@@ -1,0 +1,94 @@
+version: 2
+
+sources:
+  - name: API_LOGS
+    database: "{{env_var('DBT_EXCHANGE_RAW_DB')}}"
+    schema: API_LOGS
+    tables:
+      - name: api_audit_logs
+        columns:
+          - name: data
+            tags:
+              - secure_field=PI_MULTI
+              - variant_mask=TRAVERSE_VALUE_MASK
+            description: Raw json data containing all API information.
+            data_type: variant
+            config:
+              meta:
+                alation_oid: oid=77122;otype=attribute
+                alation_title: Data
+
+          - name: inserted_at
+            description: Timestamp for when the data was ingested into Snowflake
+            data_type: timestamp_tz
+            config:
+              meta:
+                alation_oid: oid=77118;otype=attribute
+                alation_title: Inserted At
+
+          - name: src_file_last_modified_date
+            description: Timestamp of when the source file was last modified.
+            data_type: timestamp_tz
+            config:
+              meta:
+                alation_oid: oid=77117;otype=attribute
+                alation_title: Source File Last Modified Date
+
+          - name: src_filename
+            description: Name of the source file that appears in S3
+            data_type: varchar
+            config:
+              meta:
+                alation_oid: oid=77066;otype=attribute
+                alation_title: Source Filename
+        description: Audit log table contains the full body of the API and it is used
+          for auditing and troubleshooting when customers contact PEXA about a specific
+          api.
+        config:
+          meta:
+            alation_oid: oid=3560;otype=table
+            alation_title: API Audit Logs
+
+      - name: api_report_logs
+        columns:
+          - name: data
+            tags:
+              - secure_field=PI_MULTI
+              - variant_mask=TRAVERSE_VALUE_MASK
+            description: Data
+            data_type: variant
+            config:
+              meta:
+                alation_oid: oid=77083;otype=attribute
+                alation_title: Data
+
+          - name: inserted_at
+            description: Timestamp for when the data was ingested into Snowflake
+            data_type: timestamp_tz
+            config:
+              meta:
+                alation_oid: oid=77098;otype=attribute
+                alation_title: Inserted At
+
+          - name: src_file_last_modified_date
+            description: Source File Last Modified Date
+            data_type: timestamp_tz
+            config:
+              meta:
+                alation_oid: oid=77068;otype=attribute
+                alation_title: Source File Last Modified Date
+
+          - name: src_filename
+            description: Source Filename
+            data_type: varchar
+            config:
+              meta:
+                alation_oid: oid=77079;otype=attribute
+                alation_title: Source Filename
+        description: Report api table is enriched data designed for reporting as the
+          table includes subscriber id, workspace id, subscriber type, channel etc
+          information in addition to the api calls.
+        config:
+          meta:
+            alation_oid: oid=3562;otype=table
+            alation_title: API Report Logs

@@ -1,0 +1,60 @@
+version: 2
+
+macros:
+   
+  - name: materialization_stored_proc_snowflake
+    description: |
+      Format for args: "TABLE_NAME" VARCHAR, "LOAD_TYPE" VARCHAR, "SOURCE_SCHEMA" VARCHAR, "TARGET_DB" VARCHAR, "TARGET_SCHEMA" VARCHAR, "INCREMENTAL_KEY" VARCHAR, "BATCH_SIZE" NUMBER(38,0) DEFAULT 100000
+      The stored proc ingests data from PEXAKey RDS to snowflake RAW DB.
+      Proc uses PEXAKey credentials, NLS name, and snowflake external integration for PEXAkey to connect to source.
+      Proc creates table in snowflake based on metadata from RDS, gets incremental data based on arg INCREMENTAL_KEY
+
+      **Returns**
+      A dictionary of success log:
+            {
+                "status": "<SUCCESS/FAILURE>",
+                "records_processed": total_records,
+                "new_columns": new_columns,
+                "execution_time": (datetime.now() - start_time).total_seconds()
+            }
+
+      **Usage**
+      ```
+      {{ config(
+          materialized='stored_proc',
+          procedure_name='PEXAKEY.DEV_LOAD_RDS_TO_RAW',
+          procedure_args="'address','incremental','public','dev_exchange_raw','pexakey','record_updated'"
+      ) }}
+      ```
+
+      arguments:
+        - name: table_name
+          type: string
+          description: | 
+            table_name in rds to ingest 
+        - name: load_type
+          type: string
+          description: | 
+            incremental or full  
+        - name: source_schema
+          type: string
+          description: | 
+            the schema where table exists in source RDS
+        - name: target_db
+          type: string
+          description: | 
+            Snowflake DB where the data will be ingested 
+        - name: target_schema
+          type: string
+          description: | 
+            Snowflake schema where the data will be ingested 
+        - name: incremental_key
+          type: string
+          description: | 
+            the column used for incremental load. The latest inserted_at timestamp in snowflake will be compared against this column in source 
+        - name: batch_size
+          type: number
+          description: | 
+            Optional field. Default is 100,000. Tells the number of rows stored in cache before loading into the temp table during ingestion.     
+          
+     

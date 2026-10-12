@@ -1,0 +1,1297 @@
+version: 2
+
+sources:
+  - name: PROJECTS_S3
+    database: "{{env_var('DBT_EXCHANGE_RAW_DB')}}"
+    schema: PROJECTS
+    loader: S3
+    tables:
+      - name: api_usage_audit
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/api_usage_audit"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: endpoint_name
+            data_type: VARCHAR
+
+          - name: project_id
+            data_type: VARCHAR
+
+          - name: project_name
+            data_type: VARCHAR
+
+          - name: pexa_core_workspace_id
+            data_type: VARCHAR
+
+          - name: oauth_grant_type
+            data_type: VARCHAR
+
+          - name: integrator
+            data_type: VARCHAR
+
+          - name: integrator_type
+            data_type: VARCHAR
+
+          - name: authorised_party
+            data_type: VARCHAR
+
+          - name: subscriber_id
+            data_type: VARCHAR
+
+          - name: email
+            data_type: VARCHAR
+
+          - name: created_at
+            data_type: VARCHAR
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: authority
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/authority"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: role
+            data_type: VARCHAR
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: batch_job
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/batch_job"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: project_id
+            data_type: VARCHAR
+
+          - name: user_id
+            data_type: VARCHAR
+
+          - name: created_at
+            data_type: VARCHAR
+
+          - name: updated_at
+            data_type: VARCHAR
+
+          - name: status
+            data_type: VARCHAR
+
+          - name: file_name
+            data_type: VARCHAR
+
+          - name: type
+            data_type: VARCHAR
+
+          - name: role
+            data_type: VARCHAR
+
+          - name: settlement_date_time
+            data_type: VARCHAR
+
+          - name: failed_items
+            data_type: VARCHAR
+
+          - name: total_items
+            data_type: VARCHAR
+
+          - name: mot_project_id
+            data_type: VARCHAR
+
+          - name: created_on
+            data_type: VARCHAR
+
+          - name: created_by
+            data_type: VARCHAR
+
+          - name: last_modified_on
+            data_type: VARCHAR
+
+          - name: last_modified_by
+            data_type: VARCHAR
+
+          - name: version
+            data_type: VARCHAR
+
+          - name: token
+            data_type: VARCHAR(4096)
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: batch_job_execution
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/batch_job_execution"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: job_execution_id
+            data_type: VARCHAR
+
+          - name: version
+            data_type: VARCHAR
+
+          - name: job_instance_id
+            data_type: VARCHAR
+
+          - name: create_time
+            data_type: VARCHAR
+
+          - name: start_time
+            data_type: VARCHAR
+
+          - name: end_time
+            data_type: VARCHAR
+
+          - name: status
+            data_type: VARCHAR
+
+          - name: exit_code
+            data_type: VARCHAR
+
+          - name: exit_message
+            data_type: VARCHAR
+
+          - name: last_updated
+            data_type: VARCHAR
+
+          - name: job_configuration_location
+            data_type: VARCHAR
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: batch_job_execution_context
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/batch_job_execution_context"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: job_execution_id
+            data_type: VARCHAR
+
+          - name: short_context
+            data_type: VARCHAR
+
+          - name: serialized_context
+            data_type: VARCHAR(256)
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: batch_job_instance
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/batch_job_instance"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: job_instance_id
+            data_type: VARCHAR
+
+          - name: version
+            data_type: VARCHAR
+
+          - name: job_name
+            data_type: VARCHAR
+
+          - name: job_key
+            data_type: VARCHAR(128)
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: batch_lock
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/batch_lock"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: project_id
+            data_type: VARCHAR
+
+          - name: created_at
+            data_type: VARCHAR
+
+          - name: mot_project_id
+            data_type: VARCHAR
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: batch_report_item
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/batch_report_item"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: upload_job_id
+            data_type: VARCHAR
+
+          - name: data
+            data_type: VARIANT
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: batch_step_execution
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/batch_step_execution"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: step_execution_id
+            data_type: VARCHAR
+
+          - name: version
+            data_type: VARCHAR
+
+          - name: step_name
+            data_type: VARCHAR
+
+          - name: job_execution_id
+            data_type: VARCHAR
+
+          - name: start_time
+            data_type: VARCHAR
+
+          - name: end_time
+            data_type: VARCHAR
+
+          - name: status
+            data_type: VARCHAR
+
+          - name: commit_count
+            data_type: VARCHAR
+
+          - name: read_count
+            data_type: VARCHAR
+
+          - name: filter_count
+            data_type: VARCHAR
+
+          - name: write_count
+            data_type: VARCHAR
+
+          - name: read_skip_count
+            data_type: VARCHAR
+
+          - name: write_skip_count
+            data_type: VARCHAR
+
+          - name: process_skip_count
+            data_type: VARCHAR
+
+          - name: rollback_count
+            data_type: VARCHAR
+
+          - name: exit_code
+            data_type: VARCHAR
+
+          - name: exit_message
+            data_type: VARCHAR
+
+          - name: last_updated
+            data_type: VARCHAR
+
+          - name: create_time
+            data_type: VARCHAR
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: batch_step_execution_context
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/batch_step_execution_context"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: step_execution_id
+            data_type: VARCHAR
+
+          - name: short_context
+            data_type: VARCHAR
+
+          - name: serialized_context
+            data_type: VARCHAR(256)
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: common_data_change_job_item
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/common_data_change_job_item"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: batch_job_id
+            data_type: VARCHAR
+
+          - name: data
+            data_type: VARIANT
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: configuration
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/configuration"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: name
+            data_type: VARCHAR
+
+          - name: data
+            data_type: VARIANT
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: data_change_alert
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/data_change_alert"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: workspace_id
+            data_type: VARCHAR
+
+          - name: subscriber_reference
+            data_type: VARCHAR
+
+          - name: created_at
+            data_type: VARCHAR
+
+          - name: updated_at
+            data_type: VARCHAR
+
+          - name: alert_read
+            data_type: VARCHAR
+
+          - name: alert_flagged
+            data_type: VARCHAR
+
+          - name: change_type
+            data_type: VARCHAR
+
+          - name: change_from
+            data_type: VARCHAR
+
+          - name: change_to
+            data_type: VARCHAR
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: document_job_item
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/document_job_item"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: batch_job_id
+            data_type: VARCHAR
+
+          - name: data
+            data_type: VARIANT
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: financials_job_item
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/financials_job_item"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: financials_job_id
+            data_type: VARCHAR
+
+          - name: data
+            data_type: VARIANT
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: financial_accounts_audit
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/financial_accounts_audit"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: pot_project_id
+            data_type: VARCHAR
+
+          - name: mot_project_id
+            data_type: VARCHAR
+
+          - name: user_id
+            data_type: VARCHAR
+
+          - name: action_date
+            data_type: VARCHAR
+
+          - name: action
+            data_type: VARCHAR
+
+          - name: before_description
+            data_type: VARCHAR(512)
+
+          - name: after_description
+            data_type: VARCHAR(512)
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: invitation_job_item
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/invitation_job_item"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: data
+            data_type: VARIANT
+
+          - name: invitation_job_id
+            data_type: VARCHAR
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: mot_project
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/mot_project"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: name
+            data_type: VARCHAR
+
+          - name: subscriber_id
+            data_type: VARCHAR
+
+          - name: project_id
+            data_type: VARCHAR
+
+          - name: created_at
+            data_type: VARCHAR
+
+          - name: subscriber_reference_prefix
+            data_type: VARCHAR
+
+          - name: status
+            data_type: VARCHAR
+
+          - name: account_details_data
+            data_type: VARIANT
+
+          - name: version
+            data_type: VARCHAR
+
+          - name: created_on
+            data_type: VARCHAR
+
+          - name: created_by
+            data_type: VARCHAR
+
+          - name: last_modified_on
+            data_type: VARCHAR
+
+          - name: last_modified_by
+            data_type: VARCHAR
+
+          - name: reports_opt_in
+            data_type: VARCHAR
+
+          - name: reports_opt_in_at
+            data_type: VARCHAR
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: pd_user
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/pd_user"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: email
+            data_type: VARCHAR
+
+          - name: subscriber_id
+            data_type: VARCHAR
+
+          - name: first_name
+            data_type: VARCHAR
+
+          - name: last_name
+            data_type: VARCHAR
+
+          - name: subscriber_name
+            data_type: VARCHAR
+
+          - name: type
+            data_type: VARCHAR
+
+          - name: workgroups
+            data_type: VARIANT
+
+          - name: subscriber_dual_sign_fss
+            data_type: VARCHAR
+
+          - name: subscriber_dual_sign_doc
+            data_type: VARCHAR
+
+          - name: user_permissions
+            data_type: VARIANT
+
+          - name: created_on
+            data_type: VARCHAR
+
+          - name: created_by
+            data_type: VARCHAR
+
+          - name: last_modified_on
+            data_type: VARCHAR
+
+          - name: last_modified_by
+            data_type: VARCHAR
+
+          - name: version
+            data_type: VARCHAR
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: pd_user_authorised
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/pd_user_authorised"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: subscriber_id
+            data_type: VARCHAR
+
+          - name: pot
+            data_type: VARCHAR
+
+          - name: mot
+            data_type: VARCHAR
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: project
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/project"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: subscriber_id
+            data_type: VARCHAR
+
+          - name: data
+            data_type: VARIANT
+
+          - name: account_details_data
+            data_type: VARIANT
+
+          - name: version
+            data_type: VARCHAR
+
+          - name: created_on
+            data_type: VARCHAR
+
+          - name: created_by
+            data_type: VARCHAR
+
+          - name: last_modified_on
+            data_type: VARCHAR
+
+          - name: last_modified_by
+            data_type: VARCHAR
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: report_audit
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/report_audit"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: created_at
+            data_type: VARCHAR
+
+          - name: username
+            data_type: VARCHAR
+
+          - name: project_id
+            data_type: VARCHAR
+
+          - name: subscriber_id
+            data_type: VARCHAR
+
+          - name: report_type
+            data_type: VARCHAR(300)
+
+          - name: input_parameters
+            data_type: VARIANT
+
+          - name: external_api
+            data_type: VARCHAR
+
+          - name: jurisdiction
+            data_type: VARCHAR
+
+          - name: project_name
+            data_type: VARCHAR(1600)
+
+          - name: subscriber_name
+            data_type: VARCHAR
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: settlement_job_item
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/settlement_job_item"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: settlement_job_id
+            data_type: VARCHAR
+
+          - name: data
+            data_type: VARIANT
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: subscriber_to_tnc
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/subscriber_to_tnc"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: tnc_version
+            data_type: VARCHAR
+
+          - name: subscriber_id
+            data_type: VARCHAR
+
+          - name: for_pot
+            data_type: VARCHAR
+
+          - name: for_mot
+            data_type: VARCHAR
+
+          - name: accepted_on
+            data_type: VARCHAR
+
+          - name: default_login_as_pot
+            data_type: VARCHAR
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: terms_and_conditions
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/terms_and_conditions"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: tnc
+            data_type: VARCHAR(16384)
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: togglz
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/togglz"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: feature_name
+            data_type: VARCHAR
+
+          - name: feature_enabled
+            data_type: VARCHAR
+
+          - name: strategy_id
+            data_type: VARCHAR
+
+          - name: strategy_params
+            data_type: VARCHAR(8000)
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: transfer_job_item
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/transfer_job_item"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: transfer_job_id
+            data_type: VARCHAR
+
+          - name: data
+            data_type: VARIANT
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: upload_file
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/upload_file"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: pot_project_id
+            data_type: VARCHAR
+
+          - name: mot_project_id
+            data_type: VARCHAR
+
+          - name: status
+            data_type: VARCHAR
+
+          - name: file_type
+            data_type: VARCHAR
+
+          - name: file_content
+            data_type: VARIANT
+
+          - name: mapped_content
+            data_type: VARIANT
+
+          - name: user_id
+            data_type: VARCHAR
+
+          - name: created_at
+            data_type: VARCHAR
+
+          - name: updated_at
+            data_type: VARCHAR
+
+          - name: created_on
+            data_type: VARCHAR
+
+          - name: created_by
+            data_type: VARCHAR
+
+          - name: last_modified_on
+            data_type: VARCHAR
+
+          - name: last_modified_by
+            data_type: VARCHAR
+
+          - name: version
+            data_type: VARCHAR
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: upload_job_item
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/upload_job_item"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: upload_job_id
+            data_type: VARCHAR
+
+          - name: data
+            data_type: VARIANT
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: upload_job_items
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/upload_job_items"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: upload_job_id
+            data_type: VARCHAR
+
+          - name: data
+            data_type: VARIANT
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: user_authorities
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/user_authorities"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: user_id
+            data_type: VARCHAR
+
+          - name: authority_role
+            data_type: VARCHAR
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: workspace
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/workspace"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: project_id
+            data_type: VARCHAR
+
+          - name: data
+            data_type: VARIANT
+
+          - name: modified_by_ip
+            data_type: VARIANT
+
+          - name: version
+            data_type: VARCHAR
+
+          - name: created_on
+            data_type: VARCHAR
+
+          - name: created_by
+            data_type: VARCHAR
+
+          - name: last_modified_on
+            data_type: VARCHAR
+
+          - name: last_modified_by
+            data_type: VARCHAR
+
+          - name: transact_seq
+            data_type: VARCHAR
+
+      - name: workspace_update_parent_title_job_item
+        description: external table to load the data from S3
+        external:
+          location: "@{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_RDS_DMS_EXTRACT_S3_STAGE/workspace_update_parent_title_job_item"
+          file_format: "{{env_var('DBT_EXCHANGE_RAW_DB')}}.PROJECTS.PROJECTS_raw_csv_fileformat"
+          partitions:
+            - name: partition_name
+              data_type: VARCHAR
+              expression: split_part(split_part(METADATA$FILENAME,'/',4),'-',1)
+        columns:
+          - name: op
+            data_type: VARCHAR
+
+          - name: extraction_start_ts
+            data_type: VARCHAR
+
+          - name: id
+            data_type: VARCHAR
+
+          - name: batch_job_id
+            data_type: VARCHAR
+
+          - name: data
+            data_type: VARIANT
+
+          - name: transact_seq
+            data_type: VARCHAR

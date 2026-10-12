@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: api_audit_logs
+    description: Raw table for the API Audit Log data that resides in S3
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+  - name: api_report_logs
+    description: Raw table for the API Report Log data that resides in S3
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK

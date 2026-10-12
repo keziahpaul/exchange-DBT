@@ -1,0 +1,10 @@
+
+version: 2
+sources:
+- name: PEXAKEY
+  database: "{{env_var('DBT_EXCHANGE_RAW_DB')}}"
+  schema: "PEXAKEY"
+  loader: S3
+  tables:
+
+    - name: tracking_user

@@ -1,0 +1,392 @@
+version: 2
+
+models:
+  - name: enum_document_status
+    columns:
+      - name: enum_name
+        data_tests:
+          - unique
+          - not_null
+
+  - name: enum_document_type
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_equal:
+          name: enum_document_type_has_default_row
+          arguments:
+            value: 1
+            row_condition: "is_default"
+    columns:
+      - name: enum_name
+        data_tests:
+          - unique
+          - not_null
+
+  - name: enum_iop_workspace_lock_status
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_equal:
+          name: enum_iop_workspace_lock_status_has_default_row
+          arguments:
+            value: 1
+            row_condition: "is_default"
+    columns:
+      - name: enum_name
+        data_tests:
+          - unique
+          - not_null
+
+  - name: enum_link_type
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_equal:
+          name: enum_link_type_has_default_row
+          arguments:
+            value: 1
+            row_condition: "is_default"
+    columns:
+      - name: enum_name
+        data_tests:
+          - unique
+          - not_null
+
+  - name: enum_lodgement_case_status
+    # This has no default row
+    columns:
+      - name: enum_name
+        data_tests:
+          - unique
+          - not_null
+
+  - name: enum_privacy
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_equal:
+          name: enum_privacy_has_default_row
+          arguments:
+            value: 1
+            row_condition: "is_default"
+    columns:
+      - name: enum_name
+        data_tests:
+          - unique
+          - not_null
+
+  - name: enum_rits_status
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_equal:
+          name: enum_rits_status_has_default_row
+          arguments:
+            value: 1
+            row_condition: "is_default"
+    columns:
+      - name: enum_name
+        data_tests:
+          - unique
+          - not_null
+
+  - name: enum_settlement_categories
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_equal:
+          name: enum_settlement_categories_has_default_row
+          arguments:
+            value: 1
+            row_condition: "is_default"
+    columns:
+      - name: enum_name
+        data_tests:
+          - unique
+          - not_null
+
+  - name: enum_settlement_category_type
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_equal:
+          name: enum_settlement_category_type_has_default_row
+          arguments:
+            value: 1
+            row_condition: "is_default"
+    columns:
+      - name: enum_name
+        data_tests:
+          - unique
+          - not_null
+
+  - name: enum_settlement_datetime_update
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_equal:
+          name: enum_settlement_datetime_update_has_default_row
+          arguments:
+            value: 1
+            row_condition: "is_default"
+    columns:
+      - name: enum_name
+        data_tests:
+          - unique
+          - not_null
+
+  - name: enum_settlement_status
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_equal:
+          name: enum_settlement_status_has_default_row
+          arguments:
+            value: 1
+            row_condition: "is_default"
+    columns:
+      - name: enum_name
+        data_tests:
+          - unique
+          - not_null
+
+  - name: enum_settlement_tracking_status
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_equal:
+          name: enum_settlement_tracking_status_has_default_row
+          arguments:
+            value: 1
+            row_condition: "is_default"
+    columns:
+      - name: enum_name
+        data_tests:
+          - unique
+          - not_null
+
+  - name: enum_settlement_type
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_equal:
+          name: enum_settlement_type_has_default_row
+          arguments:
+            value: 1
+            row_condition: "is_default"
+    columns:
+      - name: enum_name
+        data_tests:
+          - unique
+          - not_null
+
+  - name: enum_subscriber_status
+    columns:
+      - name: enum_name
+        data_tests:
+          - unique
+          - not_null
+
+  - name: enum_workspace_role
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_equal:
+          name: enum_workspace_role_has_default_row
+          arguments:
+            value: 1
+            row_condition: "is_default"
+    columns:
+      - name: enum_name
+        data_tests:
+          - unique
+          - not_null
+
+  - name: enum_workspace_status
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_equal:
+          name: enum_workspace_status_has_default_row
+          arguments:
+            value: 1
+            row_condition: "is_default"
+    columns:
+      - name: enum_name
+        data_tests:
+          - unique
+          - not_null
+
+  - name: enum_workspace_transaction_scope
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_equal:
+          name: enum_workspace_transaction_scope_has_default_row
+          arguments:
+            value: 1
+            row_condition: "is_default"
+    columns:
+      - name: enum_name
+        data_tests:
+          - unique
+          - not_null
+
+  - name: enum_workspace_transaction_type
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_equal:
+          name: enum_workspace_transaction_type_has_default_row
+          arguments:
+            value: 1
+            row_condition: "is_default"
+    columns:
+      - name: enum_name
+        data_tests:
+          - unique
+          - not_null
+
+  - name: dim_workspace_status
+    description: |
+      This table contains the dimension data for various status enums used in the PEXA application with respect to pxa_workspaces.
+      It is used to provide a consistent reference for status values across the application.
+      The pxa_workspaces table is joined to this table to provide the id for any fact table that needs to reference the status of a workspace.
+      You can find the default NULL replacement values by selecting the dim_workspace_status row where is_default_row_for_null is true.
+      Joining pxa_workspaces to this table is done via
+      ```
+      WHERE HASH(COALESCE(pxa_workspaces.status, ds_null.workspace_status),
+                 COALESCE(pxa_workspaces.privacy, ds_null.privacy),
+                 COALESCE(pxa_workspaces.transaction_type, ds_null.transaction_type),
+                 COALESCE(pxa_workspaces.transaction_scope, ds_null.transaction_scope),
+                 COALESCE(pxa_workspaces.panel_master_selected, ds_null.panel_master_selected),
+                 COALESCE(pxa_workspaces.is_ready_to_book, ds_null.is_ready_to_book),
+                 COALESCE(pxa_workspaces.is_interop, ds_null.is_interop),
+                 COALESCE(pxa_workspaces.is_interop_ready, ds_null.is_interop_ready),
+                 COALESCE(pxa_workspaces.interop_lock_status, ds_null.interop_lock_status),
+                 COALESCE(pxa_workspaces.is_interop_archived, ds_null.is_interop_archived),
+                 COALESCE(pxa_workspaces.is_pelno, ds_null.is_pelno),
+                 -- this field is coming in R.23, use ds_null.is_reverted_to_regular_refi until released
+                 COALESCE(pxa_workspaces.is_reverted_to_regular_refi, ds_null.is_reverted_to_regular_refi)) = dim_workspace_status.id
+      ```
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_equal:
+          name: dim_workspace_status_has_default_row
+          arguments:
+            value: 1
+            row_condition: "is_default_row_for_null"
+    columns:
+      - name: id
+        description: |
+          A surrogate HASH for the combination of various status fields in pxa_workspaces.
+          It is used to join to pxa_workspaces to provide the id for any fact table that needs
+          to reference the status of a workspace.
+        data_tests:
+          - unique
+          - not_null
+      - name: is_default_row_for_null
+        data_tests:
+          - not_null
+      - name: created_on
+        data_tests:
+          - not_null
+      - name: workspace_status
+        data_tests:
+          - not_null
+      - name: transaction_type
+        data_tests:
+          - not_null
+      - name: transaction_scope
+        data_tests:
+          - not_null
+      - name: interop_lock_status
+        data_tests:
+          - not_null
+
+  - name: dim_settlement_status
+    description: |
+      This table contains the dimension data for various status enums used in the PEXA application with respect to pxa_settlements.
+      It is used to provide a consistent reference for status values across the application.
+      The pxa_settlements table is joined to this table to provide the id for any fact table that needs to reference the status of a settlement.
+      You can find the default NULL replacement values by selecting the dim_settlement_status row where is_default_row_for_null is true.
+      Joining pxa_settlements to this table is done via
+      ```
+      WHERE HASH(COALESCE(pxa_settlements.link_type, ds_null.link_type),
+                 COALESCE(pxa_settlements.rits_status, ds_null.rits_status),
+                 COALESCE(pxa_settlements.status, ds_null.settlement_status),
+                 COALESCE(pxa_settlements.type1, ds_null.settlement_type),
+                 COALESCE(pxa_settlements.settlement_tracking_status, ds_null.settlement_tracking_status)) = dim_settlement_status.id
+      ```
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_equal:
+          name: dim_settlement_status_has_default_row
+          arguments:
+            value: 1
+            row_condition: "is_default_row_for_null"
+    columns:
+      - name: id
+        description: |
+          A surrogate HASH for the combination of the various status fields in pxa_settlements.
+          It is used to join to pxa_settlements to provide the id for any fact table that needs
+          to reference the status of a settlement.
+        data_tests:
+          - unique
+          - not_null
+      - name: is_default_row_for_null
+        data_tests:
+          - not_null
+      - name: created_on
+        data_tests:
+          - not_null
+      - name: link_type
+        data_tests:
+          - not_null
+      - name: rits_status
+        data_tests:
+          - not_null
+      - name: settlement_status
+        data_tests:
+          - not_null
+      - name: settlement_type
+        data_tests:
+          - not_null
+      - name: settlement_tracking_status
+        data_tests:
+          - not_null
+
+  - name: dim_business_event
+    description: |
+      This table contains the dimension data for various business event types used in the PEXA application.
+      It is used to provide a consistent reference for business event type values across the application.
+    columns:
+      - name: id
+        description: This is a surrogate key for the Business Event Type. It changes between environments.
+        data_type: number
+        data_tests:
+          - not_null
+          - unique
+      - name: created_on
+        description: The date and time this record was created
+        data_type: timestamp_tz
+        data_tests:
+          - not_null
+      - name: event_name
+        description: This is the natural key for the Business Event Type. Use this column to identify which business event id you want to match.
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+      - name: business_event_category_id
+        description: This is a surrogate key for the Business Event Category. It changes between environments.
+        data_type: number
+        data_tests:
+          - not_null
+      - name: category_name
+        description: This is the natural key for the Business Event Category. Use this column to identify which business event ids you want to match.
+        data_type: varchar
+        data_tests:
+          - not_null
+      - name: workspace_related
+        description: This is a workspace related event
+        data_type: boolean
+        data_tests:
+          - not_null
+      - name: action_required
+        description: This event relates to something that requires an action to be taken
+        data_type: boolean
+        data_tests:
+          - not_null
+      - name: description
+        description: A description of the Business Event
+        data_type: varchar
+        data_tests:
+          - not_null
+
+  - name: canary_subscriber
+    description: |
+      This table contains the list of subscribers that are considered canary subscribers.
+      It is used to provide a consistent reference for canary subscriber values across the application.
+    columns:
+      - name: subscriber_id
+        description: This is the unique identifier for the subscriber. It is used to join to other tables to provide the id for any fact table that needs to reference the subscriber.
+        data_type: number
+        data_tests:
+          - not_null
+          - unique
+      - name: is_canary
+        description: Indicates whether the subscriber is a canary subscriber
+        data_type: boolean
+        data_tests:
+          - accepted_values:
+              values: [true]

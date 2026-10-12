@@ -1,0 +1,156 @@
+version: 2
+
+models:
+  - name: vw_notifications
+    description: View Notifications
+    config:
+      meta:
+        alation_oid: oid=4909;otype=table
+        alation_title: View Notifications
+    columns:
+      - name: business_event_id
+        data_type: number
+        description: Unique identifier of business event.
+        config:
+          meta:
+            alation_oid: oid=126885;otype=attribute
+            alation_title: Business Event Id
+            orig_description: Business Event Id
+
+      - name: cc_recipient
+        data_type: varchar
+        description: E-mail of recipient included in CC.
+        tags:
+          - secure_field=PI_EMAIL
+        config:
+          meta:
+            alation_oid: oid=127694;otype=attribute
+            alation_title: CC Recipient
+            orig_description: CC Recipient
+
+      - name: created
+        data_type: timestamp_ntz
+        description: Invitation created date.
+        config:
+          meta:
+            alation_oid: oid=125461;otype=attribute
+            alation_title: Created
+            orig_description: Created
+
+      - name: data_json_string
+        data_type: varchar
+        description: Notification content data in json format.
+        tags:
+          - secure_field=PI_FREE_TEXT_FIELD
+        config:
+          meta:
+            alation_oid: oid=125722;otype=attribute
+            alation_title: Data Json String
+            orig_description: Data Json String
+
+      - name: delivery_datetime
+        data_type: timestamp_ntz
+        description: Date and time when the notification was delivered.
+        config:
+          meta:
+            alation_oid: oid=126762;otype=attribute
+            alation_title: Delivery Datetime
+            orig_description: Delivery Datetime
+
+      - name: description
+        data_type: varchar
+        description: Description of the notification.
+        tags:
+          - secure_field=PI_FREE_TEXT_FIELD
+        config:
+          meta:
+            alation_oid: oid=125407;otype=attribute
+            alation_title: Description
+            orig_description: Description
+
+      - name: inserted_at
+        data_type: timestamp_tz
+        description: Timestamp for when the data was ingested into Snowflake.
+        config:
+          meta:
+            alation_oid: oid=128262;otype=attribute
+            alation_title: Inserted At
+            orig_description: Inserted At
+
+      - name: notification_id
+        data_type: number
+        description: Unique identifier of a notification.
+        config:
+          meta:
+            alation_oid: oid=125521;otype=attribute
+            alation_title: Notification Id
+            orig_description: Notification Id
+
+      - name: notification_method
+        data_type: varchar
+        description: 'Method of notification used. For example: screen notification
+          or email.'
+        config:
+          meta:
+            alation_oid: oid=125460;otype=attribute
+            alation_title: Notification Method
+            orig_description: Notification Method
+
+      - name: notification_type_id
+        data_type: number
+        description: Unique identifier of the notification type.
+        config:
+          meta:
+            alation_oid: oid=127851;otype=attribute
+            alation_title: Notification Type Id
+            orig_description: Notification Type Id
+
+      - name: recipient
+        data_type: varchar
+        description: E-mail of the recipient of the notification
+        tags:
+          - secure_field=PI_EMAIL
+        config:
+          meta:
+            alation_oid: oid=126475;otype=attribute
+            alation_title: Recipient
+            orig_description: Recipient
+
+      - name: severity
+        data_type: varchar
+        description: Severity of the notification.
+        config:
+          meta:
+            alation_oid: oid=126715;otype=attribute
+            alation_title: Severity
+            orig_description: Severity
+
+      - name: status
+        data_type: varchar
+        description: 'Status of the notification. Ex: created, delivered.'
+        config:
+          meta:
+            alation_oid: oid=127275;otype=attribute
+            alation_title: Status
+            orig_description: Status
+
+      - name: subject
+        data_type: varchar
+        description: Notification subject.
+        tags:
+          - secure_field=PI_FREE_TEXT_FIELD
+        config:
+          meta:
+            alation_oid: oid=127714;otype=attribute
+            alation_title: Subject
+            orig_description: Subject
+
+      - name: workspace_id
+        data_type: number
+        description: Workspace ID which is assigned when the <a data-oid="760" data-otype="glossary_term"
+          href="/docs/term/760/">Workspace</a> is created for the purpose of a transaction.
+        config:
+          meta:
+            alation_oid: oid=126748;otype=attribute
+            alation_title: Workspace Id
+            orig_description: Workspace Id

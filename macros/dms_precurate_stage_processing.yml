@@ -1,0 +1,56 @@
+version: 2
+
+macros:
+  - name: dms_precurate_stage_processing
+    description: |
+      This macro processes AWS DMS (Database Migration Service) CDC (Change Data Capture) data to make it available for SCD2 logic in curate layer. 
+      It handles incremental loading, timezone conversions, and tracks deletes as boolean flag in column called src_delete_idn and deleted timestamp in deleted_at column.
+      This macro is applicable for Exchange and Projects
+
+      **Returns**
+      A CTE that includes:
+      All specified columns from the source
+      next_op: used to identify all the records having delete as their next operation. This is useful in marking the records as deleted in the stage layer itself without SCD2 logic.
+      modified_extraction_start_ts: Adjusted timestamp based on timezone conversion. In exchange it is possible that source can have exact timestamp for more than one record for same primary key(I,U,D at the same timestamp), 
+      this column helps create a millisecond difference in those transactions.In addition converting this to AEST because Effective_From and Effective_To columns in curate layer are derived from this column and they need to be in AEST
+      row_num: for each ingestion, a sequential number for each record within a primary key group is assigned. 
+      This is useful specifically to identify delete operations as the first operation in a particular ingestion and send them to curate layer for SCD2 processing
+      src_delete_idn: Boolean flag indicating if the record is a delete operation
+      deleted_at: Timestamp when the record was deleted
+      inserted_at: Current timestamp in AEST when the record was inserted
+
+      **Dependencies**
+      Requires 'low_date' variable to be set in dbt_project.yml
+      Requires 'inserted_at' variable to be set in dbt_project.yml
+
+      **Usage**
+      ```
+      \{\{dms_precurate_stage_processing( src_view_name='raw_orders',
+        pk='order_id',
+        columns_config='order_id, customer_id, order_date, status',
+        source_tz='UTC',
+        target_tz='Australia/Melbourne')
+      }}
+      ```
+
+
+    arguments:
+      - name: src_view_name
+        type: string
+        description: materialized view containing the DMS CDC data
+      - name: pk
+        type: string
+        description: primary key column(s) used for partitioning and tracking changes
+      - name: columns_config
+        type: string
+        description: columns selection for the output
+      - name: source_tz
+        type: string
+        description: timezone of the data in source.default='UTC'
+      - name: target_tz
+        type: string
+        description: target timezone for conversion.default='Australia/Melbourne'
+      - name: src_timestamp_grain
+        type: string
+        description: granularity of the source timestamp.default='millisecond'
+

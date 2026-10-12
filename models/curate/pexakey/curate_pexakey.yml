@@ -1,0 +1,432 @@
+version: 2
+
+models:
+  - name: vw_bank_account_store
+    description: View for PEXAKey Bank Account store
+    columns:
+      - name: data
+        description: Data
+        data_type: variant
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+
+      - name: src_file_last_modified_date
+        description: Source File Last Modified Date
+        data_type: timestamp_tz
+
+      - name: src_filename
+        description: Source Filename
+        data_type: varchar
+
+  - name: vw_property_store
+    description: View for PEXAKey Property Store
+    columns:
+      - name: data
+        description: Data
+        data_type: variant
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+
+      - name: src_file_last_modified_date
+        description: Source File Last Modified Date
+        data_type: timestamp_tz
+
+      - name: src_filename
+        description: Source Filename
+        data_type: varchar
+
+  - name: vw_web_app_registration
+    description: View for PEXAKey Web App Registration
+    columns:
+      - name: data
+        description: Data
+        data_type: variant
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+
+      - name: src_file_last_modified_date
+        description: Source File Last Modified Date
+        data_type: timestamp_tz
+
+      - name: src_filename
+        description: Source Filename
+        data_type: varchar
+
+  - name: rds_address
+    description: Curate with scd2 for RDS address
+    data_tests:
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+    columns:
+      - name: id
+        description: Id, unique identifier
+        data_type: varchar
+
+      - name: version
+        data_type: number
+
+      - name: record_created
+        data_type: timestamp_tz
+
+      - name: record_updated
+        description: Source Filename
+        data_type: timestamp_tz
+
+      - name: unstructured_address
+        tags:
+          - secure_field=PI_FULL_ADDRESS
+        data_type: varchar
+
+      - name: address_line
+        tags:
+          - secure_field=PI_PARTIAL_ADDRESS
+        description: Address line includes house number and street name
+        data_type: varchar
+
+      - name: suburb
+        tags:
+          - secure_field=PI_PARTIAL_ADDRESS
+        description: Suburb
+        data_type: varchar
+
+      - name: state
+        description: State
+        data_type: varchar
+
+      - name: postcode
+        tags:
+          - secure_field=PI_PARTIAL_ADDRESS
+        description: Postcode
+        data_type: varchar
+
+      - name: property_classification
+        data_type: varchar
+
+      - name: tracking_user_reference
+        data_type: varchar
+
+      - name: inserted_at
+        description: Source Filename
+        data_type: timestamp_tz
+
+      - name: load_type
+        description: Tells if the record was inserted as part of an incremental or
+          full load
+        data_type: varchar
+
+  - name: rds_task
+    description: Raw table for PEXAKey Task ( property settelment RDS)
+    data_tests:
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+    columns:
+      - name: id
+        description: Id, unique identifier
+        data_type: varchar
+
+      - name: version
+        data_type: number
+
+      - name: record_created
+        data_type: timestamp_tz
+
+      - name: record_updated
+        data_type: timestamp_tz
+
+      - name: task_id
+        data_type: varchar
+
+      - name: task_type
+        data_type: varchar
+
+      - name: task_status
+        description: Task status
+        data_type: varchar
+
+      - name: task_detail
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: variant
+        data_type: variant
+
+      - name: tracking_reference
+        description: Postcode
+        data_type: varchar
+
+      - name: task_expired
+        data_type: timestamp_tz
+
+      - name: tracking_user_reference
+        data_type: varchar
+
+      - name: task_is_viewed
+        data_type: boolean
+
+      - name: inserted_at
+        description: Source Filename
+        data_type: timestamp_tz
+
+      - name: load_type
+        description: Tells if the record was inserted as part of an incremental or
+          full load
+        data_type: varchar
+
+  - name: rds_subscriber
+    description: Raw table for PEXAKey Subscriber ( property settelment RDS)
+    data_tests:
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+    columns:
+      - name: id
+        description: Id, unique identifier
+        data_type: varchar
+
+      - name: version
+        data_type: number
+
+      - name: record_created
+        data_type: timestamp_tz
+
+      - name: record_updated
+        data_type: timestamp_tz
+
+      - name: subscriber_id
+        data_type: varchar
+
+      - name: subscriber_name
+        tags:
+          - secure_field=PI_BUSINESS_NAME
+        data_type: varchar
+
+      - name: inserted_at
+        description: Source Filename
+        data_type: timestamp_tz
+
+      - name: load_type
+        description: Tells if the record was inserted as part of an incremental or
+          full load
+        data_type: varchar
+
+  - name: rds_tracking_user
+    description: Raw table for PEXAKey tracking user ( property settelment RDS)
+    data_tests:
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+    columns:
+      - name: id
+        description: Id, unique identifier
+        data_type: varchar
+
+      - name: version
+        data_type: number
+
+      - name: record_created
+        data_type: timestamp_tz
+
+      - name: record_updated
+        data_type: timestamp_tz
+
+      - name: user_email
+        tags:
+          - secure_field=PI_EMAIL
+        data_type: varchar
+
+      - name: user_mobile
+        tags:
+          - secure_field=PI_CONTACT_NUMBER
+        data_type: varchar
+
+      - name: user_family_name
+        tags:
+          - secure_field=PI_NAME
+        data_type: varchar
+
+      - name: user_given_name
+        tags:
+          - secure_field=PI_NAME
+        data_type: varchar
+
+      - name: user_org_name
+        tags:
+          - secure_field=PI_BUSINESS_NAME
+        data_type: varchar
+
+      - name: user_org_contact_given_name
+        tags:
+          - secure_field=PI_NAME
+        data_type: varchar
+
+      - name: user_org_contact_family_name
+        tags:
+          - secure_field=PI_NAME
+        data_type: varchar
+
+      - name: inserted_at
+        description: Source Filename
+        data_type: timestamp_tz
+
+      - name: load_type
+        description: Tells if the record was inserted as part of an incremental or
+          full load
+        data_type: varchar
+
+  - name: rds_tracking
+    description: Raw table for PEXAKey tracking ( property settelment RDS)
+    data_tests:
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+    columns:
+      - name: id
+        description: Id, unique identifier
+        data_type: varchar
+
+      - name: version
+        data_type: number
+
+      - name: record_created
+        data_type: timestamp_tz
+
+      - name: record_updated
+        data_type: timestamp_tz
+
+      - name: tracking_id
+        data_type: varchar
+
+      - name: tracking_status
+        data_type: varchar
+
+      - name: invitation_date
+        data_type: timestamp_tz
+
+      - name: workspace_internal_id
+        data_type: number
+
+      - name: settlement_date
+        data_type: timestamp_tz
+
+      - name: workspace_status
+        data_type: varchar
+
+      - name: party_id
+        data_type: varchar
+
+      - name: role
+        data_type: varchar
+
+      - name: correlation_token
+        data_type: varchar
+
+      - name: subscriber_reference
+        data_type: varchar
+
+      - name: tracking_user_reference
+        data_type: varchar
+
+      - name: address_reference
+        data_type: varchar
+
+      - name: display_name
+        tags:
+          - secure_field=PI_FULL_NAME
+        data_type: varchar
+
+      - name: party_type
+        data_type: varchar
+
+      - name: tracking_expired
+        data_type: timestamp_tz
+
+      - name: is_hidden
+        data_type: boolean,
+
+      - name: subscriber_mobile
+        tags:
+          - secure_field=PI_CONTACT_NUMBER
+        data_type: varchar
+
+      - name: settlement_status
+        data_type: varchar
+
+      - name: is_settlement_ready
+        data_type: boolean
+
+      - name: inserted_at
+        description: Source Filename
+        data_type: timestamp_tz
+
+      - name: load_type
+        description: Tells if the record was inserted as part of an incremental or
+          full load
+        data_type: varchar

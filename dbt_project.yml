@@ -1,0 +1,350 @@
+
+# Name your project! Project names should contain only lowercase characters
+# and underscores. A good package name should reflect your organization's
+# name or the intended use of these models
+name: 'pexa_one_data_au_exchange_dbt'
+version: '1.0.0'
+config-version: 2
+
+# This setting configures which "profile" dbt uses for this project.
+profile: 'default'
+
+# These configurations specify where dbt should look for different types of files.
+# The `model-paths` config, for example, states that models in this project can be
+# found in the "models/" directory. You probably won't need to change these!
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+flags:
+  warn_error_options:
+    silence:
+      - InvalidMacroAnnotation
+
+vars:
+    DBT_ENV_NAME: "{{env_var('DBT_ENV_NAME')}}"
+    dbt_tags__database: "{{env_var('DBT_GOVERNANCE_DB')}}"
+    dbt_tags__schema: "{{env_var('DBT_GOVERNANCE_SCHEMA')}}"
+    dbt_tags__resource_types: ["model", "snapshot", "source"]
+    dbt_tags__opt_in_default_naming_config: false
+    dbt_tags__allowed_tags: ["secure_field", "variant_mask"]
+    dbt_tags__tag_name_separator: "="
+    inserted_at: CONVERT_TIMEZONE('Australia/Sydney',CURRENT_TIMESTAMP(2))
+    updated_at: CONVERT_TIMEZONE('Australia/Sydney',CURRENT_TIMESTAMP(2))
+    active_date: '9999-12-31'
+    low_date: '1900-01-01'
+    primary_keys_dict: 
+      pxa_accounts: 'account_id'
+      pxa_addresses: 'address_id'
+      pxa_api_req_resp_audit: 'api_req_resp_audit_id'
+      pxa_application_roles: 'application_role_id'
+      pxa_batch_tac: 'tac_batch_id'
+      pxa_billing_transactions: 'bllng_rqst_trnsctns_id'
+      pxa_business_event: 'business_event_id'
+      pxa_business_event_categories: 'business_event_category_id'
+      pxa_business_event_details: 'id'
+      pxa_business_event_outbox: 'business_event_id'
+      pxa_business_event_ref_types: 'business_event_ref_type_id'
+      pxa_business_event_reference: 'business_event_reference_id'
+      pxa_business_event_types: 'business_event_type_id'
+      pxa_checklist_items: 'checklist_item_id'
+      pxa_checklist_types: 'checklist_type_id'
+      pxa_common_signatures: 'common_signature_id'
+      pxa_conversations: 'conversation_id'
+      pxa_conversation_subscribers: 'conversation_subscriber_id'
+      pxa_conversations_read_ref: 'conversations_read_ref_id'
+      pxa_corrective_homes: 'corrective_home_id'
+      pxa_corrective_payments: 'corrective_payment_id'
+      pxa_correspondences: 'correspondence_id'
+      pxa_countrys: 'country_id'
+      pxa_digital_cert_details: 'cert_details_id'
+      pxa_documents: 'document_id'
+      pxa_document_counterpart: 'document_counterpart_id'
+      pxa_document_property_ref: 'document_id, property_ref_id'
+      pxa_document_signatures: 'document_id, signature_id'
+      pxa_document_types: 'document_type_id'
+      pxa_document_type_roles: 'document_type_id, workspace_role_id'
+      pxa_event_audit_entry: 'event_audit_entry_id'
+      pxa_event_audit_type: 'event_audit_type_id'
+      pxa_event_log: 'event_log_id'
+      pxa_event_log_type: 'event_log_type_id'
+      pxa_ext_event_sub_mapping: 'map_ext_bus_event_id, map_ext_subscriber_id'
+      pxa_external_business_event: 'ext_bus_event_id'
+      pxa_financialaccounts: 'financialaccount_id'
+      pxa_gst: 'workspace_id,form_type'
+      pxa_history: 'history_id'
+      pxa_imt_providers: 'imt_provider_id'
+      pxa_indeterminates: 'party_id'
+      pxa_invitations: 'invitation_id'
+      pxa_line_items_changelog: 'line_item_change_id'
+      pxa_lodgeins_dealing_require: 'dealing_req_id, document_id'
+      pxa_lodgements: 'lodgement_id'
+      pxa_lodgement_billing_event: 'lodgement_billing_event_id'
+      pxa_lodgement_instructions: 'document_id'
+      pxa_lodgement_instruc_docs: 'instructions_id, document_id'
+      pxa_messages: 'message_id'
+      pxa_mobile_signing_status: 'mobile_signing_status_id'
+      pxa_noa_details: 'noa_details_id'
+      pxa_noa_details_list: 'document_id, noa_details_id'
+      pxa_nos_form_24b: 'document_id'
+      pxa_nos_property_ref: 'property_ref_id'
+      pxa_notice_of_acquisition: 'document_id'
+      pxa_notice_of_sales: 'document_id'
+      pxa_notifications: 'notification_id'
+      pxa_operating_jurisdiction: 'opera_jurisdiction_id'
+      pxa_organisations: 'party_id'
+      pxa_org_types: 'org_type_id'
+      pxa_panel_member_esa: 'panel_member_id, panel_master_id'
+      pxa_participants: 'participant_id'
+      pxa_participant_partys: 'participant_id, party_id'
+      pxa_partys: 'party_id'
+      pxa_party_addresses: 'party_address_id'
+      pxa_party_roles: 'party_id, workspace_role_id'
+      pxa_passwords: 'password_id'
+      pxa_permissions: 'permission_id'
+      pxa_persons: 'party_id'
+      pxa_planner_rtb_status: 'pxa_planner_rtb_status_id'
+      pxa_planner_user_access: 'user_id'
+      pxa_ppr_details: 'ppr_details_id'
+      pxa_ppr_details_list: 'document_id, ppr_details_id'
+      pxa_primary_contacts: 'primary_contact_id'
+      pxa_project_data: 'project_data_id'
+      pxa_project_request: 'project_request_id'
+      pxa_project_supplier: 'project_supplier_id'
+      pxa_propertygroup_property: 'property_group_id,property_id'
+      pxa_propertys: 'property_id'
+      pxa_propertys_address: 'property_id'
+      pxa_property_details: 'property_detail_id'
+      pxa_property_detail_propertys: 'property_detail_id'
+      pxa_property_group: 'property_group_id'
+      pxa_proprietor_groups: 'proprietior_group_id'
+      pxa_prop_info_detail: 'property_information_detail_id'
+      pxa_prop_info_prop: 'property_information_detail_id, transfer_id'
+      pxa_reference_data: 'reference_data_id'
+      pxa_residuals: 'document_id'
+      pxa_residual_configs: 'residual_config_id'
+      pxa_sales_procurement_journal: 'sales_procurement_journal_id'
+      pxa_settlements: 'settlement_id'
+      pxa_settlement_categories: 'settlement_category_id'
+      pxa_settlement_schedules: 'settlement_schedule_id'
+      pxa_settle_datetime_history: 'settle_datetime_history_id'
+      pxa_settle_sched_history: 'history_id,settlement_schedule_id'
+      pxa_signatures: 'signature_id'
+      pxa_stamp_duty: 'stamp_duty_id'
+      pxa_subscribers: 'subscriber_id'
+      pxa_subscriber_correspondence: 'subscriber_corr_id'
+      pxa_subscriber_panel_members: 'subscriber_id,panel_member_id'
+      pxa_subscriber_types: 'subscriber_type_id'
+      pxa_sub_opera_jurisdictions: 'opera_jurisdiction_id, subscriber_id'
+      pxa_simultaneous_lodgements: 'simultaneous_lodgement_id'
+      pxa_simultaneous_workspaces: 'simultaneous_lodgement_id, workspace_id'
+      pxa_tenancy_groups: 'tenancy_detail_id,proprietor_group_id'
+      pxa_transferor_partys: 'party_id,transferor_id'
+      pxa_transfers: 'transfer_id'
+      pxa_transfer_tenancies: 'transfer_id, tenancy_detail_id'
+      pxa_transfer_transferors: 'transfer_id,transferor_id'
+      pxa_users: 'user_id'
+      pxa_user_application_roles: 'user_id'
+      pxa_user_permissions: 'user_id,permission_id'
+      pxa_workgroups: 'workgroup_id'
+      pxa_workgroup_users: 'user_id,workgroup_id'
+      pxa_workgroup_workspaces: 'workspace_id,workgroup_id'
+      pxa_workspaces: 'workspace_id'
+      pxa_workspaces_accessed: 'id'
+      pxa_workspace_last_modified: 'workspace_id'
+      pxa_workspace_roles: 'workspace_role_id'
+      pxa_ws_txn_type_workspaces: 'workspace_id'
+
+
+target-path: "target"  # directory which will store compiled SQL files
+clean-targets:         # directories to be removed by `dbt clean`
+  - "target"
+  - "dbt_packages"
+
+seeds:
+  pexa_one_data_au_exchange_dbt:
+    logging:
+      +database: "{{env_var('DBT_LOGGING_DB')}}"
+      +schema: "{{env_var('DBT_LOG_MAPPING_SCHEMA')}}"
+
+# Configuring models
+# Full documentation: https://docs.getdbt.com/docs/configuring-models
+
+# In dbt, the default materialization for a model is a view. This means, when you run
+# dbt run or dbt build, all of your models will be built as a view in your data platform.
+# The configuration below will override this setting for models in the example folder to
+# instead be materialized as tables. Any models you add to the root of the models folder will
+# continue to be built as views. These settings can be overridden in the individual model files
+# using the `{{ config(...) }}` macro.
+on-run-end:
+  - "{{ dbt_artifacts.upload_results(results) }}"
+
+# unless its business-critical db or data quality issues that have downstream impact it should error
+# otherwise it should not break pipelines
+tests:
+  +severity: warn
+
+models:
+  pexa_one_data_au_exchange_dbt:
+    +persist_docs:
+      relation: true
+      columns: true
+    +post-hook:
+      - >
+        {% if flags.WHICH in ('run', 'build') %}
+          {{ dbt_tags.apply_column_tags() }}
+        {% endif %}
+        
+    raw:
+      +database: "{{env_var('DBT_EXCHANGE_RAW_DB')}}"
+      api_logs:
+        +schema: "{{env_var('DBT_API_LOGS_RAW_SCHEMA')}}"
+      pexakey:
+        +pre-hook: "ALTER SESSION SET TIMEZONE = 'Australia/Sydney'"
+        +schema: "{{env_var('DBT_PEXAKEY_RAW_SCHEMA')}}"
+      api_push_notification:
+        +pre-hook: 'ALTER SESSION SET TIMEZONE = ''Australia/Sydney'''
+        +schema: "{{env_var('DBT_PUSH_NOTIFICATION_SCHEMA')}}"
+      exchange:
+        +schema: "{{env_var('DBT_EXCHANGE_RAW_SCHEMA')}}"
+        +materialized: materialized_view_snowflake
+        +persist_docs:
+          relation: false
+          columns: false
+      projects:
+        +schema: "{{env_var('DBT_PROJECTS_SCHEMA')}}"
+        +materialized: materialized_view_snowflake
+        +persist_docs:
+          relation: false
+          columns: false
+
+    stage:
+      +database: "{{env_var('DBT_EXCHANGE_STAGE_DB')}}"
+      exchange:
+        +schema: "{{env_var('DBT_EXCHANGE_STAGE_SCHEMA')}}"
+        +materialized: incremental
+        +incremental_strategy: append
+        +transient: false
+        stg_pxa_documents:
+          +snowflake_warehouse: "{{ env_var('DBT_ENV_NAME') | upper | replace('CI', 'TST') }}_TRN_S_WH"
+        stg_pxa_lodgements:
+          +snowflake_warehouse: "{{ env_var('DBT_ENV_NAME') | upper | replace('CI', 'TST') }}_TRN_S_WH"
+        stg_pxa_invitations:
+          +snowflake_warehouse: "{{ env_var('DBT_ENV_NAME') | upper | replace('CI', 'TST') }}_TRN_S_WH"
+        stg_pxa_gst:
+          +snowflake_warehouse: "{{ env_var('DBT_ENV_NAME') | upper | replace('CI', 'TST') }}_TRN_S_WH"
+        stg_pxa_participants:
+          +snowflake_warehouse: "{{ env_var('DBT_ENV_NAME') | upper | replace('CI', 'TST') }}_TRN_S_WH"
+        stg_pxa_settlements:
+          +snowflake_warehouse: "{{ env_var('DBT_ENV_NAME') | upper | replace('CI', 'TST') }}_TRN_S_WH"
+        stg_pxa_settlement_schedules:
+          +snowflake_warehouse: "{{ env_var('DBT_ENV_NAME') | upper | replace('CI', 'TST') }}_TRN_S_WH"
+        stg_pxa_subscribers:
+          +snowflake_warehouse: "{{ env_var('DBT_ENV_NAME') | upper | replace('CI', 'TST') }}_TRN_S_WH"
+        stg_pxa_workspace_roles:
+          +snowflake_warehouse: "{{ env_var('DBT_ENV_NAME') | upper | replace('CI', 'TST') }}_TRN_S_WH"
+        stg_pxa_workspaces:
+          +snowflake_warehouse: "{{ env_var('DBT_ENV_NAME') | upper | replace('CI', 'TST') }}_TRN_S_WH"
+
+      projects:
+        +schema: "{{env_var('DBT_PROJECTS_SCHEMA')}}"
+        +materialized: incremental
+        +incremental_strategy: append
+        +transient: "{{ env_var('DBT_ENV_NAME') != 'PRD' }}"
+
+    curate:
+      +database: "{{env_var('DBT_EXCHANGE_CURATE_DB')}}"
+      exchange:
+        +schema: "{{env_var('DBT_EXCHANGE_CURATE_SCHEMA')}}"
+        pxa_documents:
+          +snowflake_warehouse: "{{ env_var('DBT_ENV_NAME') | upper | replace('CI', 'TST') }}_TRN_S_WH"
+        pxa_lodgements:
+          +snowflake_warehouse: "{{ env_var('DBT_ENV_NAME') | upper | replace('CI', 'TST') }}_TRN_S_WH"
+        pxa_invitations:
+          +snowflake_warehouse: "{{ env_var('DBT_ENV_NAME') | upper | replace('CI', 'TST') }}_TRN_S_WH"
+        pxa_gst:
+          +snowflake_warehouse: "{{ env_var('DBT_ENV_NAME') | upper | replace('CI', 'TST') }}_TRN_S_WH"
+        pxa_participants:
+          +snowflake_warehouse: "{{ env_var('DBT_ENV_NAME') | upper | replace('CI', 'TST') }}_TRN_S_WH"
+        pxa_settlements:
+          +snowflake_warehouse: "{{ env_var('DBT_ENV_NAME') | upper | replace('CI', 'TST') }}_TRN_S_WH"
+        pxa_settlement_schedules:
+          +snowflake_warehouse: "{{ env_var('DBT_ENV_NAME') | upper | replace('CI', 'TST') }}_TRN_S_WH"
+        pxa_subscribers:
+          +snowflake_warehouse: "{{ env_var('DBT_ENV_NAME') | upper | replace('CI', 'TST') }}_TRN_S_WH"
+        pxa_workspace_roles:
+          +snowflake_warehouse: "{{ env_var('DBT_ENV_NAME') | upper | replace('CI', 'TST') }}_TRN_S_WH"
+        pxa_workspaces:
+          +snowflake_warehouse: "{{ env_var('DBT_ENV_NAME') | upper | replace('CI', 'TST') }}_TRN_S_WH"
+      exchange_views:
+        +schema: "{{env_var('DBT_EXCHANGE_CURATE_SCHEMA')}}"
+      projects:
+        +schema: "{{env_var('DBT_PROJECTS_SCHEMA')}}"
+      api_logs:
+        +schema: "{{env_var('DBT_API_LOGS_CURATE_SCHEMA')}}"
+        +snowflake_warehouse: "{{env_var('DBT_API_LOGS_CURATE_WH')}}"
+      pexakey:
+        +pre-hook: "ALTER SESSION SET TIMEZONE = 'Australia/Sydney'"
+        +schema: "{{env_var('DBT_PEXAKEY_CURATE_SCHEMA')}}"
+        curate_table:
+          rds_address:
+            +alias: address
+          rds_task:
+            +alias: task
+          rds_subscriber:
+            +alias: subscriber
+          rds_tracking:
+            +alias: tracking
+          rds_tracking_user:
+            +alias: tracking_user
+      api_push_notification:
+        +pre-hook: 'ALTER SESSION SET TIMEZONE = ''Australia/Sydney'''
+        +schema: "{{env_var('DBT_PUSH_NOTIFICATION_SCHEMA')}}"
+        outbound_notification_curate:
+            +alias: outbound_notification
+        registration_curate:
+            +alias: registration
+        webhook_registration_curate:
+            +alias: webhook_registration
+
+    data_services:
+      +secure: true
+      +database: "{{env_var('DBT_EXCHANGE_DATASERVICES_DB')}}"
+      exchange:
+        +secure: true
+        +copy_grants: true
+        +schema: "{{env_var('DBT_EXCHANGE_DATASERVICES_SCHEMA')}}"
+      projects:
+        +schema: "{{env_var('DBT_PROJECTS_SCHEMA')}}"
+        +copy_grants: true
+      api_logs:
+        +copy_grants: true
+        +schema: "{{env_var('DBT_API_LOGS_DATASERVICES_SCHEMA')}}"
+      pexakey:
+        +pre-hook: "ALTER SESSION SET TIMEZONE = 'Australia/Sydney'"
+        +schema: "{{env_var('DBT_PEXAKEY_DATASERVICES_SCHEMA')}}"
+        +copy_grants: true
+        ds_view:
+          vw_ds_all_users_store:
+            +alias: vw_all_users_store
+          vw_ds_bank_account_store:
+            +alias: vw_bank_account_store
+          vw_ds_property_store:
+            +alias: vw_property_store
+          vw_ds_property_settlement:
+            +alias: vw_property_settlement
+      api_push_notification:
+        +schema: "{{env_var('DBT_PUSH_NOTIFICATION_SCHEMA')}}"
+        +copy_grants: true
+          
+    logging:
+      +database: "{{env_var('DBT_LOGGING_DB')}}"
+      trustcenter:
+        +schema: "{{env_var('DBT_TRUSTCENTER_SCHEMA')}}"
+
+  dbt_artifacts:
+    +database: "{{env_var('DBT_LOGGING_DB')}}"
+    +schema: "{{env_var('DBT_LOGGING_SCHEMA')}}"

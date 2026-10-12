@@ -1,0 +1,9 @@
+selectors:
+  - name: cdm_only
+    description: "Only build the CDM part of the Exchange project"
+    definition:
+      # --select "*.data_services.exchange.cdm.*"
+      method: fqn
+      value: "*.data_services.exchange.cdm.*"
+      children: true
+      indirect_selection: buildable

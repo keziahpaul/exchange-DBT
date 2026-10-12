@@ -1,0 +1,463 @@
+version: 2
+
+models:
+  - name: ms_api_bank_account_store
+    description: Raw table for PEXAKey Bank Account store
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=86355;otype=attribute
+            alation_title: Data
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=86362;otype=attribute
+            alation_title: Inserted At
+
+      - name: src_file_last_modified_date
+        description: Source File Last Modified Date
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=86359;otype=attribute
+            alation_title: Source File Last Modified Date
+
+      - name: src_filename
+        description: Source Filename
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=86364;otype=attribute
+            alation_title: Source Filename
+    config:
+      meta:
+        alation_oid: oid=3707;otype=table
+        alation_title: Microservice API Bank Account Store
+
+  - name: ms_api_property_settlement
+    description: Raw table for PEXAKey Property Settlement
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=86357;otype=attribute
+            alation_title: Data
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=86361;otype=attribute
+            alation_title: Inserted At
+
+      - name: src_file_last_modified_date
+        description: Source File Last Modified Date
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=86366;otype=attribute
+            alation_title: Source File Last Modified Date
+
+      - name: src_filename
+        description: Source Filename
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=86358;otype=attribute
+            alation_title: Source Filename
+    config:
+      meta:
+        alation_oid: oid=3709;otype=table
+        alation_title: Microservice API Property Settlement
+
+  - name: ms_api_property_store
+    description: Raw table for PEXAKey Property Store
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=86363;otype=attribute
+            alation_title: Data
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=86360;otype=attribute
+            alation_title: Inserted At
+
+      - name: src_file_last_modified_date
+        description: Source File Last Modified Date
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=86356;otype=attribute
+            alation_title: Source File Last Modified Date
+
+      - name: src_filename
+        description: Source Filename
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=86365;otype=attribute
+            alation_title: Source Filename
+    config:
+      meta:
+        alation_oid: oid=3708;otype=table
+        alation_title: Microservice API Property Store
+
+  - name: web_app_registration_ms
+    description: Raw table for PEXAKey Web App Registration
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=153453;otype=attribute
+            alation_title: Data
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153454;otype=attribute
+            alation_title: Inserted At
+
+      - name: src_file_last_modified_date
+        description: Source File Last Modified Date
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153455;otype=attribute
+            alation_title: Source File Last Modified Date
+
+      - name: src_filename
+        description: Source Filename
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153456;otype=attribute
+            alation_title: Source Filename
+    config:
+      meta:
+        alation_oid: oid=5909;otype=table
+        alation_title: Web App Registration Microservice
+
+  - name: address
+    description: Raw table for PEXAKey Address ( property settelment RDS)
+    columns:
+      - name: id
+        description: Id, unique identifier
+        data_type: varchar
+
+      - name: version
+        data_type: number
+
+      - name: record_created
+        data_type: timestamp_tz
+
+      - name: record_updated
+        description: Source Filename
+        data_type: timestamp_tz
+
+      - name: unstructured_address
+        tags:
+          - secure_field=PI_FULL_ADDRESS
+        data_type: varchar
+
+      - name: address_line
+        tags:
+          - secure_field=PI_PARTIAL_ADDRESS
+        description: Address line includes house number and street name
+        data_type: varchar
+
+      - name: suburb
+        tags:
+          - secure_field=PI_PARTIAL_ADDRESS
+        description: Suburb
+        data_type: varchar
+
+      - name: state
+        description: State
+        data_type: varchar
+
+      - name: postcode
+        tags:
+          - secure_field=PI_PARTIAL_ADDRESS
+        description: Postcode
+        data_type: varchar
+
+      - name: property_classification
+        data_type: varchar
+
+      - name: tracking_user_reference
+        data_type: varchar
+
+      - name: inserted_at
+        description: Source Filename
+        data_type: timestamp_tz
+
+      - name: load_type
+        description: Tells if the record was inserted as part of an incremental or
+          full load
+        data_type: varchar
+
+  - name: task
+    description: Raw table for PEXAKey Task ( property settelment RDS)
+    columns:
+      - name: id
+        description: Id, unique identifier
+        data_type: varchar
+
+      - name: version
+        data_type: number
+
+      - name: record_created
+        data_type: timestamp_tz
+
+      - name: record_updated
+        data_type: timestamp_tz
+
+      - name: task_id
+        data_type: varchar
+
+      - name: task_type
+        data_type: varchar
+
+      - name: task_status
+        description: Task status
+        data_type: varchar
+
+      - name: task_detail
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: variant
+        data_type: variant
+
+      - name: tracking_reference
+        description: Postcode
+        data_type: varchar
+
+      - name: task_expired
+        data_type: timestamp_tz
+
+      - name: tracking_user_reference
+        data_type: varchar
+
+      - name: task_is_viewed
+        data_type: boolean
+
+      - name: inserted_at
+        description: Source Filename
+        data_type: timestamp_tz
+
+      - name: load_type
+        description: Tells if the record was inserted as part of an incremental or
+          full load
+        data_type: varchar
+
+  - name: subscriber
+    description: Raw table for PEXAKey Subscriber ( property settelment RDS)
+    columns:
+      - name: id
+        description: Id, unique identifier
+        data_type: varchar
+
+      - name: version
+        data_type: number
+
+      - name: record_created
+        data_type: timestamp_tz
+
+      - name: record_updated
+        data_type: timestamp_tz
+
+      - name: subscriber_id
+        data_type: varchar
+
+      - name: subscriber_name
+        tags:
+          - secure_field=PI_BUSINESS_NAME
+        data_type: varchar
+
+      - name: inserted_at
+        description: Source Filename
+        data_type: timestamp_tz
+
+      - name: load_type
+        description: Tells if the record was inserted as part of an incremental or
+          full load
+        data_type: varchar
+
+  - name: tracking_user
+    description: Raw table for PEXAKey tracking user ( property settelment RDS)
+    columns:
+      - name: id
+        description: Id, unique identifier
+        data_type: varchar
+
+      - name: version
+        data_type: number
+
+      - name: record_created
+        data_type: timestamp_tz
+
+      - name: record_updated
+        data_type: timestamp_tz
+
+      - name: user_email
+        tags:
+          - secure_field=PI_EMAIL
+        data_type: varchar
+
+      - name: user_mobile
+        tags:
+          - secure_field=PI_CONTACT_NUMBER
+        data_type: varchar
+
+      - name: user_family_name
+        tags:
+          - secure_field=PI_NAME
+        data_type: varchar
+
+      - name: user_given_name
+        tags:
+          - secure_field=PI_NAME
+        data_type: varchar
+
+      - name: user_org_name
+        tags:
+          - secure_field=PI_BUSINESS_NAME
+        data_type: varchar
+
+      - name: user_org_contact_given_name
+        tags:
+          - secure_field=PI_NAME
+        data_type: varchar
+
+      - name: user_org_contact_family_name
+        tags:
+          - secure_field=PI_NAME
+        data_type: varchar
+
+      - name: inserted_at
+        description: Source Filename
+        data_type: timestamp_tz
+
+      - name: load_type
+        description: Tells if the record was inserted as part of an incremental or
+          full load
+        data_type: varchar
+
+  - name: tracking
+    description: Raw table for PEXAKey tracking ( property settelment RDS)
+    columns:
+      - name: id
+        description: Id, unique identifier
+        data_type: varchar
+
+      - name: version
+        data_type: number
+
+      - name: record_created
+        data_type: timestamp_tz
+
+      - name: record_updated
+        data_type: timestamp_tz
+
+      - name: tracking_id
+        data_type: varchar
+
+      - name: tracking_status
+        data_type: varchar
+
+      - name: invitation_date
+        data_type: timestamp_tz
+
+      - name: workspace_internal_id
+        data_type: number
+
+      - name: settlement_date
+        data_type: timestamp_tz
+
+      - name: workspace_status
+        data_type: varchar
+
+      - name: party_id
+        data_type: varchar
+
+      - name: role
+        data_type: varchar
+
+      - name: correlation_token
+        data_type: varchar
+
+      - name: subscriber_reference
+        data_type: varchar
+
+      - name: tracking_user_reference
+        data_type: varchar
+
+      - name: address_reference
+        data_type: varchar
+
+      - name: display_name
+        tags:
+          - secure_field=PI_FULL_NAME
+        data_type: varchar
+
+      - name: party_type
+        data_type: varchar
+
+      - name: tracking_expired
+        data_type: timestamp_tz
+
+      - name: is_hidden
+        data_type: boolean,
+
+      - name: subscriber_mobile
+        tags:
+          - secure_field=PI_CONTACT_NUMBER
+        data_type: varchar
+
+      - name: settlement_status
+        data_type: varchar
+
+      - name: is_settlement_ready
+        data_type: boolean
+
+      - name: inserted_at
+        description: Source Filename
+        data_type: timestamp_tz
+
+      - name: load_type
+        description: Tells if the record was inserted as part of an incremental or
+          full load
+        data_type: varchar

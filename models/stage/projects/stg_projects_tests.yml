@@ -1,0 +1,596 @@
+version: 2
+
+models:
+  - name: stg_api_usage_audit
+    columns:
+      - name: email
+        tags:
+          - secure_field=PI_EMAIL
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_api_usage_audit')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_api_usage_audit')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+
+  - name: stg_authority
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_authority')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_authority')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: role
+
+  - name: stg_batch_job
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_batch_job')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_batch_job')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: user_id
+        tags:
+          - secure_field=PI_USERID
+
+      - name: created_by
+        tags:
+          - secure_field=PI_EMAIL
+
+      - name: last_modified_by
+        tags:
+          - secure_field=PI_EMAIL
+
+  - name: stg_batch_job_execution
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_batch_job_execution')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_batch_job_execution')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: job_execution_id
+
+  - name: stg_batch_job_execution_context
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_batch_job_execution_context')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_batch_job_execution_context')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: job_execution_id
+
+  - name: stg_batch_job_instance
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_batch_job_instance')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_batch_job_instance')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: job_instance_id
+
+  - name: stg_batch_lock
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_batch_lock')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_batch_lock')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+
+  - name: stg_batch_report_item
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_batch_report_item')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_batch_report_item')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+  - name: stg_batch_step_execution
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_batch_step_execution')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_batch_step_execution')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: step_execution_id
+
+  - name: stg_batch_step_execution_context
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_batch_step_execution_context')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_batch_step_execution_context')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: step_execution_id
+
+  - name: stg_common_data_change_job_item
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_common_data_change_job_item')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_common_data_change_job_item')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+  - name: stg_configuration
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_configuration')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_configuration')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+  - name: stg_data_change_alert
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_data_change_alert')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_data_change_alert')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: subscriber_reference
+        tags:
+          - secure_field=PI_FREE_TEXT_FIELD
+
+      - name: change_from
+        tags:
+          - secure_field=PI_FULL_NAME
+
+      - name: change_to
+        tags:
+          - secure_field=PI_FULL_NAME
+
+  - name: stg_document_job_item
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_document_job_item')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_document_job_item')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+  - name: stg_financial_accounts_audit
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_financial_accounts_audit')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_financial_accounts_audit')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: user_id
+        tags:
+          - secure_field=PI_USERID
+
+      - name: before_description
+        tags:
+          - secure_field=PI_FREE_TEXT_FIELD
+
+      - name: after_description
+        tags:
+          - secure_field=PI_FREE_TEXT_FIELD
+
+  - name: stg_financials_job_item
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_financials_job_item')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_financials_job_item')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+  - name: stg_invitation_job_item
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_invitation_job_item')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_invitation_job_item')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+  - name: stg_mot_project
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_mot_project')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_mot_project')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: account_details_data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+      - name: created_by
+        tags:
+          - secure_field=PI_EMAIL
+
+      - name: last_modified_by
+        tags:
+          - secure_field=PI_EMAIL
+
+  - name: stg_pd_user
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_pd_user')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_pd_user')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: email
+        tags:
+          - secure_field=PI_EMAIL
+
+      - name: first_name
+        tags:
+          - secure_field=PI_NAME
+
+      - name: last_name
+        tags:
+          - secure_field=PI_NAME
+
+      - name: subscriber_name
+        tags:
+          - secure_field=PI_BUSINESS_NAME
+
+      - name: type
+        tags:
+          - secure_field=PI_SENSITIVE
+
+      - name: created_by
+        tags:
+          - secure_field=PI_EMAIL
+
+      - name: last_modified_by
+        tags:
+          - secure_field=PI_EMAIL
+
+  - name: stg_pd_user_authorised
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_pd_user_authorised')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_pd_user_authorised')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+
+  - name: stg_project
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_project')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_project')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+      - name: account_details_data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+      - name: created_by
+        tags:
+          - secure_field=PI_EMAIL
+
+      - name: last_modified_by
+        tags:
+          - secure_field=PI_EMAIL
+
+  - name: stg_report_audit
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_report_audit')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_report_audit')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: username
+        tags:
+          - secure_field=PI_EMAIL
+
+  - name: stg_settlement_job_item
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_settlement_job_item')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_settlement_job_item')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+  - name: stg_subscriber_to_tnc
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_subscriber_to_tnc')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_subscriber_to_tnc')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+
+  - name: stg_terms_and_conditions
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_terms_and_conditions')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_terms_and_conditions')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+
+  - name: stg_togglz
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_togglz')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_togglz')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: feature_name
+
+  - name: stg_transfer_job_item
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_transfer_job_item')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_transfer_job_item')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+  - name: stg_upload_file
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_upload_file')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_upload_file')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: file_content
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+      - name: mapped_content
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+      - name: user_id
+        tags:
+          - secure_field=PI_USERID
+
+      - name: created_by
+        tags:
+          - secure_field=PI_EMAIL
+
+      - name: last_modified_by
+        tags:
+          - secure_field=PI_EMAIL
+
+  - name: stg_upload_job_item
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_upload_job_item')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_upload_job_item')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+  - name: stg_upload_job_items
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_upload_job_items')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_upload_job_items')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+  - name: stg_user_authorities
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_user_authorities')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_user_authorities')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: user_id, authority_role
+
+  - name: stg_workspace
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_workspace')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_workspace')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+      - name: modified_by_ip
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+      - name: created_by
+        tags:
+          - secure_field=PI_EMAIL
+
+      - name: last_modified_by
+        tags:
+          - secure_field=PI_EMAIL
+
+  - name: stg_workspace_update_parent_title_job_item
+    data_tests:
+      - check_raw_stg_cnt:
+          arguments:
+            vw_model: ref('vw_prj_workspace_update_parent_title_job_item')
+      - column_count_check:
+          arguments:
+            source: ref('vw_prj_workspace_update_parent_title_job_item')
+      - identify_first_operation_not_insert:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK

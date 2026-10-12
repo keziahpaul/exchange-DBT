@@ -1,0 +1,4725 @@
+version: 2
+
+models:
+  - name: vw_api_usage_audit
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: email
+        tags:
+          - secure_field=PI_EMAIL
+        description: Email of the user associated with an API request
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63603;otype=attribute
+            alation_title: Email
+
+      - name: authorised_party
+        description: User identifier from OAuth2 token, matches to secondary system
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63249;otype=attribute
+            alation_title: Authorised Party
+
+      - name: created_at
+        description: Time that an API request was received
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63620;otype=attribute
+            alation_title: Created At
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63730;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63442;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: endpoint_name
+        description: Name of the endpoint called for an API call
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63355;otype=attribute
+            alation_title: Endpoint Name
+
+      - name: id
+        description: ID for an audit record
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63596;otype=attribute
+            alation_title: Id
+
+      - name: integrator
+        description: User for an API Request
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63786;otype=attribute
+            alation_title: Integrator
+
+      - name: integrator_type
+        description: OAuth2 type used for the request
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63802;otype=attribute
+            alation_title: Integrator Type
+
+      - name: oauth_grant_type
+        description: OAuth2 grant type used for an API request
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63263;otype=attribute
+            alation_title: Oauth Grant Type
+
+      - name: pexa_core_workspace_id
+        description: WorkspaceID from Pexa core
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63483;otype=attribute
+            alation_title: Pexa Core Workspace Id
+
+      - name: project_id
+        description: ID reference to a Project
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63642;otype=attribute
+            alation_title: Project Id
+
+      - name: project_name
+        description: Name reference to a project
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63608;otype=attribute
+            alation_title: Project Name
+
+      - name: subscriber_id
+        description: ID Reference to a subscriber
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63842;otype=attribute
+            alation_title: Subscriber Id
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63846;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63825;otype=attribute
+            alation_title: System Updated At
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153701;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153483;otype=attribute
+            alation_title: Updated At
+    description: Audit log of external API requests and which endpoint they requested
+    config:
+      meta:
+        alation_oid: oid=3243;otype=table
+        alation_title: View API Usage Audit
+
+  - name: vw_authority
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: role
+    description: List of available roles that can be given to a user
+    config:
+      meta:
+        alation_oid: oid=3200;otype=table
+        alation_title: View Authority
+    columns:
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63265;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63839;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: role
+        description: Role that can be assigned to users
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63365;otype=attribute
+            alation_title: Role
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63838;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63576;otype=attribute
+            alation_title: System Updated At
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153970;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153783;otype=attribute
+            alation_title: Updated At
+
+  - name: vw_batch_job
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: user_id
+        tags:
+          - secure_field=PI_USERID
+        description: ID Reference to a user
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63286;otype=attribute
+            alation_title: User Id
+
+      - name: created_by
+        tags:
+          - secure_field=PI_EMAIL
+        description: User who created a batch job
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63435;otype=attribute
+            alation_title: Created By
+
+      - name: last_modified_by
+        tags:
+          - secure_field=PI_EMAIL
+        description: User who last modified a batch job
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63478;otype=attribute
+            alation_title: Last Modified By
+
+      - name: created_at
+        description: Time that a batch job was created
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63744;otype=attribute
+            alation_title: Created At
+
+      - name: created_on
+        description: Date time when a batch job was created
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63691;otype=attribute
+            alation_title: Created On
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63420;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63195;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: failed_items
+        description: Number of items that failed to update
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63339;otype=attribute
+            alation_title: Failed Items
+
+      - name: file_name
+        description: Name of the file that was uploaded for a batch job
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63376;otype=attribute
+            alation_title: File Name
+
+      - name: id
+        description: ID of a batch job
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63495;otype=attribute
+            alation_title: Id
+
+      - name: last_modified_on
+        description: Last time a batch was edited
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63406;otype=attribute
+            alation_title: Last Modified On
+
+      - name: mot_project_id
+        description: Mortgagee on Title ID reference to an MOT Project
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63854;otype=attribute
+            alation_title: Mortgagee on Title Project ID
+
+      - name: project_id
+        description: ID reference to a Project
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63737;otype=attribute
+            alation_title: Project Id
+
+      - name: role
+        description: Role that can be assigned to users
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63609;otype=attribute
+            alation_title: Role
+
+      - name: settlement_date_time
+        description: Settlement date time for a settlement job
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63270;otype=attribute
+            alation_title: Settlement Date Time
+
+      - name: status
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63677;otype=attribute
+            alation_title: Status
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63714;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63803;otype=attribute
+            alation_title: System Updated At
+
+      - name: total_items
+        description: Total number of changes in a batch
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63520;otype=attribute
+            alation_title: Total Items
+
+      - name: type
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63526;otype=attribute
+            alation_title: Type
+
+      - name: updated_at
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63350;otype=attribute
+            alation_title: Updated At
+
+      - name: version
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63657;otype=attribute
+            alation_title: Version
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153788;otype=attribute
+            alation_title: Inserted At
+
+      - name: src_updated_at
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153904;otype=attribute
+    description: 3rd Party Spring Batch table used for processing batch jobs
+    config:
+      meta:
+        alation_oid: oid=3208;otype=table
+        alation_title: View Batch Job
+
+  - name: vw_batch_job_execution
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: job_execution_id
+    description: 3rd Party Spring Batch table used for processing batch jobs
+    config:
+      meta:
+        alation_oid: oid=3201;otype=table
+        alation_title: View Batch Job Execution
+    columns:
+      - name: create_time
+        description: Time that a batch job was executed
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63585;otype=attribute
+            alation_title: Create Time
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63568;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63667;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: end_time
+        description: Date time when the batch job finished
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63466;otype=attribute
+            alation_title: End Time
+
+      - name: exit_code
+        description: Indicator if the job was successful or not
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63304;otype=attribute
+            alation_title: Exit Code
+
+      - name: exit_message
+        description: Always empty
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63427;otype=attribute
+            alation_title: Exit Message
+
+      - name: job_configuration_location
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63855;otype=attribute
+            alation_title: Job Configuration Location
+
+      - name: job_execution_id
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63367;otype=attribute
+            alation_title: Job Execution Id
+
+      - name: job_instance_id
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63644;otype=attribute
+            alation_title: Job Instance Identify
+
+      - name: last_updated
+        description: Last time a batch job was updated
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63805;otype=attribute
+            alation_title: Last Updated
+
+      - name: start_time
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63629;otype=attribute
+            alation_title: Start Time
+
+      - name: status
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63648;otype=attribute
+            alation_title: Status
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63561;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63485;otype=attribute
+            alation_title: System Updated At
+
+      - name: version
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63429;otype=attribute
+            alation_title: Version
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153955;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=154068;otype=attribute
+            alation_title: Updated At
+
+  - name: vw_batch_job_execution_context
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: job_execution_id
+    description: 3rd Party Spring Batch table used for processing batch jobs
+    config:
+      meta:
+        alation_oid: oid=3221;otype=table
+        alation_title: View Batch Job Execution Context
+    columns:
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63552;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63661;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: job_execution_id
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63578;otype=attribute
+            alation_title: Job Execution Id
+
+      - name: serialized_context
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63329;otype=attribute
+            alation_title: Serialized Context
+
+      - name: short_context
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63814;otype=attribute
+            alation_title: Short Context
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63247;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63243;otype=attribute
+            alation_title: System Updated At
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153620;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153577;otype=attribute
+            alation_title: Updated At
+
+  - name: vw_batch_job_instance
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: job_instance_id
+    description: 3rd Party Spring Batch table used for processing batch jobs
+    config:
+      meta:
+        alation_oid: oid=3204;otype=table
+        alation_title: View Batch Job Instance
+    columns:
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63497;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63796;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: job_instance_id
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63294;otype=attribute
+            alation_title: Job Instance Identify
+
+      - name: job_key
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63438;otype=attribute
+            alation_title: Job Key
+
+      - name: job_name
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63820;otype=attribute
+            alation_title: Job Name
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63591;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63835;otype=attribute
+            alation_title: System Updated At
+
+      - name: version
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63750;otype=attribute
+            alation_title: Version
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153956;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153924;otype=attribute
+            alation_title: Updated At
+
+  - name: vw_batch_lock
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    description: 3rd Party Spring Batch table used for processing batch jobs
+    config:
+      meta:
+        alation_oid: oid=3248;otype=table
+        alation_title: View Batch Lock
+    columns:
+      - name: created_at
+        description: Time that the batch lock was created
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63535;otype=attribute
+            alation_title: Created At
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63809;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63393;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: id
+        description: ID of a lock (temporary record)
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63540;otype=attribute
+            alation_title: Id
+
+      - name: mot_project_id
+        description: Mortgagee on Title ID reference to an MOT Project
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63347;otype=attribute
+            alation_title: Mortgagee on Title Project ID
+
+      - name: project_id
+        description: ID reference to a Project
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63682;otype=attribute
+            alation_title: Project Id
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63747;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63828;otype=attribute
+            alation_title: System Updated At
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153648;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153465;otype=attribute
+            alation_title: Updated At
+
+  - name: vw_batch_report_item
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=90082;otype=attribute
+            alation_title: Data
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63313;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63524;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: id
+        description: ID of a batch report item
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63395;otype=attribute
+            alation_title: Id
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63285;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63645;otype=attribute
+            alation_title: System Updated At
+
+      - name: upload_job_id
+        description: ID Reference to an upload job
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63811;otype=attribute
+            alation_title: Upload Job Identify
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153790;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153777;otype=attribute
+            alation_title: Updated At
+    description: Data reported to users on the success/failure of a batch job
+    config:
+      meta:
+        alation_oid: oid=3206;otype=table
+        alation_title: View Batch Report Item
+
+  - name: vw_batch_step_execution
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: step_execution_id
+    description: 3rd Party Spring Batch table used for processing batch jobs
+    config:
+      meta:
+        alation_oid: oid=3232;otype=table
+        alation_title: View Batch Step Execution
+    columns:
+      - name: commit_count
+        description: Amount of data row changes committed
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63849;otype=attribute
+            alation_title: Commit Count
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63532;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63416;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: end_time
+        description: Date time when the batch job finished
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63370;otype=attribute
+            alation_title: End Time
+
+      - name: exit_code
+        description: Indicator if the jobs step was successful or not
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63563;otype=attribute
+            alation_title: Exit Code
+
+      - name: exit_message
+        description: Always empty
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63198;otype=attribute
+            alation_title: Exit Message
+
+      - name: filter_count
+        description: Unknown internal SpringBatch detail
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63245;otype=attribute
+            alation_title: Filter Count
+
+      - name: job_execution_id
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63623;otype=attribute
+            alation_title: Job Execution Id
+
+      - name: last_updated
+        description: Last time a batch job was updated
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63622;otype=attribute
+            alation_title: Last Updated
+
+      - name: process_skip_count
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63670;otype=attribute
+            alation_title: Process Skip Count
+
+      - name: read_count
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63668;otype=attribute
+            alation_title: Ready Count
+
+      - name: read_skip_count
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63202;otype=attribute
+            alation_title: Ready Skip Count
+
+      - name: rollback_count
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63582;otype=attribute
+            alation_title: Rollback Count
+
+      - name: start_time
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63593;otype=attribute
+            alation_title: Start Time
+
+      - name: status
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63280;otype=attribute
+            alation_title: Status
+
+      - name: step_execution_id
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63356;otype=attribute
+            alation_title: Step Execution Identify
+
+      - name: step_name
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63773;otype=attribute
+            alation_title: Step Name
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63779;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63239;otype=attribute
+            alation_title: System Updated At
+
+      - name: version
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63651;otype=attribute
+            alation_title: Version
+
+      - name: write_count
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63767;otype=attribute
+            alation_title: Write Count
+
+      - name: write_skip_count
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63316;otype=attribute
+            alation_title: Write Skip Count
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153525;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153527;otype=attribute
+            alation_title: Updated At
+
+  - name: vw_batch_step_execution_context
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: step_execution_id
+    description: 3rd Party Spring Batch table used for processing batch jobs
+    config:
+      meta:
+        alation_oid: oid=3222;otype=table
+        alation_title: View Batch Step Execution Context
+    columns:
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63761;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63368;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: serialized_context
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63553;otype=attribute
+            alation_title: Serialized Context
+
+      - name: short_context
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63632;otype=attribute
+            alation_title: Short Context
+
+      - name: step_execution_id
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63233;otype=attribute
+            alation_title: Step Execution Identify
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63607;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63209;otype=attribute
+            alation_title: System Updated At
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153736;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153941;otype=attribute
+            alation_title: Updated At
+
+  - name: vw_common_data_change_job_item
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=89263;otype=attribute
+            alation_title: Data
+
+      - name: batch_job_id
+        description: Matches batch_job table, to identify data associated with a batch
+          job
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63550;otype=attribute
+            alation_title: Batch Job Id
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63590;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63405;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: id
+        description: ID of a data change job
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63272;otype=attribute
+            alation_title: Id
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63581;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63627;otype=attribute
+            alation_title: System Updated At
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153737;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153923;otype=attribute
+            alation_title: Updated At
+    description: Records if Project information has changed that should be updated
+      in all workspaces via a Batch Job
+    config:
+      meta:
+        alation_oid: oid=3202;otype=table
+        alation_title: View Common Data Change Job Item
+
+  - name: vw_configuration
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=89563;otype=attribute
+            alation_title: Data
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63273;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63732;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: id
+        description: ID of configuration (only ever 1)
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63196;otype=attribute
+            alation_title: Id
+
+      - name: name
+        description: Configuration name. Never changes.
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63448;otype=attribute
+            alation_title: Name
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63742;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63684;otype=attribute
+            alation_title: System Updated At
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153573;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153529;otype=attribute
+            alation_title: Updated At
+    description: Configuration for the application, contains URL's of other internal
+      services
+    config:
+      meta:
+        alation_oid: oid=3212;otype=table
+        alation_title: View Configuration
+
+  - name: vw_data_change_alert
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: subscriber_reference
+        tags:
+          - secure_field=PI_FREE_TEXT_FIELD
+        description: Subscribers workspace reference name
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63822;otype=attribute
+            alation_title: Subscriber Reference
+
+      - name: change_from
+        tags:
+          - secure_field=PI_FULL_NAME
+        description: The data's prior value
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63574;otype=attribute
+            alation_title: Change From
+
+      - name: change_to
+        tags:
+          - secure_field=PI_FULL_NAME
+        description: The data's value after change
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63453;otype=attribute
+            alation_title: Change To
+
+      - name: alert_flagged
+        description: Boolean if a user chooses to flag a data change message
+        data_type: boolean
+        config:
+          meta:
+            alation_oid: oid=63541;otype=attribute
+            alation_title: Alert Flagged
+
+      - name: alert_read
+        description: Boolean if a user has read a data change message
+        data_type: boolean
+        config:
+          meta:
+            alation_oid: oid=63262;otype=attribute
+            alation_title: Alert Ready
+
+      - name: change_type
+        description: Identifier of the type of change
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63674;otype=attribute
+            alation_title: Change Type
+
+      - name: created_at
+        description: Date that the data change was created
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63472;otype=attribute
+            alation_title: Created At
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63424;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63726;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: id
+        description: ID of a data change
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63793;otype=attribute
+            alation_title: Id
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63662;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63693;otype=attribute
+            alation_title: System Updated At
+
+      - name: updated_at
+        description: Last time a data change alert was edited
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63366;otype=attribute
+            alation_title: Updated At
+
+      - name: workspace_id
+        description: ID Reference to a workspace
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63403;otype=attribute
+            alation_title: Workspace Id
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=154082;otype=attribute
+            alation_title: Inserted At
+
+      - name: src_updated_at
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153792;otype=attribute
+    description: An alert for users that data has been manually changed in Exchange
+    config:
+      meta:
+        alation_oid: oid=3225;otype=table
+        alation_title: View Data Change Alert
+
+  - name: vw_document_job_item
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=89637;otype=attribute
+            alation_title: Data
+
+      - name: batch_job_id
+        description: Matches batch_job table, to identify data associated with a batch
+          job
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63491;otype=attribute
+            alation_title: Batch Job Id
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63844;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63410;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: id
+        description: ID of a document batch job
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63729;otype=attribute
+            alation_title: Id
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63412;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63467;otype=attribute
+            alation_title: System Updated At
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153703;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153767;otype=attribute
+            alation_title: Updated At
+    description: A request to generate document via a Batch Job
+    config:
+      meta:
+        alation_oid: oid=3230;otype=table
+        alation_title: View Document Job Item
+
+  - name: vw_financial_accounts_audit
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: user_id
+        tags:
+          - secure_field=PI_USERID
+        description: ID Reference to a user
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63454;otype=attribute
+            alation_title: User Id
+
+      - name: before_description
+        tags:
+          - secure_field=PI_FREE_TEXT_FIELD
+        description: Value a financial account had prior to being changed
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63850;otype=attribute
+            alation_title: Before Description
+
+      - name: after_description
+        tags:
+          - secure_field=PI_FREE_TEXT_FIELD
+        description: Value a financial account was changed to
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63604;otype=attribute
+            alation_title: After Description
+
+      - name: action
+        description: Action performed for a logged line item
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63659;otype=attribute
+            alation_title: Action
+
+      - name: action_date
+        description: Date time the action was performed
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63341;otype=attribute
+            alation_title: Action Date
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63482;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63782;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: id
+        description: ID of a financials audit log entry
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63545;otype=attribute
+            alation_title: Id
+
+      - name: mot_project_id
+        description: Mortgagee on Title ID reference to an MOT Project
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63589;otype=attribute
+            alation_title: Mortgagee on Title Project ID
+
+      - name: pot_project_id
+        description: Proprietor on Title ID reference to a Project
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63421;otype=attribute
+            alation_title: Proprietor on Title Project ID
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63277;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63664;otype=attribute
+            alation_title: System Updated At
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153671;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153758;otype=attribute
+            alation_title: Updated At
+    description: Logs each time locked accounts are modified and the before and after
+      values
+    config:
+      meta:
+        alation_oid: oid=3231;otype=table
+        alation_title: View Financial Accounts Audit
+
+  - name: vw_financials_job_item
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=89604;otype=attribute
+            alation_title: Data
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63654;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63261;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: financials_job_id
+        description: Id of a financials batch job
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63490;otype=attribute
+            alation_title: Financials Job Id
+
+      - name: id
+        description: ID of a financials batch job
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63232;otype=attribute
+            alation_title: Id
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63266;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63528;otype=attribute
+            alation_title: System Updated At
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=154048;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153708;otype=attribute
+            alation_title: Updated At
+    description: Data for account uploads via a Batch Job
+    config:
+      meta:
+        alation_oid: oid=3251;otype=table
+        alation_title: View Financials Job Item
+
+  - name: vw_invitation_job_item
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=89876;otype=attribute
+            alation_title: Data
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63230;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63577;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: id
+        description: ID of an invitation batch job
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63246;otype=attribute
+            alation_title: Id
+
+      - name: invitation_job_id
+        description: ID of an invitation batch job
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63201;otype=attribute
+            alation_title: Invitation Job Id
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63720;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63440;otype=attribute
+            alation_title: System Updated At
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153496;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153622;otype=attribute
+            alation_title: Updated At
+    description: Data for invitations created via a Batch Job
+    config:
+      meta:
+        alation_oid: oid=3236;otype=table
+        alation_title: View Invitation Job Item
+
+  - name: vw_mot_project
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: account_details_data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: List of accounts and categories to restrict available inputs
+          to.
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=90294;otype=attribute
+            alation_title: Account Details Data
+
+      - name: created_by
+        tags:
+          - secure_field=PI_EMAIL
+        description: User who created a batch job
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63656;otype=attribute
+            alation_title: Created By
+
+      - name: last_modified_by
+        tags:
+          - secure_field=PI_EMAIL
+        description: User who last modified a MOT Project
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63400;otype=attribute
+            alation_title: Last Modified By
+
+      - name: created_at
+        description: Date Morgagee on Title Project was created
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63707;otype=attribute
+            alation_title: Created At
+
+      - name: created_on
+        description: Date time when a batch job was created
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63727;otype=attribute
+            alation_title: Created On
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63647;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63624;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: id
+        description: ID of an MOT Project
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63628;otype=attribute
+            alation_title: Id
+
+      - name: last_modified_on
+        description: Last time a MOT project was edited
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63808;otype=attribute
+            alation_title: Last Modified On
+
+      - name: name
+        description: Configuration name. Never changes.
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63224;otype=attribute
+            alation_title: Name
+
+      - name: project_id
+        description: ID reference to a MOT Project
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63449;otype=attribute
+            alation_title: Project Id
+
+      - name: status
+        description: Status of an MOT Project
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63369;otype=attribute
+            alation_title: Status
+
+      - name: subscriber_id
+        description: ID Reference to a subscriber
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63471;otype=attribute
+            alation_title: Subscriber Id
+
+      - name: subscriber_reference_prefix
+        description: Prefix to put infron of a subscriber workspace reference
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63451;otype=attribute
+            alation_title: Subscriber Reference Prefix
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63567;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63510;otype=attribute
+            alation_title: System Updated At
+
+      - name: version
+        description: Version of the MOT Project.
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63722;otype=attribute
+            alation_title: Version
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=154095;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153942;otype=attribute
+            alation_title: Updated At
+    description: MOT view of a project, used to allow MOT's to generate documents
+      and set financials
+    config:
+      meta:
+        alation_oid: oid=3199;otype=table
+        alation_title: View Mot Project
+
+  - name: vw_pd_user
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: email
+        tags:
+          - secure_field=PI_EMAIL
+        description: Email of the user associated with an API request
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63824;otype=attribute
+            alation_title: Email
+
+      - name: first_name
+        tags:
+          - secure_field=PI_NAME
+        description: Users first name
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63635;otype=attribute
+            alation_title: First Name
+
+      - name: last_name
+        tags:
+          - secure_field=PI_NAME
+        description: Users surname
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63225;otype=attribute
+            alation_title: Last Name
+
+      - name: subscriber_name
+        tags:
+          - secure_field=PI_BUSINESS_NAME
+        description: Subscribers name
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63708;otype=attribute
+            alation_title: Subscriber Name
+
+      - name: type
+        tags:
+          - secure_field=PI_SENSITIVE
+        description: The type of user they are.
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63322;otype=attribute
+            alation_title: Type
+
+      - name: created_by
+        tags:
+          - secure_field=PI_EMAIL
+        description: User who created a batch job
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63275;otype=attribute
+            alation_title: Created By
+
+      - name: last_modified_by
+        tags:
+          - secure_field=PI_EMAIL
+        description: User who last modified a users details
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63213;otype=attribute
+            alation_title: Last Modified By
+
+      - name: created_on
+        description: Date time when a batch job was created
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63534;otype=attribute
+            alation_title: Created On
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63345;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63777;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: id
+        description: ID of a user
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63479;otype=attribute
+            alation_title: Id
+
+      - name: last_modified_on
+        description: Last time a user was edited
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63715;otype=attribute
+            alation_title: Last Modified On
+
+      - name: subscriber_dual_sign_doc
+        description: Can a user dual sign documents
+        data_type: boolean
+        config:
+          meta:
+            alation_oid: oid=63269;otype=attribute
+            alation_title: Subscriber Dual Sign Document
+
+      - name: subscriber_dual_sign_fss
+        description: Can a user dual sign fss
+        data_type: boolean
+        config:
+          meta:
+            alation_oid: oid=63503;otype=attribute
+            alation_title: Subscriber Dual Sign Financial Settlement Schedule
+
+      - name: subscriber_id
+        description: ID Reference to a subscriber
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63799;otype=attribute
+            alation_title: Subscriber Id
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63494;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63408;otype=attribute
+            alation_title: System Updated At
+
+      - name: user_permissions
+        description: Array of permissions the user has coming from Exchange
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=63551;otype=attribute
+            alation_title: User Permissions
+
+      - name: version
+        description: Version of the User.
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63770;otype=attribute
+            alation_title: Version
+
+      - name: workgroups
+        description: Workgroups the user has access to
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=63372;otype=attribute
+            alation_title: Workgroups
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153500;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153536;otype=attribute
+            alation_title: Updated At
+    description: A user in the system
+    config:
+      meta:
+        alation_oid: oid=3205;otype=table
+        alation_title: View PD User
+
+  - name: vw_pd_user_authorised
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    description: Mapping table which gives subscribers access to POT/MOT role
+    config:
+      meta:
+        alation_oid: oid=3203;otype=table
+        alation_title: View PD User Authorised
+    columns:
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63536;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63463;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: id
+        description: ID of a user and authorities
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63307;otype=attribute
+            alation_title: Id
+
+      - name: mot
+        description: Is the subscriber allowed to be a Mortgagee on Title
+        data_type: boolean
+        config:
+          meta:
+            alation_oid: oid=63571;otype=attribute
+            alation_title: Mortgagee on Title
+
+      - name: pot
+        description: Boolean if a subscriber can be a Proprietor on Title
+        data_type: boolean
+        config:
+          meta:
+            alation_oid: oid=63784;otype=attribute
+            alation_title: Proprietor on Title
+
+      - name: subscriber_id
+        description: ID Reference to a subscriber
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63600;otype=attribute
+            alation_title: Subscriber Id
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63614;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63287;otype=attribute
+            alation_title: System Updated At
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153510;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153562;otype=attribute
+            alation_title: Updated At
+
+  - name: vw_project
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=89797;otype=attribute
+            alation_title: Data
+
+      - name: account_details_data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: List of accounts and categories to restrict available inputs
+          to.
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=89857;otype=attribute
+            alation_title: Account Details Data
+
+      - name: created_by
+        tags:
+          - secure_field=PI_EMAIL
+        description: User who created a batch job
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63698;otype=attribute
+            alation_title: Created By
+
+      - name: last_modified_by
+        tags:
+          - secure_field=PI_EMAIL
+        description: User who last modified a Project
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63679;otype=attribute
+            alation_title: Last Modified By
+
+      - name: created_on
+        description: Date time when a batch job was created
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63374;otype=attribute
+            alation_title: Created On
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63282;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63769;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: id
+        description: ID of a Project
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63231;otype=attribute
+            alation_title: Id
+
+      - name: last_modified_on
+        description: Last time a Project was edited
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63470;otype=attribute
+            alation_title: Last Modified On
+
+      - name: subscriber_id
+        description: ID Reference to a subscriber
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63740;otype=attribute
+            alation_title: Subscriber Id
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63226;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63293;otype=attribute
+            alation_title: System Updated At
+
+      - name: version
+        description: Version of the Project.
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63217;otype=attribute
+            alation_title: Version
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153847;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153998;otype=attribute
+            alation_title: Updated At
+    description: A project in the system which gives default data for workspaces to
+      be created against
+    config:
+      meta:
+        alation_oid: oid=3254;otype=table
+        alation_title: View Project
+
+  - name: vw_report_audit
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: username
+        tags:
+          - secure_field=PI_EMAIL
+        description: Username of the user the requested a report
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63676;otype=attribute
+            alation_title: Username
+
+      - name: created_at
+        description: Date a report was generated
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63447;otype=attribute
+            alation_title: Created At
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63415;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63834;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: external_api
+        description: Boolean if the report was request via API or not
+        data_type: boolean
+        config:
+          meta:
+            alation_oid: oid=63333;otype=attribute
+            alation_title: External Api
+
+      - name: id
+        description: ID of a report audit entry
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63655;otype=attribute
+            alation_title: Id
+
+      - name: input_parameters
+        description: User input for a report request
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=63671;otype=attribute
+            alation_title: Input Parameters
+
+      - name: jurisdiction
+        description: Jurisdiction used in a report
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63377;otype=attribute
+            alation_title: Jurisdiction
+
+      - name: project_id
+        description: ID reference to a Project
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63704;otype=attribute
+            alation_title: Project Id
+
+      - name: project_name
+        description: Name reference to a project
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63404;otype=attribute
+            alation_title: Project Name
+
+      - name: report_type
+        description: Type of report requested
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63565;otype=attribute
+            alation_title: Report Type
+
+      - name: subscriber_id
+        description: ID Reference to a subscriber
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63508;otype=attribute
+            alation_title: Subscriber Id
+
+      - name: subscriber_name
+        description: Subscribers name
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63639;otype=attribute
+            alation_title: Subscriber Name
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63616;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63669;otype=attribute
+            alation_title: System Updated At
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153606;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153855;otype=attribute
+            alation_title: Updated At
+    description: An auditing table for which users have access which reports and when
+    config:
+      meta:
+        alation_oid: oid=3253;otype=table
+        alation_title: View Report Audit
+
+  - name: vw_settlement_job_item
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=89819;otype=attribute
+            alation_title: Data
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63358;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63579;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: id
+        description: ID of a settlement Batch Job
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63218;otype=attribute
+            alation_title: Id
+
+      - name: settlement_job_id
+        description: ID reference to a settlement job
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63711;otype=attribute
+            alation_title: Settlement Job Id
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63806;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63512;otype=attribute
+            alation_title: System Updated At
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=154008;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153972;otype=attribute
+            alation_title: Updated At
+    description: Data for setting settlement date/time via a Batch Job
+    config:
+      meta:
+        alation_oid: oid=3213;otype=table
+        alation_title: View Settlement Job Item
+
+  - name: vw_subscriber_to_tnc
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    description: If a subscriber has signed the terms and conditions, and which roles
+      they wish to use
+    config:
+      meta:
+        alation_oid: oid=3238;otype=table
+        alation_title: View Subscriber To Tnc
+    columns:
+      - name: accepted_on
+        description: The date and time terms and conditions were accepted on
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63612;otype=attribute
+            alation_title: Accepted On
+
+      - name: default_login_as_pot
+        description: If the login for the subscriber should default to POT or MOT
+        data_type: boolean
+        config:
+          meta:
+            alation_oid: oid=63516;otype=attribute
+            alation_title: Default Login as Proprietor on Title
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63810;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63330;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: for_mot
+        description: Can the subscriber be a MOT
+        data_type: boolean
+        config:
+          meta:
+            alation_oid: oid=63610;otype=attribute
+            alation_title: For Mortgagee on Title
+
+      - name: for_pot
+        description: Can the subscriber be a POT
+        data_type: boolean
+        config:
+          meta:
+            alation_oid: oid=63706;otype=attribute
+            alation_title: For Proprietor on Title
+
+      - name: id
+        description: ID of a subscribers terms and conditions agreement
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63428;otype=attribute
+            alation_title: Id
+
+      - name: subscriber_id
+        description: ID Reference to a subscriber
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63383;otype=attribute
+            alation_title: Subscriber Id
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63783;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63468;otype=attribute
+            alation_title: System Updated At
+
+      - name: tnc_version
+        description: The version of the TNC that was accepted
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63515;otype=attribute
+            alation_title: Three Numeric Characters Version
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153888;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153757;otype=attribute
+            alation_title: Updated At
+
+  - name: vw_terms_and_conditions
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    description: Contains the HTML shown to a user when accepting the terms and conditions
+    config:
+      meta:
+        alation_oid: oid=3245;otype=table
+        alation_title: View Terms And Conditions
+    columns:
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63518;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63391;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: id
+        description: ID of terms and conditions to show (only 1)
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63464;otype=attribute
+            alation_title: Id
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63660;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63501;otype=attribute
+            alation_title: System Updated At
+
+      - name: tnc
+        description: The terms and conditions
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63326;otype=attribute
+            alation_title: Three Numeric Characters
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153862;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153488;otype=attribute
+            alation_title: Updated At
+
+  - name: vw_togglz
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: feature_name
+    description: Feature toggles which allow us to turn on and off features/changes
+      without restarting the application
+    config:
+      meta:
+        alation_oid: oid=3210;otype=table
+        alation_title: View Togglz
+    columns:
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63445;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63320;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: feature_enabled
+        description: Boolean if the feature is enabled or not
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63444;otype=attribute
+            alation_title: Feature Enabled
+
+      - name: feature_name
+        description: Name of the feature toggle
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63759;otype=attribute
+            alation_title: Feature Name
+
+      - name: strategy_id
+        description: The strategy used for a toggle
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63790;otype=attribute
+            alation_title: Strategy Id
+
+      - name: strategy_params
+        description: Parameters used to execute a strategy
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63815;otype=attribute
+            alation_title: Strategy Parameters
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63488;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63717;otype=attribute
+            alation_title: System Updated At
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153660;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153732;otype=attribute
+            alation_title: Updated At
+
+  - name: vw_transfer_job_item
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=89565;otype=attribute
+            alation_title: Data
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63700;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63755;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: id
+        description: ID of a transfer batch job
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63220;otype=attribute
+            alation_title: Id
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63650;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63533;otype=attribute
+            alation_title: System Updated At
+
+      - name: transfer_job_id
+        description: ID of a transfer job
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63686;otype=attribute
+            alation_title: Transfer Job Id
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153883;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153964;otype=attribute
+            alation_title: Updated At
+    description: Data for tranfers created via a Batch Job
+    config:
+      meta:
+        alation_oid: oid=3195;otype=table
+        alation_title: View Transfer Job Item
+
+  - name: vw_upload_file
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: file_content
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: File Content
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=90060;otype=attribute
+            alation_title: File Content
+
+      - name: mapped_content
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Mapped Content
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=89302;otype=attribute
+            alation_title: Mapped Content
+
+      - name: user_id
+        tags:
+          - secure_field=PI_USERID
+        description: ID Reference to a user
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63626;otype=attribute
+            alation_title: User Id
+
+      - name: created_by
+        tags:
+          - secure_field=PI_EMAIL
+        description: User who created a batch job
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63705;otype=attribute
+            alation_title: Created By
+
+      - name: last_modified_by
+        tags:
+          - secure_field=PI_EMAIL
+        description: User who last modified an upload file
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63450;otype=attribute
+            alation_title: Last Modified By
+
+      - name: created_at
+        description: Date a file was uploaded, as part of a batch upload
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63688;otype=attribute
+            alation_title: Created At
+
+      - name: created_on
+        description: Date time when a batch job was created
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63504;otype=attribute
+            alation_title: Created On
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63456;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63724;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: file_type
+        description: Job type the file was uploaded for
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63211;otype=attribute
+            alation_title: File Type
+
+      - name: id
+        description: ID of a file upload for a batch job
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63425;otype=attribute
+            alation_title: Id
+
+      - name: last_modified_on
+        description: Last time an upload file was edited
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63203;otype=attribute
+            alation_title: Last Modified On
+
+      - name: mot_project_id
+        description: Mortgagee on Title ID reference to an MOT Project
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63697;otype=attribute
+            alation_title: Mortgagee on Title Project ID
+
+      - name: pot_project_id
+        description: Proprietor on Title ID reference to a Project
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63778;otype=attribute
+            alation_title: Proprietor on Title Project ID
+
+      - name: status
+        description: Details used by SpringBatch for processing. Controlled by a third
+          Party.
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63299;otype=attribute
+            alation_title: Status
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63836;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63493;otype=attribute
+            alation_title: System Updated At
+
+      - name: updated_at
+        description: Last time an upload file was edited
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63344;otype=attribute
+            alation_title: Updated At
+
+      - name: version
+        description: Version of the upload file.
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63207;otype=attribute
+            alation_title: Version
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153631;otype=attribute
+            alation_title: Inserted At
+
+      - name: src_updated_at
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153675;otype=attribute
+    description: Financial and workspace uploads require a file uploaded and mapped
+      into domain specific objects. This table holds the uploaded file and the mapped
+      content
+    config:
+      meta:
+        alation_oid: oid=3229;otype=table
+        alation_title: View Upload File
+
+  - name: vw_upload_job_item
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=89307;otype=attribute
+            alation_title: Data
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63587;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63633;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: id
+        description: ID of a file upload for a batch job
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63549;otype=attribute
+            alation_title: Id
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63327;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63559;otype=attribute
+            alation_title: System Updated At
+
+      - name: upload_job_id
+        description: ID Reference to an upload job
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63771;otype=attribute
+            alation_title: Upload Job Identify
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153699;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153635;otype=attribute
+            alation_title: Updated At
+    description: Inidividual rows from an EXCEL or CSV document uploaded into the
+      upload_file table
+    config:
+      meta:
+        alation_oid: oid=3255;otype=table
+        alation_title: View Upload Job Item
+
+  - name: vw_upload_job_items
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=89675;otype=attribute
+            alation_title: Data
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63235;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63602;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: id
+        description: Unused table
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63392;otype=attribute
+            alation_title: Id
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63473;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63725;otype=attribute
+            alation_title: System Updated At
+
+      - name: upload_job_id
+        description: ID Reference to an upload job
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63853;otype=attribute
+            alation_title: Upload Job Identify
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153715;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153714;otype=attribute
+            alation_title: Updated At
+    description: UNUSED TABLE
+    config:
+      meta:
+        alation_oid: oid=3240;otype=table
+        alation_title: View Upload Job Items
+
+  - name: vw_user_authorities
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: user_id, authority_role
+    description: Mapping table which gives users access to roles
+    config:
+      meta:
+        alation_oid: oid=3244;otype=table
+        alation_title: View User Authorities
+    columns:
+      - name: authority_role
+        description: An authority (role) that has been granted to a user
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63379;otype=attribute
+            alation_title: Authority Role
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63310;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63757;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63694;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63584;otype=attribute
+            alation_title: System Updated At
+
+      - name: user_id
+        description: ID Reference to a user
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63274;otype=attribute
+            alation_title: User Id
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153474;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153642;otype=attribute
+            alation_title: Updated At
+
+  - name: vw_workspace
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=89790;otype=attribute
+            alation_title: Data
+
+      - name: modified_by_ip
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=154027;otype=attribute
+
+      - name: created_by
+        tags:
+          - secure_field=PI_EMAIL
+        description: User who created a batch job
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63402;otype=attribute
+            alation_title: Created By
+
+      - name: last_modified_by
+        tags:
+          - secure_field=PI_EMAIL
+        description: User who last modified a workspace
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=63462;otype=attribute
+            alation_title: Last Modified By
+
+      - name: created_on
+        description: Date time when a batch job was created
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63426;otype=attribute
+            alation_title: Created On
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63487;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63847;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: id
+        description: ID of a workspace(internal to Projects)
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63317;otype=attribute
+            alation_title: Id
+
+      - name: last_modified_on
+        description: Last time a workspace was edited
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63743;otype=attribute
+            alation_title: Last Modified On
+
+      - name: project_id
+        description: ID reference to a Project
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63785;otype=attribute
+            alation_title: Project Id
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63718;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63780;otype=attribute
+            alation_title: System Updated At
+
+      - name: version
+        description: Version of the workspace.
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63204;otype=attribute
+            alation_title: Version
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153747;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153887;otype=attribute
+            alation_title: Updated At
+    description: A projects view of an Exchange workspace. Updated in Projects and
+      used for caching and storing Projects specific information
+    config:
+      meta:
+        alation_oid: oid=3218;otype=table
+        alation_title: View Workspace
+
+  - name: vw_workspace_update_parent_title_job_item
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=89625;otype=attribute
+            alation_title: Data
+
+      - name: batch_job_id
+        description: Matches batch_job table, to identify data associated with a batch
+          job
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63221;otype=attribute
+            alation_title: Batch Job Id
+
+      - name: effective_from
+        description: <div><p>The time when the record was first created or modified
+          in the source, based on a timestamp value in the source table that monotonically
+          increases over time with data change or update.</p><p>Usually it corresponds
+          to the Fivetran Start Timestamp column in the raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63558;otype=attribute
+            alation_title: Effective From
+            orig_data_type: timestamp_tz
+
+      - name: effective_to
+        description: <div><p>The time until the record was active minus epsilon, where
+          epsilon is the smallest time difference that can be stored in the timestamp
+          type value. The value for this column depends on the corresponding record's
+          status - whether it is active or not - and the destination type.</p><p>Corresponds
+          to column Fivetran End Timestamp in raw layer.</p></div>
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=63594;otype=attribute
+            alation_title: Effective To
+            orig_data_type: timestamp_tz
+
+      - name: id
+        description: ID of a parent title update Batch job
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=63827;otype=attribute
+            alation_title: Id
+
+      - name: sys_inserted_at
+        description: <div><p>This Column shows when we successfully extracted the
+          data from the source. The destination data matches the data as it appeared
+          in the source at the time shown in the column.</p><p> Corresponds to Fivetran
+          Synced Timestamp in raw layer</p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63787;otype=attribute
+            alation_title: System Inserted At
+
+      - name: sys_updated_at
+        description: <div><p>System Updated At is a timetsamp column derived from
+          _fivetran_end and _fivetran_synced columns in raw. </p><p>If _fivetran_end
+          is NOT equal to 9999-12-31 then updated_at value = _fivetran_end timestamp.
+          Otherwise, updated_at value = fivetran_synced. </p></div>
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=63681;otype=attribute
+            alation_title: System Updated At
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153548;otype=attribute
+            alation_title: Inserted At
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153702;otype=attribute
+            alation_title: Updated At
+    description: Data for updating a parent tile via a Batch Job
+    config:
+      meta:
+        alation_oid: oid=3239;otype=table
+        alation_title: View Workspace Update Parent Title Job Item
+
+  - name: vw_api_usage_audit_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: email
+        tags:
+          - secure_field=PI_EMAIL
+
+  - name: vw_authority_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: role
+
+  - name: vw_batch_job_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: user_id
+        tags:
+          - secure_field=PI_USERID
+
+      - name: created_by
+        tags:
+          - secure_field=PI_EMAIL
+
+      - name: last_modified_by
+        tags:
+          - secure_field=PI_EMAIL
+
+  - name: vw_batch_job_execution_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: job_execution_id
+
+  - name: vw_batch_job_execution_context_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: job_execution_id
+
+  - name: vw_batch_job_instance_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: job_instance_id
+
+  - name: vw_batch_lock_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+
+  - name: vw_batch_report_item_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+  - name: vw_batch_step_execution_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: step_execution_id
+
+  - name: vw_batch_step_execution_context_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: step_execution_id
+
+  - name: vw_common_data_change_job_item_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+  - name: vw_configuration_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+  - name: vw_data_change_alert_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: subscriber_reference
+        tags:
+          - secure_field=PI_FREE_TEXT_FIELD
+
+      - name: change_from
+        tags:
+          - secure_field=PI_FULL_NAME
+
+      - name: change_to
+        tags:
+          - secure_field=PI_FULL_NAME
+
+  - name: vw_document_job_item_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+  - name: vw_financial_accounts_audit_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: user_id
+        tags:
+          - secure_field=PI_USERID
+
+      - name: before_description
+        tags:
+          - secure_field=PI_FREE_TEXT_FIELD
+
+      - name: after_description
+        tags:
+          - secure_field=PI_FREE_TEXT_FIELD
+
+  - name: vw_financials_job_item_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+  - name: vw_invitation_job_item_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+  - name: vw_mot_project_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: account_details_data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+      - name: created_by
+        tags:
+          - secure_field=PI_EMAIL
+
+      - name: last_modified_by
+        tags:
+          - secure_field=PI_EMAIL
+
+  - name: vw_pd_user_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: email
+        tags:
+          - secure_field=PI_EMAIL
+
+      - name: first_name
+        tags:
+          - secure_field=PI_NAME
+
+      - name: last_name
+        tags:
+          - secure_field=PI_NAME
+
+      - name: subscriber_name
+        tags:
+          - secure_field=PI_BUSINESS_NAME
+
+      - name: type
+        tags:
+          - secure_field=PI_SENSITIVE
+
+      - name: created_by
+        tags:
+          - secure_field=PI_EMAIL
+
+      - name: last_modified_by
+        tags:
+          - secure_field=PI_EMAIL
+
+  - name: vw_pd_user_authorised_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+
+  - name: vw_project_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+      - name: account_details_data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+      - name: created_by
+        tags:
+          - secure_field=PI_EMAIL
+
+      - name: last_modified_by
+        tags:
+          - secure_field=PI_EMAIL
+
+  - name: vw_report_audit_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: username
+        tags:
+          - secure_field=PI_EMAIL
+
+  - name: vw_settlement_job_item_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+  - name: vw_subscriber_to_tnc_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+
+  - name: vw_terms_and_conditions_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+
+  - name: vw_togglz_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: feature_name
+
+  - name: vw_transfer_job_item_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+  - name: vw_upload_file_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: file_content
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+      - name: mapped_content
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+      - name: user_id
+        tags:
+          - secure_field=PI_USERID
+
+      - name: created_by
+        tags:
+          - secure_field=PI_EMAIL
+
+      - name: last_modified_by
+        tags:
+          - secure_field=PI_EMAIL
+
+  - name: vw_upload_job_item_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+  - name: vw_upload_job_items_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+  - name: vw_user_authorities_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: user_id, authority_role
+
+  - name: vw_workspace_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+      - name: modified_by_ip
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+
+      - name: created_by
+        tags:
+          - secure_field=PI_EMAIL
+
+      - name: last_modified_by
+        tags:
+          - secure_field=PI_EMAIL
+
+  - name: vw_workspace_update_parent_title_job_item_hist
+    data_tests:
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+    columns:
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK

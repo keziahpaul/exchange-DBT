@@ -1,0 +1,78 @@
+{{
+    config(
+        materialized = 'ephemeral'
+    )
+}}
+{#- sourced from core-pexa-app/pexa_core/src/main/java/au/necdl/pexa/core/document/DocumentStatus.java @release/R.23.01.00 -#}
+{#- If you change the structure of this model, you need to update value of the created_on column -#}
+
+WITH enum AS (
+    SELECT enum_name, enum_value, is_active, is_submitted, is_nsw_completed, is_qld_completed, is_tas_completed, is_vic_completed, is_wa_completed
+    FROM (VALUES
+        ('IN_PREPARATION', 'In Preparation', TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE), {#- getActiveDocumentStatuses #}
+        ('PREPARED', 'Prepared', TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE), {#- getActiveDocumentStatuses #} 
+        ('APPROVED', 'Signed', TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE), {#- getActiveDocumentStatuses #}
+        ('NOT_ACCEPTED', 'Not Accepted', FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE),
+        ('LODGING', 'Lodging', FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE), {#- Submit for Lodgment #}
+        ('LODGED', 'Lodged', FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE), {#- Submit for Lodgment #}
+        ('ACTION_COMPLETED', 'Action Complete', FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE), {#- NSW #}
+        ('UNNECESSARY', 'Unnecessary', FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE), {#- NSW #}
+        ('RECEIVED', 'Received', FALSE, FALSE, TRUE, FALSE, FALSE, TRUE, TRUE),  {#- VIC, NSW, WA #}
+        ('REGISTERED', 'Registered', FALSE, FALSE, TRUE, FALSE, FALSE, TRUE, TRUE),  {#- VIC, NSW, WA #}
+        ('REJECTED', 'Rejected', FALSE, FALSE, TRUE, FALSE, FALSE, TRUE, TRUE),  {#- VIC, NSW, WA #}
+        ('WITHDRAWN', 'Withdrawn', FALSE, FALSE, TRUE, FALSE, FALSE, TRUE, TRUE),  {#- VIC, NSW, WA #}
+        ('ABANDONED', 'Abandoned', FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE), {#- VIC #}
+        ('APPROVEDVIC', 'Approved', FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE), {#- VIC #}
+        ('COMPLETED', 'Completed', FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE), {#- VIC #}
+        ('DEPOSITED', 'Deposited', FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE), {#- VIC #}
+        ('FINISHED', 'Finished', FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE), {#- VIC #}
+        ('UNREGISTERED', 'Unregistered', FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE), {#- VIC #}
+        ('ABYUNREGISTEREDABEYANCE', 'UNREGISTERED ABEYANCE', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('ADVUNREGISTEREDADVERTISED', 'UNREGISTERED ADVERTISED', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('ASVASSOCUNREGISTEREDADVERTISED', 'ASSOC UNREGISTERED ADVERTISED', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('ASYASSOCUNREGISTEREDABEYANCE', 'ASSOC UNREGISTERED ABEYANCE', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('BFDDEALINGBFWDTONEWTITLE', 'DEALING B''FWD TO NEW TITLE', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('CANCANCELLED', 'CANCELLED', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('CURCURRENT', 'CURRENT', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('DFADELETEDFROMATS', 'DELETED FROM ATS', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('DTIUNREGISTEREDDEEDTOISSUE', 'UNREGISTERED DEED TO ISSUE', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('ENTDEALINGENTERED', 'DEALING ENTERED', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('FWDFULLYWITHDRAWN', 'FULLY WITHDRAWN', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('KIAKEPTINABEYANCEDEALING', 'KEPT IN ABEYANCE DEALING', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('LAPLAPSED', 'LAPSED', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('LPSLAPSEDSECTION1267', 'LAPSED (SECTION 126(7))', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('MAHMODIFIEDANDNOWHISTORY', 'MODIFIED AND NOW HISTORY', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('MISABEYANCEMISSINGDEALING', 'ABEYANCE MISSING DEALING', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('NTCNOTCURRENT', 'NOT CURRENT', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('REJREJECTED', 'REJECTED', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('REMREMOVED', 'REMOVED', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('REQUNREGISTEREDREQUISITIONED', 'UNREGISTERED REQUISITIONED', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('RGCREGISTEREDCURRENT', 'REGISTERED CURRENT', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('RGHREGISTEREDHISTORY', 'REGISTERED HISTORY', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('RIERECORDEDINERRORANDREMOVED', 'RECORDED IN ERROR AND REMOVED', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('RUNUNREGISTEREDREMVDTOHISTORY', 'UNREGISTERED, REMVD TO HISTORY', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('TRSREGISTEREDANDTRANSFERRED', 'REGISTERED AND TRANSFERRED', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('UNRUNREGISTEREDDEALING', 'UNREGISTERED DEALING', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('UNVUNVERIFIEDDEALING', 'UNVERIFIED DEALING', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('URSUNREGISTEREDSUPERSEDED', 'UNREGISTERED SUPERSEDED', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('VERVERIFIEDDEALING', 'VERIFIED DEALING', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('WREWITHDRAWNANDREENTERED', 'WITHDRAWN AND RE-ENTERED', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('SUPERSEDED', 'Superseded', FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE), {#- Qld #}
+        ('EXAMINATION', 'Examination', FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE), {#- TAS #}
+        ('REFUSED', 'Refused', FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE), {#- TAS #}
+        ('REQUISITIONED', 'Requisitioned', FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE) {#- TAS #}
+
+    ) v(enum_name, enum_value, is_active, is_submitted, is_nsw_completed, is_qld_completed, is_tas_completed, is_vic_completed, is_wa_completed)
+)
+SELECT
+    '2026-07-01 12:30:00 +10'::timestamp_tz AS created_on,
+    enum_name,
+    enum_value,
+    is_active,
+    is_submitted,
+    is_nsw_completed,
+    is_qld_completed,
+    is_tas_completed,
+    is_vic_completed,
+    is_wa_completed
+FROM enum

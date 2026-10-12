@@ -1,0 +1,5591 @@
+version: 2
+
+models:
+  - name: api_usage_audit
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_api_usage_audit')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_api_usage_audit')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_api_usage_audit')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154104;otype=attribute
+            alation_title: Id
+
+      - name: email
+        tags:
+          - secure_field=PI_EMAIL
+        description: Email
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153526;otype=attribute
+            alation_title: Email
+
+      - name: authorised_party
+        description: Authorised Party
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153651;otype=attribute
+            alation_title: Authorised Party
+
+      - name: created_at
+        description: Created At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153695;otype=attribute
+            alation_title: Created At
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153668;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153785;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153502;otype=attribute
+            alation_title: Effective To
+
+      - name: endpoint_name
+        description: Endpoint Name
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153688;otype=attribute
+            alation_title: Endpoint Name
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153549;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153859;otype=attribute
+            alation_title: Inserted At
+
+      - name: integrator
+        description: Integrator
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153553;otype=attribute
+            alation_title: Integrator
+
+      - name: integrator_type
+        description: Integrator Type
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153558;otype=attribute
+            alation_title: Integrator Type
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153997;otype=attribute
+            alation_title: Key Hash
+
+      - name: oauth_grant_type
+        description: Oauth2 Grant Type
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153680;otype=attribute
+            alation_title: Oauth2 Grant Type
+
+      - name: pexa_core_workspace_id
+        description: Pexa Core Workspace Id
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153516;otype=attribute
+            alation_title: Pexa Core Workspace Id
+
+      - name: project_id
+        description: Project Id
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153515;otype=attribute
+            alation_title: Project Id
+
+      - name: project_name
+        description: Project Name
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153639;otype=attribute
+            alation_title: Project Name
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153795;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153842;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: subscriber_id
+        description: Subscriber Id
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153647;otype=attribute
+            alation_title: Subscriber Id
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153537;otype=attribute
+            alation_title: Updated At
+    description: Api Usage Audit
+    config:
+      meta:
+        alation_oid: oid=5962;otype=table
+        alation_title: Api Usage Audit
+
+  - name: authority
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_authority')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: role
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: role
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: role
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: role
+            source: ref('stg_authority')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: role
+            source: ref('stg_authority')
+    columns:
+      - name: role
+        data_tests:
+          - not_null
+        description: Role
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153784;otype=attribute
+            alation_title: Role
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153932;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153749;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153958;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154100;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153754;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153765;otype=attribute
+            alation_title: Key Hash
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154025;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153807;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153742;otype=attribute
+            alation_title: Updated At
+    description: Authority
+    config:
+      meta:
+        alation_oid: oid=6003;otype=table
+        alation_title: Authority
+
+  - name: batch_job
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_batch_job')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_batch_job')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_batch_job')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153959;otype=attribute
+            alation_title: Id
+
+      - name: type
+        data_tests:
+          - not_null
+        description: Type
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153891;otype=attribute
+            alation_title: Type
+
+      - name: created_on
+        data_tests:
+          - not_null
+        description: Created On
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154047;otype=attribute
+            alation_title: Created On
+
+      - name: created_by
+        data_tests:
+          - not_null
+        tags:
+          - secure_field=PI_EMAIL
+        description: Created By
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=154056;otype=attribute
+            alation_title: Created By
+
+      - name: last_modified_on
+        data_tests:
+          - not_null
+        description: Last Modified On
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154057;otype=attribute
+            alation_title: Last Modified On
+
+      - name: last_modified_by
+        data_tests:
+          - not_null
+        tags:
+          - secure_field=PI_EMAIL
+        description: Last Modified By
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=154053;otype=attribute
+            alation_title: Last Modified By
+
+      - name: version
+        data_tests:
+          - not_null
+        description: Version
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154111;otype=attribute
+            alation_title: Version
+
+      - name: user_id
+        tags:
+          - secure_field=PI_USERID
+        description: User Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154024;otype=attribute
+            alation_title: User Id
+
+      - name: created_at
+        description: Created At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153834;otype=attribute
+            alation_title: Created At
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153761;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154010;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153949;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153882;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: failed_items
+        description: Failed Items
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153873;otype=attribute
+            alation_title: Failed Items
+
+      - name: file_name
+        description: File Name
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=154093;otype=attribute
+            alation_title: File Name
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153946;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153880;otype=attribute
+            alation_title: Key Hash
+
+      - name: mot_project_id
+        description: Mot Project Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153934;otype=attribute
+            alation_title: Mot Project Id
+
+      - name: project_id
+        description: Project Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153918;otype=attribute
+            alation_title: Project Id
+
+      - name: role
+        description: Role
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153860;otype=attribute
+            alation_title: Role
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153840;otype=attribute
+            alation_title: Row Hash
+
+      - name: settlement_date_time
+        description: Settlement Date Time
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153852;otype=attribute
+            alation_title: Settlement Date Time
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153961;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: src_updated_at
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153724;otype=attribute
+
+      - name: status
+        description: Status
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153743;otype=attribute
+            alation_title: Status
+
+      - name: token
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153973;otype=attribute
+
+      - name: total_items
+        description: Total Items
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154065;otype=attribute
+            alation_title: Total Items
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153845;otype=attribute
+            alation_title: Updated At
+    description: Batch Job
+    config:
+      meta:
+        alation_oid: oid=5999;otype=table
+        alation_title: Batch Job
+
+  - name: batch_job_execution
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_batch_job_execution')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: job_execution_id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: job_execution_id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: job_execution_id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: job_execution_id
+            source: ref('stg_batch_job_execution')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: job_execution_id
+            source: ref('stg_batch_job_execution')
+    columns:
+      - name: job_execution_id
+        data_tests:
+          - not_null
+        description: Job Execution Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154085;otype=attribute
+            alation_title: Job Execution Id
+
+      - name: job_instance_id
+        data_tests:
+          - not_null
+        description: Job Instance Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153823;otype=attribute
+            alation_title: Job Instance Id
+
+      - name: create_time
+        data_tests:
+          - not_null
+        description: Create Time
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153796;otype=attribute
+            alation_title: Create Time
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153820;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153954;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154064;otype=attribute
+            alation_title: Effective To
+
+      - name: end_time
+        description: End Time
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153825;otype=attribute
+            alation_title: End Time
+
+      - name: exit_code
+        description: Exit Code
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153953;otype=attribute
+            alation_title: Exit Code
+
+      - name: exit_message
+        description: Exit Message
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153844;otype=attribute
+            alation_title: Exit Message
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153985;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153957;otype=attribute
+            alation_title: Inserted At
+
+      - name: job_configuration_location
+        description: Job Configuration Location
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=154081;otype=attribute
+            alation_title: Job Configuration Location
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153787;otype=attribute
+            alation_title: Key Hash
+
+      - name: last_updated
+        description: Last Updated
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153763;otype=attribute
+            alation_title: Last Updated
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153892;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=154089;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: start_time
+        description: Start Time
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153928;otype=attribute
+            alation_title: Start Time
+
+      - name: status
+        description: Status
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=154001;otype=attribute
+            alation_title: Status
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153828;otype=attribute
+            alation_title: Updated At
+
+      - name: version
+        description: Version
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153945;otype=attribute
+            alation_title: Version
+    description: Batch Job Execution
+    config:
+      meta:
+        alation_oid: oid=5921;otype=table
+        alation_title: Batch Job Execution
+
+  - name: batch_job_execution_context
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_batch_job_execution_context')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: job_execution_id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: job_execution_id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: job_execution_id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: job_execution_id
+            source: ref('stg_batch_job_execution_context')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: job_execution_id
+            source: ref('stg_batch_job_execution_context')
+    columns:
+      - name: job_execution_id
+        data_tests:
+          - not_null
+        description: Job Execution Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153484;otype=attribute
+            alation_title: Job Execution Id
+
+      - name: short_context
+        data_tests:
+          - not_null
+        description: Short Context
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153697;otype=attribute
+            alation_title: Short Context
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153652;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153511;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153461;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153669;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153632;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153623;otype=attribute
+            alation_title: Key Hash
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153614;otype=attribute
+            alation_title: Row Hash
+
+      - name: serialized_context
+        description: Serialized Context
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153466;otype=attribute
+            alation_title: Serialized Context
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153658;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153579;otype=attribute
+            alation_title: Updated At
+    description: Batch Job Execution Context
+    config:
+      meta:
+        alation_oid: oid=5938;otype=table
+        alation_title: Batch Job Execution Context
+
+  - name: batch_job_instance
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_batch_job_instance')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: job_instance_id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: job_instance_id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: job_instance_id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: job_instance_id
+            source: ref('stg_batch_job_instance')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: job_instance_id
+            source: ref('stg_batch_job_instance')
+    columns:
+      - name: job_instance_id
+        data_tests:
+          - not_null
+        description: Job Instance Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154000;otype=attribute
+            alation_title: Job Instance Id
+
+      - name: job_name
+        data_tests:
+          - not_null
+        description: Job Name
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153730;otype=attribute
+            alation_title: Job Name
+
+      - name: job_key
+        data_tests:
+          - not_null
+        description: Job Key
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=154090;otype=attribute
+            alation_title: Job Key
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154023;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154080;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154076;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153884;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153875;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154088;otype=attribute
+            alation_title: Key Hash
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153748;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=154079;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153839;otype=attribute
+            alation_title: Updated At
+
+      - name: version
+        description: Version
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153951;otype=attribute
+            alation_title: Version
+    description: Batch Job Instance
+    config:
+      meta:
+        alation_oid: oid=5945;otype=table
+        alation_title: Batch Job Instance
+
+  - name: batch_lock
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_batch_lock')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_batch_lock')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_batch_lock')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153682;otype=attribute
+            alation_title: Id
+
+      - name: created_at
+        description: Created At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153469;otype=attribute
+            alation_title: Created At
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153533;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153613;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153551;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153546;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153590;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153676;otype=attribute
+            alation_title: Key Hash
+
+      - name: mot_project_id
+        description: Mot Project Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153574;otype=attribute
+            alation_title: Mot Project Id
+
+      - name: project_id
+        description: Project Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153542;otype=attribute
+            alation_title: Project Id
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153564;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153588;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153557;otype=attribute
+            alation_title: Updated At
+    description: Batch Lock
+    config:
+      meta:
+        alation_oid: oid=5975;otype=table
+        alation_title: Batch Lock
+
+  - name: batch_report_item
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_batch_report_item')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_batch_report_item')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_batch_report_item')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154039;otype=attribute
+            alation_title: Id
+
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=154033;otype=attribute
+            alation_title: Data
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153829;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154011;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153978;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153976;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153733;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154091;otype=attribute
+            alation_title: Key Hash
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153816;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=154078;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=154097;otype=attribute
+            alation_title: Updated At
+
+      - name: upload_job_id
+        description: Upload Job Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153889;otype=attribute
+            alation_title: Upload Job Id
+    config:
+      meta:
+        alation_oid: oid=5937;otype=table
+
+  - name: batch_step_execution
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_batch_step_execution')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: step_execution_id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: step_execution_id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: step_execution_id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: step_execution_id
+            source: ref('stg_batch_step_execution')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: step_execution_id
+            source: ref('stg_batch_step_execution')
+    columns:
+      - name: step_execution_id
+        data_tests:
+          - not_null
+        description: Step Execution Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153771;otype=attribute
+            alation_title: Step Execution Id
+
+      - name: version
+        data_tests:
+          - not_null
+        description: Version
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154036;otype=attribute
+            alation_title: Version
+
+      - name: step_name
+        data_tests:
+          - not_null
+        description: Step Name
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153835;otype=attribute
+            alation_title: Step Name
+
+      - name: job_execution_id
+        data_tests:
+          - not_null
+        description: Job Execution Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153879;otype=attribute
+            alation_title: Job Execution Id
+
+      - name: commit_count
+        description: Commit Count
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153962;otype=attribute
+            alation_title: Commit Count
+
+      - name: create_time
+        description: Create Time
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153858;otype=attribute
+            alation_title: Create Time
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153916;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154035;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154087;otype=attribute
+            alation_title: Effective To
+
+      - name: end_time
+        description: End Time
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153943;otype=attribute
+            alation_title: End Time
+
+      - name: exit_code
+        description: Exit Code
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153804;otype=attribute
+            alation_title: Exit Code
+
+      - name: exit_message
+        description: Exit Message
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153914;otype=attribute
+            alation_title: Exit Message
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153865;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: filter_count
+        description: Filter Count
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153814;otype=attribute
+            alation_title: Filter Count
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153922;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153744;otype=attribute
+            alation_title: Key Hash
+
+      - name: last_updated
+        description: Last Updated
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153990;otype=attribute
+            alation_title: Last Updated
+
+      - name: process_skip_count
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153810;otype=attribute
+
+      - name: read_count
+        description: Ready Count
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153851;otype=attribute
+            alation_title: Ready Count
+
+      - name: read_skip_count
+        description: Ready Skip Count
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153977;otype=attribute
+            alation_title: Ready Skip Count
+
+      - name: rollback_count
+        description: Rollback Count
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154077;otype=attribute
+            alation_title: Rollback Count
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154003;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=154029;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: start_time
+        description: Start Time
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153779;otype=attribute
+            alation_title: Start Time
+
+      - name: status
+        description: Status
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153902;otype=attribute
+            alation_title: Status
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153728;otype=attribute
+            alation_title: Updated At
+
+      - name: write_count
+        description: Write Count
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154067;otype=attribute
+            alation_title: Write Count
+
+      - name: write_skip_count
+        description: Write Skip Count
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153778;otype=attribute
+            alation_title: Write Skip Count
+    description: Batch Step Execution
+    config:
+      meta:
+        alation_oid: oid=5974;otype=table
+        alation_title: Batch Step Execution
+
+  - name: batch_step_execution_context
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_batch_step_execution_context')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: step_execution_id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: step_execution_id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: step_execution_id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: step_execution_id
+            source: ref('stg_batch_step_execution_context')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: step_execution_id
+            source: ref('stg_batch_step_execution_context')
+    columns:
+      - name: step_execution_id
+        data_tests:
+          - not_null
+        description: Step Execution Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153853;otype=attribute
+            alation_title: Step Execution Id
+
+      - name: short_context
+        data_tests:
+          - not_null
+        description: Short Context
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=154054;otype=attribute
+            alation_title: Short Context
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154041;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153770;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154058;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154017;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153857;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153824;otype=attribute
+            alation_title: Key Hash
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153794;otype=attribute
+            alation_title: Row Hash
+
+      - name: serialized_context
+        description: Serialized Context
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153864;otype=attribute
+            alation_title: Serialized Context
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153863;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=154050;otype=attribute
+            alation_title: Updated At
+    description: Batch Step Execution Context
+    config:
+      meta:
+        alation_oid: oid=5961;otype=table
+        alation_title: Batch Step Execution Context
+
+  - name: common_data_change_job_item
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_common_data_change_job_item')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_common_data_change_job_item')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_common_data_change_job_item')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154071;otype=attribute
+            alation_title: Id
+
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=153867;otype=attribute
+            alation_title: Data
+
+      - name: batch_job_id
+        description: Batch Job Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153991;otype=attribute
+            alation_title: Batch Job Id
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153805;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153760;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154046;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154086;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153819;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154006;otype=attribute
+            alation_title: Key Hash
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154042;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=154098;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=154073;otype=attribute
+            alation_title: Updated At
+    description: Common Data Change Job Item
+    config:
+      meta:
+        alation_oid: oid=5997;otype=table
+        alation_title: Common Data Change Job Item
+
+  - name: configuration
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_configuration')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_configuration')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_configuration')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153585;otype=attribute
+            alation_title: Id
+
+      - name: name
+        data_tests:
+          - not_null
+        description: Name
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153528;otype=attribute
+            alation_title: Name
+
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=153602;otype=attribute
+            alation_title: Data
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153603;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153538;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153565;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153625;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153686;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153643;otype=attribute
+            alation_title: Key Hash
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153673;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153592;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153589;otype=attribute
+            alation_title: Updated At
+    description: Configuration
+    config:
+      meta:
+        alation_oid: oid=5924;otype=table
+        alation_title: Configuration
+
+  - name: data_change_alert
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_data_change_alert')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_data_change_alert')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_data_change_alert')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153832;otype=attribute
+            alation_title: Id
+
+      - name: subscriber_reference
+        tags:
+          - secure_field=PI_FREE_TEXT_FIELD
+        description: Subscriber Reference
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153890;otype=attribute
+            alation_title: Subscriber Reference
+
+      - name: change_from
+        tags:
+          - secure_field=PI_FULL_NAME
+        description: Change From
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=154070;otype=attribute
+            alation_title: Change From
+
+      - name: change_to
+        tags:
+          - secure_field=PI_FULL_NAME
+        description: Change To
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153809;otype=attribute
+            alation_title: Change To
+
+      - name: alert_flagged
+        description: Alert Flagged
+        data_type: boolean
+        config:
+          meta:
+            alation_oid: oid=154092;otype=attribute
+            alation_title: Alert Flagged
+
+      - name: alert_read
+        description: Alert Ready
+        data_type: boolean
+        config:
+          meta:
+            alation_oid: oid=153944;otype=attribute
+            alation_title: Alert Ready
+
+      - name: change_type
+        description: Change Type
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=154040;otype=attribute
+            alation_title: Change Type
+
+      - name: created_at
+        description: Created At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153711;otype=attribute
+            alation_title: Created At
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153800;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154049;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154102;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154034;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153982;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153786;otype=attribute
+            alation_title: Key Hash
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153968;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153983;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: src_updated_at
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153781;otype=attribute
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153870;otype=attribute
+            alation_title: Updated At
+
+      - name: workspace_id
+        description: Workspace Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153775;otype=attribute
+            alation_title: Workspace Id
+    description: Data Change Alert
+    config:
+      meta:
+        alation_oid: oid=5979;otype=table
+        alation_title: Data Change Alert
+
+  - name: document_job_item
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_document_job_item')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_document_job_item')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_document_job_item')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154062;otype=attribute
+            alation_title: Id
+
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=153789;otype=attribute
+            alation_title: Data
+
+      - name: batch_job_id
+        description: Batch Job Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153931;otype=attribute
+            alation_title: Batch Job Id
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154022;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153766;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153994;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154101;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153936;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154084;otype=attribute
+            alation_title: Key Hash
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153753;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153935;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153721;otype=attribute
+            alation_title: Updated At
+    description: Document Job Item
+    config:
+      meta:
+        alation_oid: oid=5982;otype=table
+        alation_title: Document Job Item
+
+  - name: financial_accounts_audit
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_financial_accounts_audit')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_financial_accounts_audit')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_financial_accounts_audit')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153908;otype=attribute
+            alation_title: Id
+
+      - name: action_date
+        data_tests:
+          - not_null
+        description: Action Date
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153940;otype=attribute
+            alation_title: Action Date
+
+      - name: action
+        data_tests:
+          - not_null
+        description: Action
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=154026;otype=attribute
+            alation_title: Action
+
+      - name: user_id
+        tags:
+          - secure_field=PI_USERID
+        description: User Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153709;otype=attribute
+            alation_title: User Id
+
+      - name: before_description
+        tags:
+          - secure_field=PI_FREE_TEXT_FIELD
+        description: Before Description
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153974;otype=attribute
+            alation_title: Before Description
+
+      - name: after_description
+        tags:
+          - secure_field=PI_FREE_TEXT_FIELD
+        description: After Description
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153740;otype=attribute
+            alation_title: After Description
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153802;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153933;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153915;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153755;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153773;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153797;otype=attribute
+            alation_title: Key Hash
+
+      - name: mot_project_id
+        description: Mot Project Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153815;otype=attribute
+            alation_title: Mot Project Id
+
+      - name: pot_project_id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153886;otype=attribute
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154004;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153917;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153848;otype=attribute
+            alation_title: Updated At
+    description: Financial Accounts Audit
+    config:
+      meta:
+        alation_oid: oid=6002;otype=table
+        alation_title: Financial Accounts Audit
+
+  - name: financials_job_item
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_financials_job_item')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_financials_job_item')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_financials_job_item')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153903;otype=attribute
+            alation_title: Id
+
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=154009;otype=attribute
+            alation_title: Data
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153841;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153719;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153909;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154038;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: financials_job_id
+        description: Financials Job Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154096;otype=attribute
+            alation_title: Financials Job Id
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153723;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154059;otype=attribute
+            alation_title: Key Hash
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153716;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153822;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153735;otype=attribute
+            alation_title: Updated At
+    description: Financials Job Item
+    config:
+      meta:
+        alation_oid: oid=5939;otype=table
+        alation_title: Financials Job Item
+
+  - name: invitation_job_item
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_invitation_job_item')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_invitation_job_item')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_invitation_job_item')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153971;otype=attribute
+            alation_title: Id
+
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=153831;otype=attribute
+            alation_title: Data
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153967;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153905;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154032;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154012;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153919;otype=attribute
+            alation_title: Inserted At
+
+      - name: invitation_job_id
+        description: Invitation Job Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153731;otype=attribute
+            alation_title: Invitation Job Id
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153776;otype=attribute
+            alation_title: Key Hash
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153836;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=154005;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=154103;otype=attribute
+            alation_title: Updated At
+    description: Invitation Job Item
+    config:
+      meta:
+        alation_oid: oid=5953;otype=table
+        alation_title: Invitation Job Item
+
+  - name: mot_project
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_mot_project')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_mot_project')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_mot_project')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153472;otype=attribute
+            alation_title: Id
+
+      - name: name
+        data_tests:
+          - not_null
+        description: Name
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153535;otype=attribute
+            alation_title: Name
+
+      - name: subscriber_id
+        data_tests:
+          - not_null
+        description: Subscriber Id
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153477;otype=attribute
+            alation_title: Subscriber Id
+
+      - name: subscriber_reference_prefix
+        data_tests:
+          - not_null
+        description: Subscriber Reference Prefix
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153508;otype=attribute
+            alation_title: Subscriber Reference Prefix
+
+      - name: created_on
+        data_tests:
+          - not_null
+        description: Created On
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153532;otype=attribute
+            alation_title: Created On
+
+      - name: created_by
+        data_tests:
+          - not_null
+        tags:
+          - secure_field=PI_EMAIL
+        description: Created By
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153630;otype=attribute
+            alation_title: Created By
+
+      - name: last_modified_on
+        data_tests:
+          - not_null
+        description: Last Modified On
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153568;otype=attribute
+            alation_title: Last Modified On
+
+      - name: last_modified_by
+        data_tests:
+          - not_null
+        tags:
+          - secure_field=PI_EMAIL
+        description: Last Modified By
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153672;otype=attribute
+            alation_title: Last Modified By
+
+      - name: account_details_data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Account Details Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=153667;otype=attribute
+            alation_title: Account Details Data
+
+      - name: created_at
+        description: Created At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153505;otype=attribute
+            alation_title: Created At
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153700;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153480;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153621;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153609;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153481;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153650;otype=attribute
+            alation_title: Key Hash
+
+      - name: project_id
+        description: Project Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153497;otype=attribute
+            alation_title: Project Id
+
+      - name: reports_opt_in
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153464;otype=attribute
+
+      - name: reports_opt_in_at
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153683;otype=attribute
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153593;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153489;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: status
+        description: Status
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153599;otype=attribute
+            alation_title: Status
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153674;otype=attribute
+            alation_title: Updated At
+
+      - name: version
+        description: Version
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153475;otype=attribute
+            alation_title: Version
+    description: Mot Project
+    config:
+      meta:
+        alation_oid: oid=5959;otype=table
+        alation_title: Mot Project
+
+  - name: pd_user
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_pd_user')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_pd_user')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_pd_user')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153965;otype=attribute
+            alation_title: Id
+
+      - name: email
+        data_tests:
+          - not_null
+        tags:
+          - secure_field=PI_EMAIL
+        description: Email
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153899;otype=attribute
+            alation_title: Email
+
+      - name: created_on
+        data_tests:
+          - not_null
+        description: Created On
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153871;otype=attribute
+            alation_title: Created On
+
+      - name: created_by
+        data_tests:
+          - not_null
+        tags:
+          - secure_field=PI_EMAIL
+        description: Created By
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153995;otype=attribute
+            alation_title: Created By
+
+      - name: last_modified_on
+        data_tests:
+          - not_null
+        description: Last Modified On
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153717;otype=attribute
+            alation_title: Last Modified On
+
+      - name: last_modified_by
+        data_tests:
+          - not_null
+        tags:
+          - secure_field=PI_EMAIL
+        description: Last Modified By
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153811;otype=attribute
+            alation_title: Last Modified By
+
+      - name: version
+        data_tests:
+          - not_null
+        description: Version
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153877;otype=attribute
+            alation_title: Version
+
+      - name: first_name
+        tags:
+          - secure_field=PI_NAME
+        description: First Name
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153969;otype=attribute
+            alation_title: First Name
+
+      - name: last_name
+        tags:
+          - secure_field=PI_NAME
+        description: Last Name
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153725;otype=attribute
+            alation_title: Last Name
+
+      - name: subscriber_name
+        tags:
+          - secure_field=PI_BUSINESS_NAME
+        description: Subscriber Name
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153911;otype=attribute
+            alation_title: Subscriber Name
+
+      - name: type
+        tags:
+          - secure_field=PI_SENSITIVE
+        description: Type
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153872;otype=attribute
+            alation_title: Type
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153856;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154063;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153833;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153876;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153799;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153938;otype=attribute
+            alation_title: Key Hash
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153813;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153817;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: subscriber_dual_sign_doc
+        description: Subscriber Dual Sign Document
+        data_type: boolean
+        config:
+          meta:
+            alation_oid: oid=154099;otype=attribute
+            alation_title: Subscriber Dual Sign Document
+
+      - name: subscriber_dual_sign_fss
+        description: Subscriber Dual Sign Financial Settlement Schedule
+        data_type: boolean
+        config:
+          meta:
+            alation_oid: oid=153992;otype=attribute
+            alation_title: Subscriber Dual Sign Financial Settlement Schedule
+
+      - name: subscriber_id
+        description: Subscriber Id
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153722;otype=attribute
+            alation_title: Subscriber Id
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153894;otype=attribute
+            alation_title: Updated At
+
+      - name: user_permissions
+        description: User Permissions
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=153948;otype=attribute
+            alation_title: User Permissions
+
+      - name: workgroups
+        description: Workgroups
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=153793;otype=attribute
+            alation_title: Workgroups
+    config:
+      meta:
+        alation_oid: oid=5928;otype=table
+
+  - name: pd_user_authorised
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_pd_user_authorised')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_pd_user_authorised')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_pd_user_authorised')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153563;otype=attribute
+            alation_title: Id
+
+      - name: subscriber_id
+        data_tests:
+          - not_null
+        description: Subscriber Id
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153584;otype=attribute
+            alation_title: Subscriber Id
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153637;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153656;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153498;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153523;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153499;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153587;otype=attribute
+            alation_title: Key Hash
+
+      - name: mot
+        description: Mot
+        data_type: boolean
+        config:
+          meta:
+            alation_oid: oid=153495;otype=attribute
+            alation_title: Mot
+
+      - name: pot
+        data_type: boolean
+        config:
+          meta:
+            alation_oid: oid=153470;otype=attribute
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153646;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153506;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153561;otype=attribute
+            alation_title: Updated At
+    config:
+      meta:
+        alation_oid: oid=5932;otype=table
+
+  - name: project
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_project')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_project')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_project')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153681;otype=attribute
+            alation_title: Id
+
+      - name: subscriber_id
+        data_tests:
+          - not_null
+        description: Subscriber Id
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153604;otype=attribute
+            alation_title: Subscriber Id
+
+      - name: created_on
+        data_tests:
+          - not_null
+        description: Created On
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153598;otype=attribute
+            alation_title: Created On
+
+      - name: created_by
+        data_tests:
+          - not_null
+        tags:
+          - secure_field=PI_EMAIL
+        description: Created By
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153597;otype=attribute
+            alation_title: Created By
+
+      - name: last_modified_on
+        data_tests:
+          - not_null
+        description: Last Modified On
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153655;otype=attribute
+            alation_title: Last Modified On
+
+      - name: last_modified_by
+        data_tests:
+          - not_null
+        tags:
+          - secure_field=PI_EMAIL
+        description: Last Modified By
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153610;otype=attribute
+            alation_title: Last Modified By
+
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=153638;otype=attribute
+            alation_title: Data
+
+      - name: account_details_data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Account Details Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=153491;otype=attribute
+            alation_title: Account Details Data
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153641;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153768;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153580;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153893;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153868;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153539;otype=attribute
+            alation_title: Key Hash
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153503;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153692;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153596;otype=attribute
+            alation_title: Updated At
+
+      - name: version
+        description: Version
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153664;otype=attribute
+            alation_title: Version
+    description: Project
+    config:
+      meta:
+        alation_oid: oid=5989;otype=table
+        alation_title: Project
+
+  - name: report_audit
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_report_audit')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_report_audit')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_report_audit')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153979;otype=attribute
+            alation_title: Id
+
+      - name: username
+        tags:
+          - secure_field=PI_EMAIL
+        description: Username
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=154013;otype=attribute
+            alation_title: Username
+
+      - name: created_at
+        description: Created At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154110;otype=attribute
+            alation_title: Created At
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153937;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153898;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153850;otype=attribute
+            alation_title: Effective To
+
+      - name: external_api
+        description: External Api
+        data_type: boolean
+        config:
+          meta:
+            alation_oid: oid=153720;otype=attribute
+            alation_title: External Api
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153712;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: input_parameters
+        description: Input Parameters
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=153818;otype=attribute
+            alation_title: Input Parameters
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153745;otype=attribute
+            alation_title: Inserted At
+
+      - name: jurisdiction
+        description: Jurisdiction
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153854;otype=attribute
+            alation_title: Jurisdiction
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154108;otype=attribute
+            alation_title: Key Hash
+
+      - name: project_id
+        description: Project Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153801;otype=attribute
+            alation_title: Project Id
+
+      - name: project_name
+        description: Project Name
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=154037;otype=attribute
+            alation_title: Project Name
+
+      - name: report_type
+        description: Report Type
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153772;otype=attribute
+            alation_title: Report Type
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153885;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153707;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: subscriber_id
+        description: Subscriber Id
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153952;otype=attribute
+            alation_title: Subscriber Id
+
+      - name: subscriber_name
+        description: Subscriber Name
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153988;otype=attribute
+            alation_title: Subscriber Name
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153838;otype=attribute
+            alation_title: Updated At
+    description: Report Audit
+    config:
+      meta:
+        alation_oid: oid=5919;otype=table
+        alation_title: Report Audit
+
+  - name: settlement_job_item
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_settlement_job_item')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_settlement_job_item')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_settlement_job_item')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153513;otype=attribute
+            alation_title: Id
+
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=153509;otype=attribute
+            alation_title: Data
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153581;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153591;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153559;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153583;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153608;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153576;otype=attribute
+            alation_title: Key Hash
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153517;otype=attribute
+            alation_title: Row Hash
+
+      - name: settlement_job_id
+        description: Settlement Job Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153605;otype=attribute
+            alation_title: Settlement Job Id
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153615;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153555;otype=attribute
+            alation_title: Updated At
+    description: Settlement Job Item
+    config:
+      meta:
+        alation_oid: oid=5948;otype=table
+        alation_title: Settlement Job Item
+
+  - name: subscriber_to_tnc
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_subscriber_to_tnc')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_subscriber_to_tnc')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_subscriber_to_tnc')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153689;otype=attribute
+            alation_title: Id
+
+      - name: tnc_version
+        data_tests:
+          - not_null
+        description: Three Numeric Characters Version
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153846;otype=attribute
+            alation_title: Three Numeric Characters Version
+
+      - name: subscriber_id
+        data_tests:
+          - not_null
+        description: Subscriber Id
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153504;otype=attribute
+            alation_title: Subscriber Id
+
+      - name: for_pot
+        data_tests:
+          - not_null
+        data_type: boolean
+        config:
+          meta:
+            alation_oid: oid=153693;otype=attribute
+
+      - name: for_mot
+        data_tests:
+          - not_null
+        description: For Mot
+        data_type: boolean
+        config:
+          meta:
+            alation_oid: oid=153645;otype=attribute
+            alation_title: For Mot
+
+      - name: accepted_on
+        data_tests:
+          - not_null
+        description: Accepted On
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153547;otype=attribute
+            alation_title: Accepted On
+
+      - name: default_login_as_pot
+        data_tests:
+          - not_null
+        data_type: boolean
+        config:
+          meta:
+            alation_oid: oid=153677;otype=attribute
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153640;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153507;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153626;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153616;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153687;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153644;otype=attribute
+            alation_title: Key Hash
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153473;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153494;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153750;otype=attribute
+            alation_title: Updated At
+    description: Subscriber To Three Numeric Characters
+    config:
+      meta:
+        alation_oid: oid=6012;otype=table
+        alation_title: Subscriber To Three Numeric Characters
+
+  - name: terms_and_conditions
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_terms_and_conditions')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_terms_and_conditions')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_terms_and_conditions')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153524;otype=attribute
+            alation_title: Id
+
+      - name: tnc
+        data_tests:
+          - not_null
+        description: Three Numeric Characters
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153486;otype=attribute
+            alation_title: Three Numeric Characters
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153678;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153595;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153665;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153617;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153560;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153554;otype=attribute
+            alation_title: Key Hash
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153501;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153586;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153545;otype=attribute
+            alation_title: Updated At
+    description: Terms And Conditions
+    config:
+      meta:
+        alation_oid: oid=5944;otype=table
+        alation_title: Terms And Conditions
+
+  - name: togglz
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_togglz')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: feature_name
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: feature_name
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: feature_name
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: feature_name
+            source: ref('stg_togglz')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: feature_name
+            source: ref('stg_togglz')
+    columns:
+      - name: feature_name
+        data_tests:
+          - not_null
+        description: Feature Name
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153578;otype=attribute
+            alation_title: Feature Name
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153627;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153575;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153653;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153543;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: feature_enabled
+        description: Feature Enabled
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153679;otype=attribute
+            alation_title: Feature Enabled
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153661;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153490;otype=attribute
+            alation_title: Key Hash
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153479;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153619;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: strategy_id
+        description: Strategy Id
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153607;otype=attribute
+            alation_title: Strategy Id
+
+      - name: strategy_params
+        description: Strategy Params
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153552;otype=attribute
+            alation_title: Strategy Params
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153628;otype=attribute
+            alation_title: Updated At
+    description: Togglz
+    config:
+      meta:
+        alation_oid: oid=5985;otype=table
+        alation_title: Togglz
+
+  - name: transfer_job_item
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_transfer_job_item')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_transfer_job_item')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_transfer_job_item')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153993;otype=attribute
+            alation_title: Id
+
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=154107;otype=attribute
+            alation_title: Data
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153989;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153705;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153759;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153980;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153896;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153939;otype=attribute
+            alation_title: Key Hash
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153734;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153830;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: transfer_job_id
+        description: Transfer Job Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153704;otype=attribute
+            alation_title: Transfer Job Id
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=154109;otype=attribute
+            alation_title: Updated At
+    description: Transfer Job Item
+    config:
+      meta:
+        alation_oid: oid=5994;otype=table
+        alation_title: Transfer Job Item
+
+  - name: upload_file
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_upload_file')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - dbt_expectations.expect_table_row_count_to_equal_other_table:
+          arguments:
+            compare_model: ref('stg_upload_file')
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_upload_file')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_upload_file')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153900;otype=attribute
+            alation_title: Id
+
+      - name: created_at
+        data_tests:
+          - not_null
+        description: Created At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=154020;otype=attribute
+            alation_title: Created At
+
+      - name: updated_at
+        data_tests:
+          - not_null
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153837;otype=attribute
+            alation_title: Updated At
+
+      - name: created_on
+        data_tests:
+          - not_null
+        description: Created On
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154061;otype=attribute
+            alation_title: Created On
+
+      - name: created_by
+        data_tests:
+          - not_null
+        tags:
+          - secure_field=PI_EMAIL
+        description: Created By
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=154014;otype=attribute
+            alation_title: Created By
+
+      - name: last_modified_on
+        data_tests:
+          - not_null
+        description: Last Modified On
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153881;otype=attribute
+            alation_title: Last Modified On
+
+      - name: last_modified_by
+        data_tests:
+          - not_null
+        tags:
+          - secure_field=PI_EMAIL
+        description: Last Modified By
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=154052;otype=attribute
+            alation_title: Last Modified By
+
+      - name: version
+        data_tests:
+          - not_null
+        description: Version
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153756;otype=attribute
+            alation_title: Version
+
+      - name: file_content
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: File Content
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=153986;otype=attribute
+            alation_title: File Content
+
+      - name: mapped_content
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Mapped Content
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=153849;otype=attribute
+            alation_title: Mapped Content
+
+      - name: user_id
+        tags:
+          - secure_field=PI_USERID
+        description: User Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153930;otype=attribute
+            alation_title: User Id
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153774;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154069;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154066;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154015;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: file_type
+        description: File Type
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=154043;otype=attribute
+            alation_title: File Type
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=154072;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153752;otype=attribute
+            alation_title: Key Hash
+
+      - name: mot_project_id
+        description: Mot Project Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153741;otype=attribute
+            alation_title: Mot Project Id
+
+      - name: pot_project_id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153927;otype=attribute
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153913;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153981;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: src_updated_at
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153999;otype=attribute
+
+      - name: status
+        description: Status
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153921;otype=attribute
+            alation_title: Status
+    description: Upload File
+    config:
+      meta:
+        alation_oid: oid=5915;otype=table
+        alation_title: Upload File
+
+  - name: upload_job_item
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_upload_job_item')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_upload_job_item')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_upload_job_item')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153633;otype=attribute
+            alation_title: Id
+
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=153520;otype=attribute
+            alation_title: Data
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153493;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153691;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153521;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153611;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153487;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153492;otype=attribute
+            alation_title: Key Hash
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153467;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153696;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153636;otype=attribute
+            alation_title: Updated At
+
+      - name: upload_job_id
+        description: Upload Job Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153571;otype=attribute
+            alation_title: Upload Job Id
+    description: Upload Job Item
+    config:
+      meta:
+        alation_oid: oid=5920;otype=table
+        alation_title: Upload Job Item
+
+  - name: upload_job_items
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_upload_job_items')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_upload_job_items')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_upload_job_items')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153649;otype=attribute
+            alation_title: Id
+
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=153471;otype=attribute
+            alation_title: Data
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153629;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153514;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153463;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153698;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153685;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153612;otype=attribute
+            alation_title: Key Hash
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153582;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153624;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153530;otype=attribute
+            alation_title: Updated At
+
+      - name: upload_job_id
+        description: Upload Job Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153462;otype=attribute
+            alation_title: Upload Job Id
+    description: Upload Job Items
+    config:
+      meta:
+        alation_oid: oid=5946;otype=table
+        alation_title: Upload Job Items
+
+  - name: user_authorities
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_user_authorities')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: user_id, authority_role
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: user_id, authority_role
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: user_id, authority_role
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: user_id, authority_role
+            source: ref('stg_user_authorities')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: user_id, authority_role
+            source: ref('stg_user_authorities')
+    columns:
+      - name: user_id
+        data_tests:
+          - not_null
+        description: User Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153512;otype=attribute
+            alation_title: User Id
+
+      - name: authority_role
+        data_tests:
+          - not_null
+        description: Authority Role
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153541;otype=attribute
+            alation_title: Authority Role
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153600;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153662;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153570;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153569;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153544;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153566;otype=attribute
+            alation_title: Key Hash
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153659;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153654;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153666;otype=attribute
+            alation_title: Updated At
+    description: User Authorities
+    config:
+      meta:
+        alation_oid: oid=5960;otype=table
+        alation_title: User Authorities
+
+  - name: workspace
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_workspace')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_workspace')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_workspace')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153866;otype=attribute
+            alation_title: Id
+
+      - name: created_on
+        data_tests:
+          - not_null
+        description: Created On
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153861;otype=attribute
+            alation_title: Created On
+
+      - name: created_by
+        data_tests:
+          - not_null
+        tags:
+          - secure_field=PI_EMAIL
+        description: Created By
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=154112;otype=attribute
+            alation_title: Created By
+
+      - name: last_modified_on
+        data_tests:
+          - not_null
+        description: Last Modified On
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153984;otype=attribute
+            alation_title: Last Modified On
+
+      - name: last_modified_by
+        data_tests:
+          - not_null
+        tags:
+          - secure_field=PI_EMAIL
+        description: Last Modified By
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=153963;otype=attribute
+            alation_title: Last Modified By
+
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=154019;otype=attribute
+            alation_title: Data
+
+      - name: modified_by_ip
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=153826;otype=attribute
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153710;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153975;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153878;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153738;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153739;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154031;otype=attribute
+            alation_title: Key Hash
+
+      - name: project_id
+        description: Project Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=154105;otype=attribute
+            alation_title: Project Id
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153966;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=154002;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153996;otype=attribute
+            alation_title: Updated At
+
+      - name: version
+        description: Version
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153907;otype=attribute
+            alation_title: Version
+    description: Workspace
+    config:
+      meta:
+        alation_oid: oid=5977;otype=table
+        alation_title: Workspace
+
+  - name: workspace_update_parent_title_job_item
+    data_tests:
+      - column_count_check:
+          arguments:
+            source: ref('stg_workspace_update_parent_title_job_item')
+          config:
+            severity: error
+      - check_unique_pk_effective_from:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_record_effectiveness_overlap:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - check_one_active_row:
+          arguments:
+            pk_field_list: id
+          config:
+            severity: error
+      - count_check_of_insert_updates:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_workspace_update_parent_title_job_item')
+      - records_deleted_in_src_but_valid_in_target:
+          arguments:
+            pk_field_list: id
+            source: ref('stg_workspace_update_parent_title_job_item')
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+        description: Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153769;otype=attribute
+            alation_title: Id
+
+      - name: data
+        tags:
+          - secure_field=PI_MULTI
+          - variant_mask=TRAVERSE_VALUE_MASK
+        description: Data
+        data_type: variant
+        config:
+          meta:
+            alation_oid: oid=154094;otype=attribute
+            alation_title: Data
+
+      - name: batch_job_id
+        description: Batch Job Id
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153929;otype=attribute
+            alation_title: Batch Job Id
+
+      - name: deleted_at
+        description: Deleted At
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154074;otype=attribute
+            alation_title: Deleted At
+
+      - name: effective_from
+        description: Effective From
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=154007;otype=attribute
+            alation_title: Effective From
+
+      - name: effective_to
+        description: Effective To
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153869;otype=attribute
+            alation_title: Effective To
+
+      - name: extraction_start_ts
+        description: Extraction Start Timestamp
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=153762;otype=attribute
+            alation_title: Extraction Start Timestamp
+
+      - name: inserted_at
+        description: Inserted At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153726;otype=attribute
+            alation_title: Inserted At
+
+      - name: key_hash
+        description: Key Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153751;otype=attribute
+            alation_title: Key Hash
+
+      - name: row_hash
+        description: Row Hash
+        data_type: number
+        config:
+          meta:
+            alation_oid: oid=153791;otype=attribute
+            alation_title: Row Hash
+
+      - name: src_delta_extract_ts
+        description: Source Delta Extract Timestamp
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153806;otype=attribute
+            alation_title: Source Delta Extract Timestamp
+
+      - name: updated_at
+        description: Updated At
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=153874;otype=attribute
+            alation_title: Updated At
+    description: Workspace Update Parent Title Job Item
+    config:
+      meta:
+        alation_oid: oid=5956;otype=table
+        alation_title: Workspace Update Parent Title Job Item

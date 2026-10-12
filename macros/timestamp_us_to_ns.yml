@@ -1,0 +1,80 @@
+version: 2
+
+macros:
+   
+  - name: dms_timestamp_trunc
+    description: |
+      Generates the SQL to truncate a timezone aware timestamp-like argument to microseconds and convert it to
+      UTC timezone for comparison to DMS extraction timestamps. This does not CAST the resultant timestamp to
+      `timestamp_ntz`. If need to compare it to the raw DMS extraction timestamps, you will need to CAST it
+      to `timestamp_ntz`.
+    arguments:
+      - name: timestamp_col
+        type: timestamp like
+        description: | 
+          The timestamp like value / column to be truncated to microseconds
+
+  - name: timestampntz_to_tz
+    description: |
+      Generate the SQL to apply a timezone to a `timestamp_ntz` like value / column. Only useful for `timestamp_ntz`
+      values that are known to be in a specific timezone. This does not translate the timestamp, just sets the timezone.
+    arguments:
+      - name: timestamp_col
+        type: timestamp_ntz like
+        description: | 
+          The timestamp like value / column to set the timezone on
+      - name: timezone
+        type: string
+        description: |
+          Apply this timezone to the timestamp. DOES NOT translate the timestamp, just sets the timezone.
+ 
+  - name: dms_timestampntz_us_to_ns
+    description: |
+      DMS only provides microsecond resolution for the extraction timestamp. This is provided in UTC and stored in a
+      `timestamp_ntz` column. To avoid timestamp collisions, this macro generates SQL to convert microsecond timestamps
+      to nanosecond timestamps. It does this by using the ROW_NUMBER window function to generate a unique nanosecond offset
+      for each record within the same microsecond, partitioned by the specified partition columns and ordered by any
+      additional sequence columns. Regardless of the sequence columns, the macro expects to find a `transact_seq` column
+      in the same table as the timestamp column. This column is appended to the order by sequence with NULLS FIRST, which
+      ensures that the row number is generated in a consistent manner. This new value is returned as a new column with a
+      transformed name starting with "\_dbt_".
+      This "internal" name is then converted to the target timezone using the `timestampntz_to_tz` macro.
+
+      This macro is intended to be used in a select clause column list.
+
+      **Usage**
+
+      ```jinja
+      {% raw -%}
+      {{ dms_timestampntz_us_to_ns('extraction_start_ts', ['document_id'], [], 'UTC') }} AS extraction_start_ts
+      {%- endraw %}
+      ```
+
+      **Returns**
+
+      ```jinja
+      {% raw -%}
+      DATEADD(...) AS _dbt_extraction_start_ts, {{ timestampntz_to_tz('_dbt_extraction_start_ts', 'UTC') }} AS extraction_start_ts
+      {%- endraw %}
+      ```
+      {# avoid render bug#}
+    arguments:
+      - name: timestamp_col
+        type: timestamp_ntz like
+        description: | 
+          The timestamp like value / column to set the timezone on
+      - name: partition_cols
+        type: none or string or list of strings
+        description: |
+          The column(s) to partition by when generating the row numbers for the nanosecond adjustment.
+      - name: sequence_cols
+        type: none or string or list of strings
+        description: |
+          The column(s) to order by when generating the row numbers for the nanosecond adjustment.
+          These should be columns that increase with each new record, such as an ID or an extraction timestamp.
+          The `transact_seq` column will be appended to this list and have NULLS FIRST applied to it to ensure
+          that the row number is generated in a consistent manner.
+      - name: timezone
+        type: string
+        description: |
+          Use this timezone to convert the timestamp to

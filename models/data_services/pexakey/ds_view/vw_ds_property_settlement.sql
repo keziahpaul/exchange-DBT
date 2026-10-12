@@ -1,0 +1,19 @@
+select
+    mobile,
+    date_created,
+    party_Id,
+    tracking_Id,
+    workspace_Internal_Id,
+    date_Updated,
+    correlation_Token,
+    email,
+    role,
+    settlement_date,
+    subscriber_name,
+    property_classification,
+    suburb,
+    state,
+    postcode,
+    src_load_ts,
+    inserted_at
+FROM {{ ref('property_settlement') }}

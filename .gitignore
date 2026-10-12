@@ -1,0 +1,26 @@
+# you shouldn't commit these into source control
+# these are the default directory names, adjust/add to fit your needs
+target/
+dbt_packages/
+dbt_modules/
+logs/
+.vscode/
+.idea/
+.venv
+.ds*
+.DS_Store
+dbt.log
+package-lock.yml
+alation_data.json
+update_logs.log
+
+# kspec local state (don't commit - personal working state)
+.kspec/.current
+.kspec/CONTEXT.md
+
+# DO commit these for team collaboration:
+# .kspec/config.json - project preferences
+# .kspec/specs/ - specifications, tasks, memory
+# .kiro/steering/ - product, tech, testing guidelines
+# .kiro/agents/ - agent configurations
+# .kiro/mcp.json.template - MCP template (no secrets)

@@ -1,0 +1,922 @@
+version: 2
+
+models:
+  - name: stg_cdm_workspace_status
+    description: |
+      This is the staging table for the workspace data from the PEXA application.
+      It is used to transform the raw data from the source into a format that can be easily consumed by the dimensional model.
+      It is also used to join to the dim_workspace_status table to provide the id for any fact table that needs to reference the status of a workspace.
+    data_tests:
+      - dbt_constraints.primary_key:
+          name: stg_cdm_workspace_status_has_pk
+          arguments:
+            column_names:
+              - id
+              - extraction_ts
+      - dbt_expectations.expect_table_row_count_to_equal_other_table:
+          name: stg_cdm_workspace_status_has_same_row_count_as_source
+          config:
+            where: "'{{env_var('DBT_ENV_NAME') | lower}}' <> 'prd'"
+          arguments:
+            compare_model: "(SELECT DISTINCT workspace_id, version FROM {{ ref('stg_pxa_workspaces') }} WHERE number1 <> 'Default')"
+            compare_row_condition: "'{{env_var('DBT_ENV_NAME') | lower}}' <> 'prd'"
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+      - name: extraction_ts
+        data_tests:
+          - not_null
+      - name: status_id
+        data_tests:
+          - not_null
+      - name: created_date
+        data_tests:
+          - not_null
+
+  - name: stg_cdm_workspace_event
+    description: |
+      This is the staging table for the workspace event data from the PEXA application.
+      It is used to transform the raw data from the source into a format that can be easily consumed by the dimensional model.
+      It is also used to join to the dim_workspace_status table to provide the id for any fact table that needs to reference the status of a workspace.
+    data_tests:
+      - dbt_constraints.primary_key:
+          name: stg_cdm_workspace_event_has_pk
+          config:
+            where: "'{{env_var('DBT_ENV_NAME') | lower}}' <> 'prd'"
+          arguments:
+            column_names:
+              - id
+              - extraction_ts
+      - dbt_expectations.expect_compound_columns_to_be_unique:
+          name: stg_cdm_workspace_event_has_recent_pk
+          arguments:
+            column_list: ["id", "extraction_ts"]
+            row_condition: "extraction_ts > CURRENT_DATE - 7"
+      - dbt_expectations.expect_table_row_count_to_equal_other_table:
+          name: stg_cdm_workspace_event_has_same_row_count_as_source
+          config:
+            where: "'{{env_var('DBT_ENV_NAME') | lower}}' <> 'prd'"
+          arguments:
+            compare_model: "(SELECT DISTINCT business_event_id FROM {{ ref('stg_pxa_business_event') }} WHERE workspace_id IS NOT NULL)"
+            compare_row_condition: "'{{env_var('DBT_ENV_NAME') | lower}}' <> 'prd'"
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+      - name: extraction_ts
+        data_tests:
+          - not_null
+      - name: created_date
+        data_tests:
+          - not_null
+      - name: workspace_id
+        data_tests:
+          - not_null
+      - name: user_id
+        config:
+          tags:
+            - secure_field=PI_USERID
+      - name: username
+        config:
+          tags:
+            - secure_field=PI_EMAIL
+      - name: subscriber_id
+        config:
+          tags:
+            - secure_field=PI_USERID
+
+  - name: dim_workspace
+    description: |
+      This is the workspace dimension. It is used to identify unique workspaces.
+    columns:
+      - name: id
+        description: Internal Workspace ID which is assigned when the workspace is created for the purpose of a transaction.
+        data_type: number
+        data_tests:
+          - not_null
+          - unique
+      - name: workspace_number
+        description: External Workspace ID.
+        data_type: varchar
+        data_tests:
+          - not_null
+      - name: jurisdiction
+        description: The Australian state/territory this workspace relates to.
+        data_type: varchar
+        data_tests:
+          - not_null
+      - name: created_date
+        description: The date and time this workspace was created.
+        data_type: timestamp_tz
+        data_tests:
+          - not_null
+      - name: ws_transaction_type
+        description: Workspace transaction type. ie. TRANSFER, REFINANCE
+        data_type: varchar
+        data_tests:
+          - not_null
+      - name: bundle_type
+        description: The type of lodgement support services bundle which affects available services and bundled pricing for those services.
+        data_type: varchar
+        data_tests:
+          - not_null
+
+  - name: fact_workspace_status
+    description: |
+      This is the workspace fact-ish table.
+    data_tests:
+      - dbt_constraints.primary_key:
+          name: fact_workspace_status_has_pk
+          arguments:
+            column_names:
+              - id
+              - event_ts
+
+  - name: fact_workspace_event
+    description: |
+      This is the workspace event fact-ish table.
+    data_tests:
+      - dbt_constraints.primary_key:
+          name: fact_workspace_event_has_pk
+          config:
+            where: "'{{env_var('DBT_ENV_NAME') | lower}}' <> 'prd'"
+          arguments:
+            column_names:
+              - id
+    columns:
+      - name: id
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_unique:
+              name: fact_workspace_event_has_recent_pk
+              arguments:
+                row_condition: "created_date > CURRENT_DATE - 7"
+      - name: user_id
+        config:
+          tags:
+            - secure_field=PI_USERID
+      - name: username
+        config:
+          tags:
+            - secure_field=PI_EMAIL
+      - name: subscriber_id
+        config:
+          tags:
+            - secure_field=PI_USERID
+
+  - name: stg_cdm_settlement_status
+    description: |
+      This is the staging table for the settlement data from the PEXA application.
+      It is used to transform the raw data from the source into a format that can be easily consumed by the dimensional model.
+      It is also used to join to the dim_settlement_status table to provide the id for any fact table that needs to reference the status of a settlement.
+    data_tests:
+      - dbt_constraints.primary_key:
+          name: stg_cdm_settlement_status_has_pk
+          arguments:
+            column_names:
+              - id
+              - extraction_ts
+      - dbt_expectations.expect_table_row_count_to_equal_other_table:
+          name: stg_cdm_settlement_status_has_same_row_count_as_source
+          config:
+            where: "'{{env_var('DBT_ENV_NAME') | lower}}' <> 'prd'"
+          arguments:
+            compare_model: "(SELECT DISTINCT settlement_id, version FROM {{ ref('stg_pxa_settlements') }})"
+            compare_row_condition: "'{{env_var('DBT_ENV_NAME') | lower}}' <> 'prd'"
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+      - name: extraction_ts
+        data_tests:
+          - not_null
+      - name: status_id
+        data_tests:
+          - not_null
+
+  - name: stg_cdm_settlement_event
+    description: |
+      This is the staging table for the settlement event data from the PEXA application.
+      It is used to transform the raw data from the source into a format that can be easily consumed by the dimensional model.
+      It is also used to join to the dim_settlement_status table to provide the id for any fact table that needs to reference the status of a settlement.
+    data_tests:
+      - dbt_constraints.primary_key:
+          name: stg_cdm_settlement_event_has_pk
+          arguments:
+            column_names:
+              - id
+              - date_changed
+      - dbt_expectations.expect_table_row_count_to_equal_other_table:
+          name: stg_cdm_settlement_event_has_same_row_count_as_source
+          config:
+            where: "'{{env_var('DBT_ENV_NAME') | lower}}' <> 'prd'"
+          arguments:
+            compare_model: "(SELECT DISTINCT settle_datetime_history_id FROM {{ ref('stg_pxa_settle_datetime_history') }})"
+            compare_row_condition: "'{{env_var('DBT_ENV_NAME') | lower}}' <> 'prd'"
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+      - name: date_changed
+        data_tests:
+          - not_null
+      - name: action_performed
+        data_tests:
+          - not_null
+      - name: modified_by_username
+        config:
+          tags:
+            - secure_field=PI_EMAIL
+      - name: modified_by_subscriber_id
+        config:
+          tags:
+            - secure_field=PI_USERID
+      - name: modified_by
+        config:
+          tags:
+            - secure_field=PI_SENSITIVE
+
+  - name: dim_settlement
+    description: |
+      This is the settlement dimension. It is used to identify unique settlements.
+    columns:
+      - name: id
+        data_tests:
+          - unique
+          - not_null
+
+  - name: fact_settlement_status
+    description: |
+      This is the settlement fact-ish table.
+    data_tests:
+      - dbt_constraints.primary_key:
+          name: fact_settlement_status_has_pk
+          arguments:
+            column_names:
+              - id
+              - event_ts
+
+  - name: fact_settlement_event
+    description: |
+      This is the settlement event fact-ish table.
+    data_tests:
+      - dbt_constraints.primary_key:
+          name: fact_settlement_event_has_pk
+          arguments:
+            column_names:
+              - id
+              - event_ts
+    columns:
+      - name: modified_by_username
+        config:
+          tags:
+            - secure_field=PI_EMAIL
+      - name: modified_by_subscriber_id
+        config:
+          tags:
+            - secure_field=PI_USERID
+      - name: modified_by
+        config:
+          tags:
+            - secure_field=PI_SENSITIVE
+
+  - name: stg_cdm_subscriber_event
+    description: |
+      This is the staging table for the subscriber data from the PEXA application.
+      It is used to transform the raw data from the source into a format that can be easily consumed by the dimensional model.
+    data_tests:
+      - dbt_constraints.primary_key:
+          name: stg_cdm_subscriber_event_has_pk
+          arguments:
+            column_names:
+              - id
+              - extraction_ts
+    columns:
+      - name: name
+        config:
+          tags:
+            - secure_field=PI_BUSINESS_NAME
+      - name: legal_entity_name
+        config:
+          tags:
+            - secure_field=PI_BUSINESS_NAME
+      - name: operating_name
+        config:
+          tags:
+            - secure_field=PI_BUSINESS_NAME
+      - name: abn
+        config:
+          tags:
+            - secure_field=PI_SENSITIVE
+      - name: acn
+        config:
+          tags:
+            - secure_field=PI_SENSITIVE
+      - name: status_reason
+        config:
+          tags:
+            - secure_field=PI_SENSITIVE
+      - name: road_number
+        config:
+          tags:
+            - secure_field=PI_PARTIAL_ADDRESS
+      - name: road_name
+        config:
+          tags:
+            - secure_field=PI_PARTIAL_ADDRESS
+      - name: suburb
+        config:
+          tags:
+            - secure_field=PI_PARTIAL_ADDRESS
+      - name: post_code
+        config:
+          tags:
+            - secure_field=PI_PARTIAL_ADDRESS
+      - name: state
+        config:
+          tags:
+            - secure_field=PI_PARTIAL_ADDRESS
+
+  - name: dim_subscriber
+    description: |
+      This is the subscriber dimension. It is used to identify unique subscribers.
+    columns:
+      - name: id
+        data_tests:
+          - unique
+          - not_null
+      - name: abn
+        config:
+          tags:
+            - secure_field=PI_SENSITIVE
+      - name: acn
+        config:
+          tags:
+            - secure_field=PI_SENSITIVE
+
+  - name: fact_subscriber_event
+    description: |
+      This is the subscriber event fact-ish table.
+    data_tests:
+      - dbt_constraints.primary_key:
+          name: fact_subscriber_event_has_pk
+          arguments:
+            column_names:
+              - id
+              - event_ts
+    columns:
+      - name: name
+        config:
+          tags:
+            - secure_field=PI_BUSINESS_NAME
+      - name: legal_entity_name
+        config:
+          tags:
+            - secure_field=PI_BUSINESS_NAME
+      - name: operating_name
+        config:
+          tags:
+            - secure_field=PI_BUSINESS_NAME
+      - name: status_reason
+        config:
+          tags:
+            - secure_field=PI_SENSITIVE
+      - name: road_number
+        config:
+          tags:
+            - secure_field=PI_PARTIAL_ADDRESS
+      - name: road_name
+        config:
+          tags:
+            - secure_field=PI_PARTIAL_ADDRESS
+      - name: suburb
+        config:
+          tags:
+            - secure_field=PI_PARTIAL_ADDRESS
+      - name: post_code
+        config:
+          tags:
+            - secure_field=PI_PARTIAL_ADDRESS
+      - name: state
+        config:
+          tags:
+            - secure_field=PI_PARTIAL_ADDRESS
+
+  - name: dim_party
+    description: |
+      This is the party dimension. It is used to identify unique parties.
+    columns:
+      - name: id
+        data_tests:
+          - unique
+          - not_null
+      - name: workspace_id
+        data_tests:
+          - not_null
+      - name: party_name
+        config:
+          tags:
+            - secure_field=PI_NAME
+      - name: address
+        config:
+          tags:
+            - secure_field=PI_FULL_ADDRESS
+      - name: subscriber_id
+        config:
+          tags:
+            - secure_field=PI_USERID
+
+  - name: stg_cdm_participant_event
+    description: |
+      This is the staging table for the participant data from the PEXA application.
+      It is used to transform the raw data from the source into a format that can be easily consumed by the dimensional model.
+    data_tests:
+      - dbt_constraints.primary_key:
+          name: stg_cdm_participant_event_has_pk
+          arguments:
+            column_names:
+              - id
+              - inserted_at
+    columns:
+      - name: subscriber_id
+        config:
+          tags:
+            - secure_field=PI_USERID
+      - name: party_represented
+        config:
+          tags:
+            - secure_field=PI_NAME
+      - name: subscriber_reference
+        config:
+          tags:
+            - secure_field=PI_SENSITIVE
+      - name: pexa_project_name
+        config:
+          tags:
+            - secure_field=PI_SENSITIVE
+      - name: subscriber_name
+        config:
+          tags:
+            - secure_field=PI_BUSINESS_NAME
+      - name: accepted_by
+        config:
+          tags:
+            - secure_field=PI_USERID
+      - name: user_id
+        config:
+          tags:
+            - secure_field=PI_USERID
+      - name: settle_accept_by_username
+        config:
+          tags:
+            - secure_field=PI_SENSITIVE
+      - name: settle_accept_by_subscriber_id
+        config:
+          tags:
+            - secure_field=PI_USERID
+      - name: withdraw_reason
+        config:
+          tags:
+            - secure_field=PI_SENSITIVE
+      - name: withdraw_info
+        config:
+          tags:
+            - secure_field=PI_SENSITIVE
+
+  - name: dim_participant
+    description: |
+      This is the participant dimension. It is used to identify unique participants.
+    columns:
+      - name: id
+        data_tests:
+          - unique
+          - not_null
+      - name: workspace_id
+        data_tests:
+          - not_null
+      - name: workspace_role_id
+        data_tests:
+          - not_null
+      - name: workspace_role
+      - name: subscriber_id
+        data_tests:
+          - not_null
+        config:
+          tags:
+            - secure_field=PI_USERID
+      - name: inserted_at
+        data_tests:
+          - not_null
+
+  - name: fact_participant_event
+    description: |
+      This is the participant event fact-ish table.
+      - dbt_constraints.primary_key:
+          name: fact_participant_event_has_pk
+          arguments:
+            column_names:
+              - id
+              - event_ts
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+      - name: subscriber_reference
+        config:
+          tags:
+            - secure_field=PI_SENSITIVE
+      - name: pexa_project_name
+        config:
+          tags:
+            - secure_field=PI_SENSITIVE
+      - name: subscriber_name
+        config:
+          tags:
+            - secure_field=PI_BUSINESS_NAME
+      - name: accepted_by
+        config:
+          tags:
+            - secure_field=PI_USERID
+      - name: user_id
+        config:
+          tags:
+            - secure_field=PI_USERID
+      - name: settle_accept_by_username
+        config:
+          tags:
+            - secure_field=PI_SENSITIVE
+      - name: settle_accept_by_subscriber_id
+        config:
+          tags:
+            - secure_field=PI_USERID
+      - name: withdraw_reason
+        config:
+          tags:
+            - secure_field=PI_SENSITIVE
+      - name: withdraw_info
+        config:
+          tags:
+            - secure_field=PI_SENSITIVE
+      - name: party_represented
+        config:
+          tags:
+            - secure_field=PI_NAME
+
+  - name: stg_cdm_property_event
+    description: |
+      This is the staging table for the property data from the PEXA application.
+      It is used to transform the raw data from the source into a format that can be easily consumed by the dimensional model.
+      It is also used to join to the dim_settlement_status table to provide the id for any fact table that needs to reference the status of a settlement.
+    data_tests:
+      - dbt_constraints.primary_key:
+          name: stg_cdm_property_has_pk
+          arguments:
+            column_names:
+              - id
+              - date_changed
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+      - name: date_changed
+        data_tests:
+          - not_null
+      - name: lvreport_address
+        config:
+          tags:
+            - secure_field=PI_FULL_ADDRESS
+      - name: updated_address_display
+        config:
+          tags:
+            - secure_field=PI_FULL_ADDRESS
+      - name: ct_controller_customer_code
+        config:
+          tags:
+            - secure_field=PI_USERID
+      - name: ct_controller_name
+        config:
+          tags:
+            - secure_field=PI_FULL_NAME
+      - name: description
+        config:
+          tags:
+            - secure_field=PI_FREE_TEXT_FIELD
+      - name: address
+        config:
+          tags:
+            - secure_field=PI_FULL_ADDRESS
+
+  - name: dim_property
+    description: |
+      This is the property dimension. It is used to identify unique properties.
+    columns:
+      - name: id
+        data_tests:
+          - unique
+          - not_null
+      - name: date_changed
+        data_tests:
+          - not_null
+      - name: workspace_id
+        data_tests:
+          - not_null
+      - name: land_identifier
+        data_tests:
+          - not_null
+      - name: date_added
+        data_tests:
+          - not_null
+      - name: lvreport_address
+        config:
+          tags:
+            - secure_field=PI_FULL_ADDRESS
+      - name: parent_indicator
+      - name: ct_controller_abn
+      - name: ct_controller_customer_code
+        config:
+          tags:
+            - secure_field=PI_USERID
+      - name: ct_controller_name
+        config:
+          tags:
+            - secure_field=PI_FULL_NAME
+      - name: lot_on_plan_id
+      - name: interop_title_id
+
+  - name: fact_property_event
+    description: |
+      This is the property event fact-ish table.
+    data_tests:
+      - dbt_constraints.primary_key:
+          name: fact_property_event_has_pk
+          arguments:
+            column_names:
+              - id
+              - event_ts
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+      - name: updated_address_display
+        config:
+          tags:
+            - secure_field=PI_FULL_ADDRESS
+      - name: description
+        config:
+          tags:
+            - secure_field=PI_FREE_TEXT_FIELD
+      - name: address
+        config:
+          tags:
+            - secure_field=PI_FULL_ADDRESS
+
+  - name: stg_cdm_lodgement_event
+    description: |
+      This is the staging table for the lodgement data from the PEXA application.
+      It is used to transform the raw data from the source into a format that can be easily consumed by the dimensional model.
+    data_tests:
+      - dbt_constraints.primary_key:
+          name: stg_cdm_lodgement_event_has_pk
+          arguments:
+            column_names:
+              - id
+              - date_changed
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+      - name: date_changed
+        data_tests:
+          - not_null
+      - name: workspace_id
+        data_tests:
+          - not_null:
+              config: 
+                where: "NOT is_delete"
+      - name: status
+        data_tests:
+          - not_null:
+              config: 
+                where: "NOT is_delete"
+
+  - name: fact_lodgement_event
+    description: |
+      This is the lodgement event fact-ish table.
+    data_tests:
+      - dbt_constraints.primary_key:
+          name: fact_lodgement_event_has_pk
+          arguments:
+            column_names:
+              - id
+              - event_ts
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+      - name: event_ts
+        data_tests:
+          - not_null
+
+  - name: dim_lodgement
+    description: |
+      This is the lodgement dimension. It is used to identify unique lodgements.
+    columns:
+      - name: id
+        data_tests:
+          - unique
+          - not_null
+      - name: workspace_id
+        data_tests:
+          - not_null
+
+  - name: stg_cdm_lodgement_document_event
+    description: |
+      This is the staging table for the lodgement document data from the PEXA application.
+      It is used to transform the raw data from the source into a format that can be easily consumed by the dimensional model.
+    data_tests:
+      - dbt_constraints.primary_key:
+          name: stg_cdm_lodgement_document_event_has_pk
+          arguments:
+            column_names:
+              - id
+              - date_changed
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+      - name: date_changed
+        data_tests:
+          - not_null
+      - name: workspace_id
+        data_tests:
+          - not_null:
+              config: 
+                where: "NOT is_delete"
+      - name: status
+        data_tests:
+          - not_null:
+              config: 
+                where: "NOT is_delete"
+      - name: lodgement_id
+        data_tests:
+          - not_null:
+              config: 
+                where: "NOT is_delete"
+
+  - name: fact_document_event
+    description: |
+      This is the document event fact-ish table.
+    data_tests:
+      - dbt_constraints.primary_key:
+          name: fact_document_event_has_pk
+          arguments:
+            column_names:
+              - id
+              - event_ts
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+      - name: event_ts
+        data_tests:
+          - not_null
+      - name: status
+        data_tests:
+          - not_null
+
+  - name: dim_document
+    description: |
+      This is the document dimension. It is used to identify unique documents.
+    columns:
+      - name: id
+        data_tests:
+          - unique
+          - not_null
+      - name: workspace_id
+        data_tests:
+          - not_null
+      - name: created_date
+        data_tests:
+          - not_null
+      - name: lodgement_id
+        data_tests:
+          - not_null
+
+  - name: stg_cdm_message_event
+    description: |
+      This is the staging table for the message data from the PEXA application.
+      It is used to transform the raw data from the source into a format that can be easily consumed by the dimensional model.
+    data_tests:
+      - dbt_constraints.primary_key:
+          name: stg_cdm_message_event_has_pk
+          arguments:
+            column_names:
+              - id
+              - created_at
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+      - name: created_at
+        data_tests:
+          - not_null
+      - name: conversation_id
+        data_tests:
+          - not_null
+      - name: subject
+        config:
+          tags:
+            - secure_field=PI_FREE_TEXT_FIELD
+        data_tests:
+          - not_null
+      - name: category
+        data_tests:
+          - not_null
+      - name: sub_category
+        config:
+          tags:
+            - secure_field=PI_FREE_TEXT_FIELD
+        data_tests:
+          - not_null
+      - name: message
+        config:
+          tags:
+            - secure_field=PI_FREE_TEXT_FIELD
+      - name: subscriber_id
+        config:
+          tags:
+            - secure_field=PI_USERID
+      - name: workspace_role_id
+      - name: user_id
+        config:
+          tags:
+            - secure_field=PI_USERID
+      - name: action_required
+        data_tests:
+          - not_null
+
+  - name: dim_conversation
+    description: |
+      This is the conversation dimension. It is used to identify unique conversations.
+    columns:
+      - name: id
+        data_tests:
+          - unique
+          - not_null
+      - name: subject
+        config:
+          tags:
+            - secure_field=PI_FREE_TEXT_FIELD
+        data_tests:
+          - not_null
+      - name: category
+        data_tests:
+          - not_null
+      - name: sub_category
+        config:
+          tags:
+            - secure_field=PI_FREE_TEXT_FIELD
+        data_tests:
+          - not_null
+      - name: workspace_id
+        data_tests:
+          - not_null
+      - name: created_at
+        data_tests:
+          - not_null
+      - name: last_message_at
+        data_tests:
+          - not_null
+
+  - name: fact_conversation_message
+    description: |
+      This is the conversation message fact-ish table.
+    data_tests:
+      - dbt_constraints.primary_key:
+          name: fact_conversation_message_has_pk
+          arguments:
+            column_names:
+              - id
+    columns:
+      - name: conversation_id
+        data_tests:
+          - not_null
+      - name: created_at
+        data_tests:
+          - not_null
+      - name: message
+        config:
+          tags:
+            - secure_field=PI_FREE_TEXT_FIELD
+      - name: subscriber_id
+        config:
+          tags:
+            - secure_field=PI_USERID
+      - name: workspace_role_id
+      - name: user_id
+        config:
+          tags:
+            - secure_field=PI_USERID
+      - name: action_required
+        data_tests:
+          - not_null

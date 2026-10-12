@@ -1,0 +1,350 @@
+version: 2
+
+models:
+  - name: vw_api_audit_logs
+    config:
+      meta:
+        alation_oid: oid=3558;otype=table
+        alation_title: View API Audit Logs
+    description: Audit log table contains the full body of the API and it is used
+      for auditing and troubleshooting when customers contact PEXA about a specific
+      api.
+    columns:
+      - name: id
+        description: Unique identifier/transaction ID. Mapped from API_REQ_RESP_AUDIT_ID
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77096;otype=attribute
+            alation_title: Id
+
+      - name: inserted_at
+        description: Timestamp for when the data was ingested into Snowflake
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=77133;otype=attribute
+            alation_title: Inserted At
+
+      - name: request_body
+        description: Request Payload in XML or JSON format. [link to documentation](https://developer.pexa.com.au/Core/current/api/apireference/)
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77132;otype=attribute
+            alation_title: Request Body
+
+      - name: request_body_ref
+        description: Request Body Reference
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77134;otype=attribute
+            alation_title: Request Body Reference
+
+      - name: request_body_s3
+        description: Request Body S3
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77081;otype=attribute
+            alation_title: Request Body S3
+
+      - name: request_headers
+        description: All the HTTP Request Headers comma separated, including auth
+          token
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77094;otype=attribute
+            alation_title: Request Headers
+
+      - name: request_headers_ref
+        description: Request Headers Reference
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77108;otype=attribute
+            alation_title: Request Headers Reference
+
+      - name: request_headers_s3
+        description: Request Headers S3
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77070;otype=attribute
+            alation_title: Request Headers S3
+
+      - name: request_qry_string
+        description: Request Query Params in key value format eg. landTitleReference=9815%2F648&jurisdiction=VIC
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77128;otype=attribute
+            alation_title: Request Query String
+
+      - name: request_timestamp
+        description: Time stamp of the API call in UTC format eg. 2021-02-25T22:58:39.070+0000
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=77084;otype=attribute
+            alation_title: Request Timestamp
+
+      - name: request_url
+        description: Request URL in full, including http:// and the domain, with the
+          query string removed
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77080;otype=attribute
+            alation_title: Request Uniform Resource Locator
+
+      - name: response_body
+        description: Response Payload in XML or JSON format. [link to documentation](https://developer.pexa.com.au/Core/current/api/apireference/)
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77074;otype=attribute
+            alation_title: Response Body
+
+      - name: response_body_ref
+        description: Response Body Reference
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77110;otype=attribute
+            alation_title: Response Body Reference
+
+      - name: response_body_s3
+        description: Response Body S3
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77061;otype=attribute
+            alation_title: Response Body S3
+
+      - name: response_headers
+        description: The Content-Type Headers in the response eg. Content-Type application/xml
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77064;otype=attribute
+            alation_title: Response Headers
+
+      - name: response_headers_ref
+        description: Response Headers Reference
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77109;otype=attribute
+            alation_title: Response Headers Reference
+
+      - name: response_headers_s3
+        description: Response Headers S3
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77125;otype=attribute
+            alation_title: Response Headers S3
+
+      - name: username
+        description: Requestor username which is the email address used to authenticate
+          to Pexa Exchange. For B2B calls it will be the Cert CN eg. *.fms.au
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77136;otype=attribute
+            alation_title: Username
+
+      - name: uuid
+        description: Transaction ID which is a random string generated in Pexa Exchange
+          eg.8fcb7df7-013a-47a9-96db-ddc5d842775f
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77107;otype=attribute
+            alation_title: Uuid
+
+  - name: vw_api_report_logs
+    config:
+      meta:
+        alation_oid: oid=3559;otype=table
+        alation_title: View API Report Logs
+    description: Report api table is enriched data designed for reporting as the table
+      includes subscriber id, workspace id, subscriber type, channel etc information
+      in addition to the api calls.
+    columns:
+      - name: api
+        description: The API name eg. RETRIEVE_NOTIFICATIONS. Maps the endpoint to
+          a friendly name.
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77114;otype=attribute
+            alation_title: Api
+
+      - name: channel
+        description: 'Request Channel based on the type of authentication eg. PING_MSSL.
+          This is essentially security pattern used by the client organisation : Oauth
+          or PING.'
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77093;otype=attribute
+            alation_title: Channel
+
+      - name: error_message
+        description: error message text in case of errors
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77100;otype=attribute
+            alation_title: Error Message
+
+      - name: inserted_at
+        description: Timestamp for when the data was ingested into Snowflake
+        data_type: timestamp_tz
+        config:
+          meta:
+            alation_oid: oid=77090;otype=attribute
+            alation_title: Inserted At
+
+      - name: legal_entity_name
+        description: Subscriber Legal Name of the requestor
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77071;otype=attribute
+            alation_title: Legal Entity Name
+
+      - name: ob_code
+        description: OBCode in case of errors. OBCode is a code to represent validation
+          errors. eg. OB1400.002
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77075;otype=attribute
+            alation_title: OB Code
+
+      - name: pms
+        description: The Practice Management Software used by the requestor eg. Globalx.
+          This is a 3rd party application used by PEXA customers to run their conveyencing
+          workflow.
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77141;otype=attribute
+            alation_title: Practice Management Software
+
+      - name: product
+        description: Product id for internal apps eg. eAPI-StandaloneDischarge-panel
+          (Only applicable when channel is INTERNAL_TOKEN)
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77142;otype=attribute
+            alation_title: Product
+
+      - name: request_body
+        description: Request Payload in XML or JSON format. [link to documentation](https://developer.pexa.com.au/Core/current/api/apireference/)
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77069;otype=attribute
+            alation_title: Request Body
+
+      - name: request_qry_string
+        description: Request Query Params in key value format eg. landTitleReference=9815%2F648&jurisdiction=VIC
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77115;otype=attribute
+            alation_title: Request Query String
+
+      - name: request_timestamp
+        description: Time stamp of the API call in UTC format eg. 2021-02-25T22:58:39.070+0000
+        data_type: timestamp_ntz
+        config:
+          meta:
+            alation_oid: oid=77091;otype=attribute
+            alation_title: Request Timestamp
+
+      - name: request_url
+        description: Request URL in full, including http:// and the domain, with the
+          query string removed
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77099;otype=attribute
+            alation_title: Request Uniform Resource Locator
+
+      - name: response_body
+        description: Response Payload in XML or JSON format. [link to documentation](https://developer.pexa.com.au/Core/current/api/apireference/)
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77101;otype=attribute
+            alation_title: Response Body
+
+      - name: response_headers
+        description: The Content-Type Headers in the response eg. Content-Type application/xml
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77120;otype=attribute
+            alation_title: Response Headers
+
+      - name: response_status
+        description: Status to say if the API call was a SUCCESS or FAILURE
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77076;otype=attribute
+            alation_title: Response Status
+
+      - name: subscriber_id
+        description: Subscriber Id of the requestor from Pexa Exchange
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77063;otype=attribute
+            alation_title: Subscriber Id
+
+      - name: subscriber_type
+        description: Subscriber Type of the requestor
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77143;otype=attribute
+            alation_title: Subscriber Type
+
+      - name: username
+        description: Requestor username which is the email address used to authenticate
+          to Pexa Exchange. For B2B calls it will be the Cert CN eg. *.fms.au
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77072;otype=attribute
+            alation_title: Username
+
+      - name: uuid
+        description: Transaction ID which is a random string generated in Pexa Exchange
+          eg.8fcb7df7-013a-47a9-96db-ddc5d842775f
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77065;otype=attribute
+            alation_title: Uuid
+
+      - name: workspace_id
+        description: Workspace Id as seen in Pexa Exchange
+        data_type: varchar
+        config:
+          meta:
+            alation_oid: oid=77138;otype=attribute
+            alation_title: Workspace Id
+      
+      - name: client_name
+        description: client Name 
+        data_type: varchar

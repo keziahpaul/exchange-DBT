@@ -1,0 +1,112 @@
+version: 2
+
+models:
+  - name: outbound_notification
+    description: Raw table for API Push notification outbound_notification
+    columns:
+      - name: id
+        description: Id, unique identifier
+        data_type: varchar
+
+      - name: registration_id
+        data_type: varchar
+
+      - name: status
+        data_type: varchar
+
+      - name: created_at
+        data_type: timestamp_tz
+
+      - name: updated_at
+        data_type: timestamp_tz
+
+      - name: data
+        data_type: varchar
+
+      - name: retry_count
+        data_type: number
+
+      - name: last_sent_at
+        data_type: timestamp_tz
+
+      - name: next_retry_at
+        data_type: timestamp_tz
+
+      - name: trace_id
+        data_type: varchar
+
+      - name: event_type
+        data_type: varchar
+
+      - name: workspace_id
+        data_type: varchar
+
+      - name: inserted_at
+        description: date and time when the data was ingested in RAW table in snowflake.
+        data_type: timestamp_tz
+
+      - name: load_type
+        description: Tells if the record was inserted as part of an incremental or full load
+        data_type: varchar
+    
+  - name: registration
+    description: Raw table for PEXAKey Registration
+    columns:
+    - name: id
+      description: Id, unique identifier
+      data_type: varchar
+
+    - name: subscriber_id
+      data_type: varchar
+
+    - name: created_at
+      data_type: timestamp_tz
+
+    - name: updated_at
+      data_type: timestamp_tz
+
+    - name: deleted
+      data_type: boolean
+
+    - name: integrator_id
+      data_type: varchar
+
+    - name: type
+      data_type: varchar
+
+    - name: inserted_at
+      description: Source Filename
+      data_type: timestamp_tz
+
+    - name: load_type
+      description: Tells if the record was inserted as part of an incremental or full load
+      data_type: varchar
+  
+  - name: webhook_registration
+    description: Raw table for PEXAKey Webhook_registration
+    columns:
+    - name: registration_id
+      data_type: varchar
+
+    - name: webhook_url
+      data_type: varchar
+
+    - name: current_shared_secret
+      data_type: varchar
+
+    - name: current_shared_secret_expiry
+      data_type: timestamp_tz
+
+    - name: previous_shared_secret
+      data_type: varchar
+
+    - name: previous_shared_secret_expiry
+      data_type: timestamp_tz
+
+    - name: inserted_at
+      description: Source Filename
+      data_type: timestamp_tz
+
+    - name: load_type
+      description: Tells if the record was inserted as part of an incremental or full load
+      data_type: varchar

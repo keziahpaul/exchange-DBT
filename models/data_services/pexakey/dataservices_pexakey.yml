@@ -1,0 +1,312 @@
+version: 2
+
+models:
+  - name: bank_account_store
+    description: Flattened and Curated table for PEXAKey Bank Account store
+    columns:
+      - name: task_id
+        description: Task identifier
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+
+      - name: subscriber_id
+        description: Subscriber identifier
+        data_type: varchar
+
+      - name: task_status
+        description: Current status of the task
+        data_type: varchar
+
+      - name: event_type
+        description: Type of event (mapped from codes to descriptive names)
+        data_type: varchar
+
+      - name: date_created
+        description: Creation timestamp in Australia/Melbourne timezone
+        data_type: timestamp_tz
+
+      - name: role
+        description: Role
+        data_type: varchar
+
+      - name: workspace_internal_id
+        description: Workspace Internal Identifier
+        data_type: number
+
+      - name: party_id
+        description: Unique identifier for the party
+        data_type: varchar
+
+      - name: date_updated
+        description: Last update timestamp in Australia/Melbourne timezone
+        data_type: timestamp_tz
+
+      - name: correlation_token
+        description: Correlation Token
+        data_type: varchar
+
+      - name: email
+        description: Email address
+        data_type: varchar
+        tags:
+          - secure_field=PI_EMAIL
+
+      - name: viewed
+        description: Viewed
+        data_type: number
+
+      - name: task_action
+        description: Task Action
+        data_type: varchar
+
+      - name: bank_account_name
+        description: Name of the bank account
+        data_type: varchar
+        tags:
+          - secure_field=PI_SENSITIVE_FINANCIAL
+
+      - name: bank_account_number
+        description: Bank account number
+        data_type: varchar
+        tags:
+          - secure_field=PI_SENSITIVE_FINANCIAL
+
+      - name: bank_account_bsb
+        description: BSB number
+        data_type: varchar
+        tags:
+          - secure_field=PI_SENSITIVE_FINANCIAL
+
+      - name: bank_account_reference
+        description: Bank account reference
+        data_type: varchar
+        tags:
+          - secure_field=PI_SENSITIVE_FINANCIAL
+
+      - name: bank_mnemonic
+        description: Bank mnemonic code
+        data_type: varchar
+
+      - name: amount
+        description: Transaction amount
+        data_type: number
+        tags:
+          - secure_field=PI_SENSITIVE_FINANCIAL
+
+      - name: src_load_ts
+        description: Source Inserted At Timestamp
+        data_type: timestamp_tz
+
+      - name: inserted_at
+        description: Inserted At Timestamp
+        data_type: timestamp_tz
+
+  - name: property_store
+    description: Flattened and Curated table for PEXAKey Property store
+    columns:
+      - name: tracking_id
+        description: Unique tracking identifier
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+
+      - name: subscriber_id
+        description: Subscriber identifier
+        data_type: varchar
+
+      - name: tracking_status
+        description: Current tracking status
+        data_type: varchar
+
+      - name: address_line
+        description: Property address line
+        data_type: varchar
+        tags:
+          - secure_field=PI_PARTIAL_ADDRESS
+
+      - name: date_created
+        description: Creation timestamp in Australia/Melbourne timezone
+        data_type: timestamp_tz
+
+      - name: date_updated
+        description: Last update date in Melbourne timezone
+        data_type: timestamp_tz
+
+      - name: src_load_ts
+        description: Source Inserted At Timestamp
+        data_type: timestamp_tz
+
+      - name: inserted_at
+        description: Inserted At Timestamp
+        data_type: timestamp_tz
+
+  - name: all_users_store
+    description: Flattened and Curated table for PEXAKey All Users store
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - email
+              - mobile
+    columns:
+      - name: email
+        description: User email address
+        data_type: varchar
+        tags:
+          - secure_field=PI_EMAIL
+
+      - name: mobile
+        description: User's mobile number
+        data_type: varchar
+        tags:
+          - secure_field=PI_CONTACT_NUMBER
+
+      - name: date_created
+        description: User creation date in Melbourne timezone
+        data_type: timestamp_tz
+
+      - name: date_updated
+        description: Last update date in Melbourne timezone
+        data_type: timestamp_tz
+
+      - name: given_name
+        description: User's given name
+        data_type: varchar
+        tags:
+          - secure_field=PI_NAME
+
+      - name: user_id
+        description: Unique identifier for the user
+        data_type: varchar
+
+      - name: registration_status
+        description: User registration status
+        data_type: varchar
+
+      - name: surname
+        description: User's surname
+        data_type: varchar
+        tags:
+          - secure_field=PI_NAME
+
+      - name: username
+        description: User's username
+        data_type: varchar
+        tags:
+          - secure_field=PI_EMAIL
+
+      - name: organisation_name
+        description: Name of the user's organization
+        data_type: varchar
+        tags:
+          - secure_field=PI_BUSINESS_NAME
+
+      - name: src_load_ts
+        description: Source Inserted At Timestamp
+        data_type: timestamp_tz
+
+      - name: inserted_at
+        description: Inserted At Timestamp
+        data_type: timestamp_tz
+
+  - name: vw_address
+    description: DS current view for RDS address
+
+  - name: vw_task
+    description: DS current view for PEXAKey Task ( property settelment RDS)
+
+  - name: vw_subscriber
+    description: DS current view for PEXAKey Subscriber ( property settelment RDS)
+
+  - name: vw_tracking_user
+    description: DS current view for PEXAKey tracking user ( property settelment RDS)
+
+  - name: vw_tracking
+    description: DS current view for PEXAKey tracking ( property settelment RDS)
+
+  - name: property_settlement
+    description: Flattened and Curated table for PEXAKey property settlement
+    columns:
+      - name: tracking_id
+        description: Tracking identifier
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+
+      - name: mobile
+        description: mobile number
+        data_type: varchar
+        tags:
+          - secure_field=PI_CONTACT_NUMBER
+
+      - name: date_created
+        description: date created
+        data_type: timestamp_tz
+
+      - name: party_id
+        description: party identifier
+        data_type: varchar
+
+      - name: workspace_internal_id
+        description: Workspace Internal Identifier
+        data_type: varchar
+
+      - name: correlation_token
+        description: Correlation Token
+        data_type: varchar
+
+      - name: email
+        description: Email address
+        data_type: varchar
+        tags:
+          - secure_field=PI_EMAIL
+
+      - name: role
+        description: Role
+        data_type: varchar
+
+      - name: settlement_date
+        description: Settlement date
+        data_type: timestamp_tz
+
+      - name: subscriber_name
+        description: Subscriber name
+        data_type: varchar
+        tags:
+          - secure_field=PI_BUSINESS_NAME
+
+      - name: propery_classification
+        description: Propery classification
+        data_type: varchar
+
+      - name: suburb
+        description: Suburb
+        data_type: varchar
+        tags:
+          - secure_field=PI_PARTIAL_ADDRESS
+
+      - name: state
+        description: State
+        data_type: varchar
+
+      - name: postcode
+        description: Postcode
+        data_type: varchar
+        tags:
+          - secure_field=PI_PARTIAL_ADDRESS
+
+      - name: date_updated
+        description: Last update timestamp in Australia/Melbourne timezone
+        data_type: timestamp_tz
+
+      - name: src_load_ts
+        description: Source Inserted At Timestamp
+        data_type: timestamp_tz
+
+      - name: inserted_at
+        description: Inserted At Timestamp
+        data_type: timestamp_tz

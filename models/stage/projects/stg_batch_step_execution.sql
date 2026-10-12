@@ -1,0 +1,31 @@
+
+ {#  materialization, incremental strategy configured in dbt_project.yml #} 
+ {% set src_view_name= ref('vw_prj_batch_step_execution') %}  
+ {% set pk = 'step_execution_id'%} 
+
+{% set columns_config %}
+    OP,
+    EXTRACTION_START_TS::TIMESTAMP_NTZ as EXTRACTION_START_TS,
+    STEP_EXECUTION_ID::NUMBER as STEP_EXECUTION_ID,
+    VERSION::NUMBER as VERSION,
+    STEP_NAME as STEP_NAME,
+    JOB_EXECUTION_ID::NUMBER as JOB_EXECUTION_ID,
+    START_TIME::TIMESTAMP_NTZ as START_TIME,
+    END_TIME::TIMESTAMP_NTZ as END_TIME,
+    STATUS as STATUS,
+    COMMIT_COUNT::NUMBER as COMMIT_COUNT,
+    READ_COUNT::NUMBER as READ_COUNT,
+    FILTER_COUNT::NUMBER as FILTER_COUNT,
+    WRITE_COUNT::NUMBER as WRITE_COUNT,
+    READ_SKIP_COUNT::NUMBER as READ_SKIP_COUNT,
+    WRITE_SKIP_COUNT::NUMBER as WRITE_SKIP_COUNT,
+    PROCESS_SKIP_COUNT::NUMBER as PROCESS_SKIP_COUNT,
+    ROLLBACK_COUNT::NUMBER as ROLLBACK_COUNT,
+    EXIT_CODE as EXIT_CODE,
+    EXIT_MESSAGE as EXIT_MESSAGE,
+    LAST_UPDATED::TIMESTAMP_NTZ as LAST_UPDATED,
+    CREATE_TIME::TIMESTAMP_NTZ as CREATE_TIME,
+    TRANSACT_SEQ::NUMBER as TRANSACT_SEQ
+{% endset %}
+
+{{ dms_precurate_stage_processing(src_view_name, pk, columns_config) }}

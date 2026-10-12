@@ -1,0 +1,10 @@
+
+version: 2
+sources:
+- name: PI
+  database: "{{env_var('DBT_EXCHANGE_CURATE_DB')}}"
+  schema: "API_PUSH_NOTIFICATION"
+  loader: S3
+  tables:
+
+    - name: WEBHOOK_registration
